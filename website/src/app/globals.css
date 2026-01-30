@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #1a1a1a;
+  --plenus-red: #c41e3a;
+  --plenus-red-dark: #a01830;
+  --plenus-gray-50: #fafafa;
+  --plenus-gray-100: #f5f5f5;
+  --plenus-gray-200: #e5e5e5;
+  --plenus-gray-300: #d4d4d4;
+  --plenus-gray-400: #a3a3a3;
+  --plenus-gray-500: #737373;
+  --plenus-gray-600: #525252;
+  --plenus-gray-700: #404040;
+  --plenus-gray-800: #262626;
+  --plenus-gray-900: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-plenus-red: var(--plenus-red);
+  --color-plenus-red-dark: var(--plenus-red-dark);
+  --color-plenus-gray-50: var(--plenus-gray-50);
+  --color-plenus-gray-100: var(--plenus-gray-100);
+  --color-plenus-gray-200: var(--plenus-gray-200);
+  --color-plenus-gray-300: var(--plenus-gray-300);
+  --color-plenus-gray-400: var(--plenus-gray-400);
+  --color-plenus-gray-500: var(--plenus-gray-500);
+  --color-plenus-gray-600: var(--plenus-gray-600);
+  --color-plenus-gray-700: var(--plenus-gray-700);
+  --color-plenus-gray-800: var(--plenus-gray-800);
+  --color-plenus-gray-900: var(--plenus-gray-900);
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-playfair);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--plenus-gray-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--plenus-gray-400);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--plenus-gray-500);
+}
