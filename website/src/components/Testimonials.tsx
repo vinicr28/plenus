@@ -73,7 +73,7 @@ export default function Testimonials() {
         >
           {testimonials.map((testimonial, index) => (
             <StaggerItem key={index}>
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 p-8 rounded-2xl h-full">
+              <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-2xl h-full shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
                 {/* Quote icon */}
                 <div className="mb-6">
                   <svg

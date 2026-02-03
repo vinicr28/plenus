@@ -129,7 +129,7 @@ export default function Header() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="absolute right-0 top-0 bottom-0 w-72 bg-white shadow-xl p-8 pt-24"
+              className="absolute right-0 top-0 bottom-0 w-72 bg-white/95 backdrop-blur-xl shadow-xl p-8 pt-24"
             >
               <div className="flex flex-col gap-6">
                 {navLinks.map((link) => (

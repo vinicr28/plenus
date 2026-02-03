@@ -28,7 +28,7 @@ export default function Footer() {
                 href="https://www.instagram.com/plenusobrasoficial/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-[#c41e3a] transition-colors"
+                className="w-10 h-10 bg-white/5 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-[#c41e3a] border border-white/10 transition-all duration-200"
               >
                 <svg
                   className="w-5 h-5"
@@ -48,7 +48,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="#home"
-                  className="text-white/60 hover:text-[#c41e3a] transition-colors text-sm"
+                  className="text-white/60 hover:text-white transition-colors duration-200 text-sm"
                 >
                   Home
                 </Link>
@@ -56,7 +56,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="#sobre"
-                  className="text-white/60 hover:text-[#c41e3a] transition-colors text-sm"
+                  className="text-white/60 hover:text-white transition-colors duration-200 text-sm"
                 >
                   Sobre Nós
                 </Link>
@@ -64,7 +64,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="#diferenciais"
-                  className="text-white/60 hover:text-[#c41e3a] transition-colors text-sm"
+                  className="text-white/60 hover:text-white transition-colors duration-200 text-sm"
                 >
                   Diferenciais
                 </Link>
@@ -72,7 +72,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="#projetos"
-                  className="text-white/60 hover:text-[#c41e3a] transition-colors text-sm"
+                  className="text-white/60 hover:text-white transition-colors duration-200 text-sm"
                 >
                   Projetos
                 </Link>
@@ -80,7 +80,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="#depoimentos"
-                  className="text-white/60 hover:text-[#c41e3a] transition-colors text-sm"
+                  className="text-white/60 hover:text-white transition-colors duration-200 text-sm"
                 >
                   Depoimentos
                 </Link>
@@ -88,7 +88,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="#contato"
-                  className="text-white/60 hover:text-[#c41e3a] transition-colors text-sm"
+                  className="text-white/60 hover:text-white transition-colors duration-200 text-sm"
                 >
                   Contato
                 </Link>

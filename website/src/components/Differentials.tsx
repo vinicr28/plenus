@@ -88,13 +88,13 @@ export default function Differentials() {
         {/* Section header */}
         <div className="max-w-3xl mx-auto text-center mb-16">
           <FadeIn>
-            <p className="text-[#c41e3a] text-sm font-semibold tracking-[0.2em] uppercase mb-4">
+            <p className="text-[#737373] text-sm font-semibold tracking-[0.2em] uppercase mb-4">
               Por que escolher a Plenus
             </p>
           </FadeIn>
           <FadeIn delay={0.1}>
             <h2 className="font-[var(--font-playfair)] text-3xl md:text-5xl font-bold text-[#1a1a1a] mb-6">
-              Nossos <span className="text-[#c41e3a]">Diferenciais</span>
+              Nossos <span className="text-[#525252]">Diferenciais</span>
             </h2>
           </FadeIn>
           <FadeIn delay={0.2}>
@@ -107,13 +107,13 @@ export default function Differentials() {
 
         {/* Differentials grid */}
         <StaggerContainer
-          className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="flex flex-wrap justify-center gap-6"
           staggerDelay={0.15}
         >
           {differentials.map((item, index) => (
-            <StaggerItem key={index}>
-              <div className="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 h-full border border-[#e5e5e5] hover:border-[#c41e3a]/20">
-                <div className="w-16 h-16 bg-[#c41e3a]/10 rounded-2xl flex items-center justify-center mb-6 text-[#c41e3a] group-hover:bg-[#c41e3a] group-hover:text-white transition-all duration-300">
+            <StaggerItem key={index} className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]">
+              <div className="group bg-white/80 backdrop-blur-sm p-8 rounded-2xl h-full text-center border border-gray-200/50 shadow-[0_2px_20px_-4px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.15)] hover:border-gray-300/50 hover:-translate-y-1 transition-all duration-300">
+                <div className="w-16 h-16 bg-[#c41e3a]/10 rounded-2xl flex items-center justify-center mb-6 mx-auto text-[#c41e3a] group-hover:bg-[#c41e3a] group-hover:text-white transition-all duration-300">
                   {item.icon}
                 </div>
                 <h3 className="font-[var(--font-playfair)] text-xl font-bold text-[#1a1a1a] mb-3">

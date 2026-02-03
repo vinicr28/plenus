@@ -10,14 +10,14 @@ export default function Contact() {
           {/* Left column - Info */}
           <div>
             <FadeIn>
-              <p className="text-[#c41e3a] text-sm font-semibold tracking-[0.2em] uppercase mb-4">
+              <p className="text-[#737373] text-sm font-semibold tracking-[0.2em] uppercase mb-4">
                 Entre em Contato
               </p>
             </FadeIn>
             <FadeIn delay={0.1}>
               <h2 className="font-[var(--font-playfair)] text-3xl md:text-5xl font-bold text-[#1a1a1a] mb-6">
                 Vamos Realizar Seu{" "}
-                <span className="text-[#c41e3a]">Sonho Juntos</span>
+                <span className="text-[#525252]">Sonho Juntos</span>
               </h2>
             </FadeIn>
             <FadeIn delay={0.2}>
@@ -163,7 +163,7 @@ export default function Contact() {
 
           {/* Right column - Form */}
           <FadeIn delay={0.2} direction="left">
-            <div className="bg-[#fafafa] p-8 lg:p-10 rounded-3xl">
+            <div className="bg-white/90 backdrop-blur-md p-8 lg:p-10 rounded-3xl border border-gray-200/60 shadow-[0_4px_40px_-8px_rgba(0,0,0,0.1)]">
               <h3 className="font-[var(--font-playfair)] text-2xl font-bold text-[#1a1a1a] mb-6">
                 Solicite seu Orçamento
               </h3>
@@ -175,7 +175,7 @@ export default function Contact() {
                   <input
                     type="text"
                     placeholder="Seu nome"
-                    className="w-full px-4 py-3 bg-white border border-[#e5e5e5] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] transition-colors"
+                    className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200"
                   />
                 </div>
                 <div className="grid md:grid-cols-2 gap-6">
@@ -186,7 +186,7 @@ export default function Contact() {
                     <input
                       type="email"
                       placeholder="seu@email.com"
-                      className="w-full px-4 py-3 bg-white border border-[#e5e5e5] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] transition-colors"
+                      className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200"
                     />
                   </div>
                   <div>
@@ -196,7 +196,7 @@ export default function Contact() {
                     <input
                       type="tel"
                       placeholder="(00) 00000-0000"
-                      className="w-full px-4 py-3 bg-white border border-[#e5e5e5] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] transition-colors"
+                      className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200"
                     />
                   </div>
                 </div>
@@ -204,7 +204,7 @@ export default function Contact() {
                   <label className="block text-sm font-medium text-[#525252] mb-2">
                     Tipo de projeto
                   </label>
-                  <select className="w-full px-4 py-3 bg-white border border-[#e5e5e5] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] transition-colors text-[#525252]">
+                  <select className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200 text-[#525252]">
                     <option value="">Selecione uma opção</option>
                     <option value="terreno-construcao">
                       Terreno + Construção
@@ -221,7 +221,7 @@ export default function Contact() {
                   <textarea
                     rows={4}
                     placeholder="Conte-nos mais sobre o seu projeto..."
-                    className="w-full px-4 py-3 bg-white border border-[#e5e5e5] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] transition-colors resize-none"
+                    className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200 resize-none"
                   />
                 </div>
                 <button

@@ -4,11 +4,11 @@ import { FadeIn, StaggerContainer, StaggerItem } from "./ScrollAnimations";
 
 const values = [
   "Gratidão",
-  "Integridade e transparência",
-  "Resultado e melhoria contínua",
-  "Responsabilidade social e ambiental",
-  "Empatia e relacionamento com clientes",
-  "Segurança e qualidade",
+  "Integridade",
+  "Excelência",
+  "Sustentabilidade",
+  "Foco no Cliente",
+  "Segurança",
   "Autorresponsabilidade",
 ];
 
@@ -19,7 +19,7 @@ export default function About() {
         {/* Section header */}
         <div className="max-w-3xl mx-auto text-center mb-20">
           <FadeIn>
-            <p className="text-[#c41e3a] text-sm font-semibold tracking-[0.2em] uppercase mb-4">
+            <p className="text-[#737373] text-sm font-semibold tracking-[0.2em] uppercase mb-4">
               Sobre a Plenus
             </p>
           </FadeIn>
@@ -27,7 +27,7 @@ export default function About() {
             <h2 className="font-[var(--font-playfair)] text-3xl md:text-5xl font-bold text-[#1a1a1a] mb-6">
               8 Anos Transformando
               <br />
-              <span className="text-[#c41e3a]">Sonhos em Realidade</span>
+              <span className="text-[#525252]">Sonhos em Realidade</span>
             </h2>
           </FadeIn>
           <FadeIn delay={0.2}>
@@ -42,8 +42,8 @@ export default function About() {
         {/* Mission, Vision, Essence */}
         <div className="grid md:grid-cols-3 gap-8 mb-20">
           <FadeIn delay={0.1}>
-            <div className="bg-[#fafafa] p-8 rounded-2xl h-full">
-              <div className="w-12 h-12 bg-[#c41e3a]/10 rounded-xl flex items-center justify-center mb-6">
+            <div className="bg-white rounded-2xl p-8 h-full text-center border border-gray-100 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.08),0_0_0_1px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.12),0_0_0_1px_rgba(0,0,0,0.04)] hover:-translate-y-1 transition-all duration-300">
+              <div className="w-12 h-12 bg-[#c41e3a]/10 rounded-xl flex items-center justify-center mb-6 mx-auto">
                 <svg
                   className="w-6 h-6 text-[#c41e3a]"
                   fill="none"
@@ -71,8 +71,8 @@ export default function About() {
           </FadeIn>
 
           <FadeIn delay={0.2}>
-            <div className="bg-[#fafafa] p-8 rounded-2xl h-full">
-              <div className="w-12 h-12 bg-[#c41e3a]/10 rounded-xl flex items-center justify-center mb-6">
+            <div className="bg-white rounded-2xl p-8 h-full text-center border border-gray-100 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.08),0_0_0_1px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.12),0_0_0_1px_rgba(0,0,0,0.04)] hover:-translate-y-1 transition-all duration-300">
+              <div className="w-12 h-12 bg-[#c41e3a]/10 rounded-xl flex items-center justify-center mb-6 mx-auto">
                 <svg
                   className="w-6 h-6 text-[#c41e3a]"
                   fill="none"
@@ -104,8 +104,8 @@ export default function About() {
           </FadeIn>
 
           <FadeIn delay={0.3}>
-            <div className="bg-[#fafafa] p-8 rounded-2xl h-full">
-              <div className="w-12 h-12 bg-[#c41e3a]/10 rounded-xl flex items-center justify-center mb-6">
+            <div className="bg-white rounded-2xl p-8 h-full text-center border border-gray-100 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.08),0_0_0_1px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.12),0_0_0_1px_rgba(0,0,0,0.04)] hover:-translate-y-1 transition-all duration-300">
+              <div className="w-12 h-12 bg-[#c41e3a]/10 rounded-xl flex items-center justify-center mb-6 mx-auto">
                 <svg
                   className="w-6 h-6 text-[#c41e3a]"
                   fill="none"
@@ -141,14 +141,14 @@ export default function About() {
           </FadeIn>
 
           <StaggerContainer
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+            className="flex flex-wrap justify-center gap-6"
             staggerDelay={0.1}
           >
             {values.map((value, index) => (
               <StaggerItem key={index}>
-                <div className="flex items-center gap-3 bg-white/5 rounded-xl px-4 py-3">
+                <div className="flex items-center gap-2 px-4 py-2">
                   <div className="w-2 h-2 bg-[#c41e3a] rounded-full flex-shrink-0" />
-                  <span className="text-white/90 text-sm">{value}</span>
+                  <span className="text-white/90 text-sm whitespace-nowrap">{value}</span>
                 </div>
               </StaggerItem>
             ))}
