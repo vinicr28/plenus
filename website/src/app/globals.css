@@ -63,3 +63,86 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--plenus-gray-500);
 }
+
+/* Deep Parallax Hero Styles */
+.parallax-container {
+  perspective: 1000px;
+  perspective-origin: 50% 50%;
+  transform-style: preserve-3d;
+  overflow: hidden;
+}
+
+.parallax-layer {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+/* Layer depth using translateZ - further back = slower movement */
+.parallax-layer--sky {
+  transform: translateZ(-800px) scale(1.8);
+}
+
+.parallax-layer--atmosphere {
+  transform: translateZ(-400px) scale(1.4);
+}
+
+.parallax-layer--main {
+  transform: translateZ(-200px) scale(1.2);
+}
+
+.parallax-layer--foreground {
+  transform: translateZ(-50px) scale(1.05);
+}
+
+.parallax-layer--content {
+  transform: translateZ(0px);
+}
+
+/* Atmospheric effects for distant layers */
+.parallax-atmospheric {
+  filter: blur(2px);
+  opacity: 0.8;
+}
+
+/* Vignette overlay */
+.parallax-vignette {
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+  pointer-events: none;
+}
+
+/* Grain/noise texture overlay */
+.parallax-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+/* Mobile optimization - reduce perspective effects */
+@media (max-width: 768px) {
+  .parallax-container {
+    perspective: 500px;
+  }
+
+  .parallax-layer--sky {
+    transform: translateZ(-400px) scale(1.4);
+  }
+
+  .parallax-layer--atmosphere {
+    transform: translateZ(-200px) scale(1.2);
+  }
+
+  .parallax-layer--main {
+    transform: translateZ(-100px) scale(1.1);
+  }
+
+  .parallax-layer--foreground {
+    transform: translateZ(-25px) scale(1.025);
+  }
+}

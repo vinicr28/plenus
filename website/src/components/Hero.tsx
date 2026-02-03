@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, useScroll, useTransform, useSpring, useMotionValue, animate } from "framer-motion";
 import Link from "next/link";
 import { FadeIn, StaggerContainer, StaggerItem } from "./ScrollAnimations";
 
@@ -12,36 +13,127 @@ const stats = [
 ];
 
 export default function Hero() {
+  const { scrollY } = useScroll();
+  const [introComplete, setIntroComplete] = useState(false);
+
+  // Intro animation scale (12x -> 0.6x on page load)
+  const introScale = useMotionValue(12);
+  const introOpacity = useMotionValue(0);
+
+  useEffect(() => {
+    // Animate logo from 12x to 0.6x on page load
+    const scaleAnimation = animate(introScale, 0.6, {
+      duration: 1.5,
+      ease: [0.22, 1, 0.36, 1], // Custom easing for smooth deceleration
+      onComplete: () => setIntroComplete(true),
+    });
+
+    // Fade in the logo
+    const opacityAnimation = animate(introOpacity, 0.65, {
+      duration: 0.8,
+      ease: "easeOut",
+    });
+
+    return () => {
+      scaleAnimation.stop();
+      opacityAnimation.stop();
+    };
+  }, [introScale, introOpacity]);
+
+  // Background parallax - subtle movement
+  const backgroundY = useTransform(scrollY, [0, 1000], [0, 300]);
+  const smoothBackgroundY = useSpring(backgroundY, { stiffness: 100, damping: 30 });
+
+  // Logo scroll effect - scales up from 0.6x to 6x as you scroll (after intro)
+  const scrollLogoScale = useTransform(scrollY, [0, 600], [0.6, 6]);
+  const scrollLogoOpacity = useTransform(scrollY, [0, 500], [0.65, 0]);
+  const logoY = useTransform(scrollY, [0, 600], [0, -200]);
+  const smoothScrollLogoScale = useSpring(scrollLogoScale, { stiffness: 100, damping: 30 });
+  const smoothLogoY = useSpring(logoY, { stiffness: 100, damping: 30 });
+
+  // Use intro values until intro is complete, then switch to scroll values
+  const logoScale = introComplete ? smoothScrollLogoScale : introScale;
+  const logoOpacity = introComplete ? scrollLogoOpacity : introOpacity;
+
+  // Foreground elements parallax
+  const foregroundY = useTransform(scrollY, [0, 1000], [0, 500]);
+  const smoothForegroundY = useSpring(foregroundY, { stiffness: 100, damping: 30 });
+
   return (
     <section
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Background with overlay */}
-      <div className="absolute inset-0">
-        {/* Background image */}
+      {/* Layer 1: Background image with parallax */}
+      <motion.div
+        className="absolute inset-0"
+        style={{ y: smoothBackgroundY }}
+      >
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110"
           style={{ backgroundImage: "url('/hero-background.png')" }}
         />
-        {/* Lighter overlay to keep photo visible */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a]/30 via-[#262626]/20 to-[#171717]/30" />
+        {/* Gradient overlay for depth */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1a1a2e]/40 via-transparent to-[#0a0a0a]/80" />
+      </motion.div>
+
+      {/* Layer 2: Atmospheric glows */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Red accent glow */}
+        <div
+          className="absolute top-10 right-20 w-[500px] h-[500px] rounded-full opacity-20"
+          style={{
+            background: "radial-gradient(ellipse at center, rgba(196,30,58,0.4) 0%, transparent 60%)",
+            filter: "blur(60px)",
+          }}
+        />
+        {/* Blue ambient */}
+        <div
+          className="absolute bottom-20 left-20 w-[400px] h-[400px] rounded-full opacity-15"
+          style={{
+            background: "radial-gradient(ellipse at center, rgba(15,52,96,0.5) 0%, transparent 60%)",
+            filter: "blur(80px)",
+          }}
+        />
       </div>
 
-      {/* Decorative elements */}
+      {/* Layer 3: Large PLENUS logo with scroll effect */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.1 }}
-        transition={{ duration: 2 }}
-        className="absolute top-20 right-10 w-96 h-96 bg-[#c41e3a] rounded-full blur-[150px]"
-      />
+        className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
+        style={{
+          scale: logoScale,
+          opacity: logoOpacity,
+          y: introComplete ? smoothLogoY : 0,
+        }}
+      >
+        <span
+          className="font-[var(--font-playfair)] text-[30vw] font-bold text-white/30 whitespace-nowrap"
+          style={{
+            WebkitTextStroke: "3px rgba(255,255,255,0.8)",
+            textShadow: "0 0 60px rgba(255,255,255,0.5), 0 0 120px rgba(196,30,58,0.4)",
+          }}
+        >
+          PLENUS
+        </span>
+      </motion.div>
+
+      {/* Layer 4: Foreground gradient overlay */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.08 }}
-        transition={{ duration: 2, delay: 0.5 }}
-        className="absolute bottom-20 left-10 w-72 h-72 bg-white rounded-full blur-[120px]"
+        className="absolute inset-0 pointer-events-none"
+        style={{ y: smoothForegroundY }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+      </motion.div>
+
+      {/* Vignette */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse at center, transparent 0%, transparent 50%, rgba(0,0,0,0.4) 100%)",
+        }}
       />
 
+      {/* Content - completely static, no motion transforms */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-32">
         {/* Glass container */}
         <div
@@ -105,7 +197,7 @@ export default function Hero() {
                   </svg>
                 </Link>
                 <Link
-                  href="#projetos"
+                  href="#mapa"
                   className="inline-flex items-center justify-center px-8 py-4 text-white text-base font-semibold rounded-full hover:scale-105 transition-all backdrop-blur-lg"
                   style={{
                     background: 'linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%)',
@@ -113,7 +205,7 @@ export default function Hero() {
                     boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2)',
                   }}
                 >
-                  Ver Projetos
+                  Explorar no Mapa
                 </Link>
               </div>
             </FadeIn>
@@ -128,7 +220,7 @@ export default function Hero() {
                   <div
                     className="text-center backdrop-blur-lg rounded-2xl p-4"
                     style={{
-                      background: 'linear-gradient(135deg, rgba(255, 255, 255, 0) 0%, rgbrgba(255, 255, 255, 0)0%)',
+                      background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)',
                       border: '1px solid rgba(255,255,255,0.2)',
                       boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1)',
                     }}
@@ -141,7 +233,7 @@ export default function Hero() {
                       )}
                       <span className="text-white">{stat.value}</span>
                     </div>
-                    <p className="text-sm text-[#000000]">{stat.label}</p>
+                    <p className="text-sm text-white/70">{stat.label}</p>
                   </div>
                 </StaggerItem>
               ))}
