@@ -16,10 +16,9 @@ const values = [
 
 function ParallaxCard({
   children,
-  index,
 }: {
   children: React.ReactNode;
-  index: number;
+  index?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -28,10 +27,8 @@ function ParallaxCard({
     offset: ["start end", "end start"],
   });
 
-  const distances = [-50, -100, -75];
-  const distance = distances[index % 3];
-
-  const y = useTransform(scrollYProgress, [0, 1], [0, distance]);
+  // All cards move at the same speed to stay aligned
+  const y = useTransform(scrollYProgress, [0, 1], [0, -50]);
   const smoothY = useSpring(y, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   return (
@@ -69,10 +66,10 @@ export default function About() {
         </div>
 
         {/* Mission, Vision, Essence */}
-        <div className="grid md:grid-cols-3 gap-8 mb-20">
-          <ParallaxCard index={0}>
+        <div className="grid md:grid-cols-3 gap-8 mb-20 items-stretch">
+          <ParallaxCard>
             <FadeIn delay={0.1} className="h-full">
-              <div className="bg-white rounded-2xl p-8 h-full text-center border border-gray-100 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.08),0_0_0_1px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.12),0_0_0_1px_rgba(0,0,0,0.04)] hover:-translate-y-1 transition-all duration-300">
+              <div className="bg-white rounded-2xl p-8 h-full flex flex-col text-center border border-gray-100 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.08),0_0_0_1px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.12),0_0_0_1px_rgba(0,0,0,0.04)] hover:-translate-y-1 transition-all duration-300">
                 <div className="w-12 h-12 bg-[#c41e3a]/10 rounded-xl flex items-center justify-center mb-6 mx-auto">
                   <svg
                     className="w-6 h-6 text-[#c41e3a]"
@@ -91,7 +88,7 @@ export default function About() {
                 <h3 className="font-[var(--font-playfair)] text-xl font-bold text-[#1a1a1a] mb-4">
                   Missão
                 </h3>
-                <p className="text-[#525252] leading-relaxed">
+                <p className="text-[#525252] leading-relaxed flex-1">
                   Nossa missão é oferecer qualidade de vida através da construção
                   de sonhos, entregando obras com excelência, segurança e
                   custo-benefício, no prazo e com a tranquilidade que gera
@@ -101,9 +98,9 @@ export default function About() {
             </FadeIn>
           </ParallaxCard>
 
-          <ParallaxCard index={1}>
+          <ParallaxCard>
             <FadeIn delay={0.2} className="h-full">
-              <div className="bg-white rounded-2xl p-8 h-full text-center border border-gray-100 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.08),0_0_0_1px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.12),0_0_0_1px_rgba(0,0,0,0.04)] hover:-translate-y-1 transition-all duration-300">
+              <div className="bg-white rounded-2xl p-8 h-full flex flex-col text-center border border-gray-100 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.08),0_0_0_1px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.12),0_0_0_1px_rgba(0,0,0,0.04)] hover:-translate-y-1 transition-all duration-300">
                 <div className="w-12 h-12 bg-[#c41e3a]/10 rounded-xl flex items-center justify-center mb-6 mx-auto">
                   <svg
                     className="w-6 h-6 text-[#c41e3a]"
@@ -128,7 +125,7 @@ export default function About() {
                 <h3 className="font-[var(--font-playfair)] text-xl font-bold text-[#1a1a1a] mb-4">
                   Visão
                 </h3>
-                <p className="text-[#525252] leading-relaxed">
+                <p className="text-[#525252] leading-relaxed flex-1">
                   Ser a empresa de maior credibilidade dentro da construção civil
                   do mercado de Indaiatuba e Jundiaí.
                 </p>
@@ -136,9 +133,9 @@ export default function About() {
             </FadeIn>
           </ParallaxCard>
 
-          <ParallaxCard index={2}>
+          <ParallaxCard>
             <FadeIn delay={0.3} className="h-full">
-              <div className="bg-white rounded-2xl p-8 h-full text-center border border-gray-100 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.08),0_0_0_1px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.12),0_0_0_1px_rgba(0,0,0,0.04)] hover:-translate-y-1 transition-all duration-300">
+              <div className="bg-white rounded-2xl p-8 h-full flex flex-col text-center border border-gray-100 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.08),0_0_0_1px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_32px_-4px_rgba(0,0,0,0.12),0_0_0_1px_rgba(0,0,0,0.04)] hover:-translate-y-1 transition-all duration-300">
                 <div className="w-12 h-12 bg-[#c41e3a]/10 rounded-xl flex items-center justify-center mb-6 mx-auto">
                   <svg
                     className="w-6 h-6 text-[#c41e3a]"
@@ -157,7 +154,7 @@ export default function About() {
                 <h3 className="font-[var(--font-playfair)] text-xl font-bold text-[#1a1a1a] mb-4">
                   Essência
                 </h3>
-                <p className="text-[#525252] leading-relaxed">
+                <p className="text-[#525252] leading-relaxed flex-1">
                   Cada projeto é único, assim como cada família. Trabalhamos com
                   dedicação para entregar não apenas uma casa, mas um lar repleto
                   de possibilidades.
