@@ -10,6 +10,7 @@ const navLinks = [
   { href: "#projetos", label: "Projetos" },
   { href: "#contato", label: "Contato" },
   { href: "#pos-venda", label: "Pós-venda" },
+  { href: "/financiamento", label: "Financiamento" },
 ];
 
 export default function Header() {
