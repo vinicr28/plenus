@@ -1,72 +1,29 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { FadeIn } from "./ScrollAnimations";
 import ProjectModal from "./ProjectModal";
-
-interface Project {
-  title: string;
-  location: string;
-  area: string;
-  category: string;
-  image: string;
-  description?: string;
-}
-
-const projects: Project[] = [
-  {
-    title: "Residência Moderna",
-    location: "Indaiatuba, SP",
-    area: "250m²",
-    category: "Casa Térrea",
-    image: "/projects/project-1.png",
-  },
-  {
-    title: "Casa Contemporânea",
-    location: "Jundiaí, SP",
-    area: "320m²",
-    category: "Sobrado",
-    image: "/projects/project-2.png",
-  },
-  {
-    title: "Projeto Personalizado",
-    location: "Indaiatuba, SP",
-    area: "280m²",
-    category: "Casa Térrea",
-    image: "/projects/project-3.png",
-  },
-  {
-    title: "Residência Premium",
-    location: "Jundiaí, SP",
-    area: "400m²",
-    category: "Sobrado",
-    image: "/projects/project-4.png",
-  },
-  {
-    title: "Casa Elegante",
-    location: "Indaiatuba, SP",
-    area: "220m²",
-    category: "Casa Térrea",
-    image: "/projects/project-5.png",
-  },
-  {
-    title: "Projeto Exclusivo",
-    location: "Jundiaí, SP",
-    area: "350m²",
-    category: "Sobrado",
-    image: "/projects/project-6.png",
-  },
-];
+import { projects, Project } from "@/data/projects";
 
 export default function Projects() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [isHovering, setIsHovering] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  const x = useTransform(scrollYProgress, [0, 1], [50, -50]);
+  const smoothX = useSpring(x, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   const openModal = (project: Project) => {
     setSelectedProject(project);
@@ -104,7 +61,7 @@ export default function Projects() {
   };
 
   return (
-    <section id="projetos" className="py-24 lg:py-32 bg-white">
+    <section ref={sectionRef} id="projetos" className="py-24 lg:py-32 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Section header */}
         <div className="max-w-3xl mx-auto text-center mb-16">
@@ -114,9 +71,12 @@ export default function Projects() {
             </p>
           </FadeIn>
           <FadeIn delay={0.1}>
-            <h2 className="font-[var(--font-playfair)] text-3xl md:text-5xl font-bold text-[#1a1a1a] mb-6">
+            <motion.h2
+              className="font-[var(--font-playfair)] text-3xl md:text-5xl font-bold text-[#1a1a1a] mb-6"
+              style={{ x: smoothX }}
+            >
               Nossos <span className="text-[#525252]">Projetos</span>
-            </h2>
+            </motion.h2>
           </FadeIn>
           <FadeIn delay={0.2}>
             <p className="text-lg text-[#525252] leading-relaxed">
@@ -292,8 +252,8 @@ export default function Projects() {
         {/* CTA */}
         <FadeIn delay={0.4}>
           <div className="text-center mt-12">
-            <a
-              href="#contato"
+            <Link
+              href="/projetos"
               className="inline-flex items-center text-[#525252] font-semibold hover:text-[#1a1a1a] transition-colors duration-300"
             >
               Ver todos os projetos
@@ -310,7 +270,7 @@ export default function Projects() {
                   d="M17 8l4 4m0 0l-4 4m4-4H3"
                 />
               </svg>
-            </a>
+            </Link>
           </div>
         </FadeIn>
       </div>
