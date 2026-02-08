@@ -5,11 +5,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
 const navLinks = [
-  { href: "#home", label: "Home" },
-  { href: "#sobre", label: "Sobre Nós" },
-  { href: "#projetos", label: "Projetos" },
-  { href: "#contato", label: "Contato" },
-  { href: "#pos-venda", label: "Pós-venda" },
+  { href: "/#home", label: "Home" },
+  { href: "/#sobre", label: "Sobre Nós" },
+  { href: "/#projetos", label: "Projetos" },
+  { href: "/#contato", label: "Contato" },
+  { href: "/#pos-venda", label: "Pós-venda" },
   { href: "/financiamento", label: "Financiamento" },
 ];
 
@@ -40,7 +40,7 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link href="#home" className="flex items-center">
+            <Link href="/#home" className="flex items-center">
               <span
                 className={`font-[var(--font-playfair)] text-2xl font-bold tracking-tight transition-colors ${
                   isScrolled ? "text-[#1a1a1a]" : "text-white"
@@ -75,7 +75,7 @@ export default function Header() {
             {/* CTA Button */}
             <div className="hidden lg:block">
               <Link
-                href="#contato"
+                href="/#contato"
                 className="inline-flex items-center px-6 py-3 bg-[#c41e3a] text-white text-sm font-semibold rounded-full hover:bg-[#a01830] transition-colors"
               >
                 Solicitar Orçamento
@@ -143,7 +143,7 @@ export default function Header() {
                   </Link>
                 ))}
                 <Link
-                  href="#contato"
+                  href="/#contato"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="mt-4 inline-flex items-center justify-center px-6 py-3 bg-[#c41e3a] text-white text-sm font-semibold rounded-full hover:bg-[#a01830] transition-colors"
                 >
