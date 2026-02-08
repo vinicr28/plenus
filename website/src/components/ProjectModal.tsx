@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useEffect } from "react";
-import { Project } from "@/data/projects";
+import { Project } from "@/components/Projects";
 
 interface ProjectModalProps {
   project: Project | null;

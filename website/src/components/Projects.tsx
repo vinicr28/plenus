@@ -6,7 +6,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { FadeIn } from "./ScrollAnimations";
 import ProjectModal from "./ProjectModal";
-import { projects, Project } from "@/data/projects";
+
+export interface Project {
+  id: string;
+  title: string;
+  location: string;
+  area: string;
+  category: string;
+  image: string;
+  description?: string;
+}
 
 export default function Projects() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -16,6 +25,8 @@ export default function Projects() {
   const [isHovering, setIsHovering] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -24,6 +35,24 @@ export default function Projects() {
 
   const x = useTransform(scrollYProgress, [0, 1], [50, -50]);
   const smoothX = useSpring(x, { stiffness: 100, damping: 30, restDelta: 0.001 });
+
+  // Fetch projects from API
+  useEffect(() => {
+    async function fetchProjects() {
+      try {
+        const response = await fetch("/api/projects");
+        if (response.ok) {
+          const data = await response.json();
+          setProjects(data);
+        }
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProjects();
+  }, []);
 
   const openModal = (project: Project) => {
     setSelectedProject(project);
@@ -50,7 +79,7 @@ export default function Projects() {
       container.addEventListener("scroll", checkScrollPosition);
       return () => container.removeEventListener("scroll", checkScrollPosition);
     }
-  }, []);
+  }, [projects]);
 
   const scroll = (direction: "left" | "right") => {
     if (scrollContainerRef.current) {
@@ -59,6 +88,34 @@ export default function Projects() {
       scrollContainerRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
     }
   };
+
+  if (loading) {
+    return (
+      <section ref={sectionRef} id="projetos" className="py-24 lg:py-32 bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto text-center mb-16">
+            <p className="text-[#737373] text-sm font-semibold tracking-[0.2em] uppercase mb-4">
+              Portfólio
+            </p>
+            <h2 className="font-[var(--font-playfair)] text-3xl md:text-5xl font-bold text-[#1a1a1a] mb-6">
+              Nossos <span className="text-[#525252]">Projetos</span>
+            </h2>
+          </div>
+          <div className="flex gap-6 overflow-hidden">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="flex-shrink-0 w-[85%] sm:w-[45%] lg:w-[30%]">
+                <div className="aspect-[3/4] rounded-2xl bg-gray-200 animate-pulse" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (projects.length === 0) {
+    return null;
+  }
 
   return (
     <section ref={sectionRef} id="projetos" className="py-24 lg:py-32 bg-white overflow-hidden">
@@ -153,7 +210,7 @@ export default function Projects() {
 
               {projects.map((project, index) => (
                 <motion.div
-                  key={index}
+                  key={project.id}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
