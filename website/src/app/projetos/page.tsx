@@ -6,6 +6,8 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { projects, Project } from "@/data/projects";
 import ProjectModal from "@/components/ProjectModal";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 export default function ProjetosPage() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -30,7 +32,9 @@ export default function ProjetosPage() {
   };
 
   return (
-    <main className="min-h-screen bg-white">
+    <>
+      <Header />
+      <main className="min-h-screen bg-white">
       {/* Header */}
       <section className="relative pt-32 pb-16 bg-gradient-to-b from-[#fafafa] to-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -282,5 +286,7 @@ export default function ProjetosPage() {
         onClose={closeModal}
       />
     </main>
+      <Footer />
+    </>
   );
 }
