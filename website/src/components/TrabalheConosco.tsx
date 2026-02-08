@@ -6,6 +6,14 @@ import { FadeIn } from "./ScrollAnimations";
 
 export default function TrabalheConosco() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    nome: "",
+    email: "",
+    telefone: "",
+    areaInteresse: "",
+    sobreVoce: "",
+  });
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
   // Close on escape key and handle body scroll
   useEffect(() => {
@@ -21,6 +29,54 @@ export default function TrabalheConosco() {
       document.body.style.overflow = "unset";
     };
   }, [isModalOpen]);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("loading");
+
+    try {
+      const response = await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          formType: "trabalhe-conosco",
+          data: formData,
+        }),
+      });
+
+      if (response.ok) {
+        setStatus("success");
+        setFormData({
+          nome: "",
+          email: "",
+          telefone: "",
+          areaInteresse: "",
+          sobreVoce: "",
+        });
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    // Reset form state when closing
+    if (status === "success") {
+      setTimeout(() => setStatus("idle"), 300);
+    }
+  };
 
   return (
     <>
@@ -136,7 +192,7 @@ export default function TrabalheConosco() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8"
-            onClick={() => setIsModalOpen(false)}
+            onClick={handleCloseModal}
           >
             {/* Backdrop with blur */}
             <motion.div
@@ -176,7 +232,7 @@ export default function TrabalheConosco() {
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.3, type: "spring", stiffness: 500 }}
-                onClick={() => setIsModalOpen(false)}
+                onClick={handleCloseModal}
                 className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-black/10 backdrop-blur-sm flex items-center justify-center hover:bg-black/20 transition-colors"
               >
                 <svg
@@ -209,73 +265,136 @@ export default function TrabalheConosco() {
                   </p>
                 </motion.div>
 
-                <motion.form
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
-                  className="space-y-6"
-                >
-                  <div>
-                    <label className="block text-sm font-medium text-[#525252] mb-2">
-                      Nome completo
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Seu nome"
-                      className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-[#525252] mb-2">
-                      E-mail
-                    </label>
-                    <input
-                      type="email"
-                      placeholder="seu@email.com"
-                      className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-[#525252] mb-2">
-                      Telefone
-                    </label>
-                    <input
-                      type="tel"
-                      placeholder="(00) 00000-0000"
-                      className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-[#525252] mb-2">
-                      Área de interesse
-                    </label>
-                    <select className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200 text-[#525252]">
-                      <option value="">Selecione uma área</option>
-                      <option value="engenharia">Engenharia</option>
-                      <option value="arquitetura">Arquitetura</option>
-                      <option value="administrativo">Administrativo</option>
-                      <option value="comercial">Comercial</option>
-                      <option value="obras">Obras</option>
-                      <option value="outro">Outro</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-[#525252] mb-2">
-                      Conte-nos sobre você
-                    </label>
-                    <textarea
-                      rows={4}
-                      placeholder="Descreva sua experiência e por que deseja trabalhar conosco..."
-                      className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200 resize-none"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-full py-4 bg-[#c41e3a] text-white font-semibold rounded-xl hover:bg-[#a01830] transition-colors"
+                {status === "success" ? (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-center py-12"
                   >
-                    Enviar Candidatura
-                  </button>
-                </motion.form>
+                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <h4 className="text-xl font-semibold text-[#1a1a1a] mb-2">Candidatura Enviada!</h4>
+                    <p className="text-[#525252] mb-6">Analisaremos seu perfil e entraremos em contato.</p>
+                    <button
+                      onClick={() => setStatus("idle")}
+                      className="text-[#c41e3a] font-medium hover:underline"
+                    >
+                      Enviar outra candidatura
+                    </button>
+                  </motion.div>
+                ) : (
+                  <motion.form
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    onSubmit={handleSubmit}
+                    className="space-y-6"
+                  >
+                    <div>
+                      <label className="block text-sm font-medium text-[#525252] mb-2">
+                        Nome completo
+                      </label>
+                      <input
+                        type="text"
+                        name="nome"
+                        value={formData.nome}
+                        onChange={handleChange}
+                        placeholder="Seu nome"
+                        required
+                        className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-[#525252] mb-2">
+                        E-mail
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder="seu@email.com"
+                        required
+                        className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-[#525252] mb-2">
+                        Telefone
+                      </label>
+                      <input
+                        type="tel"
+                        name="telefone"
+                        value={formData.telefone}
+                        onChange={handleChange}
+                        placeholder="(00) 00000-0000"
+                        required
+                        className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-[#525252] mb-2">
+                        Área de interesse
+                      </label>
+                      <select
+                        name="areaInteresse"
+                        value={formData.areaInteresse}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200 text-[#525252]"
+                      >
+                        <option value="">Selecione uma área</option>
+                        <option value="Engenharia">Engenharia</option>
+                        <option value="Arquitetura">Arquitetura</option>
+                        <option value="Administrativo">Administrativo</option>
+                        <option value="Comercial">Comercial</option>
+                        <option value="Obras">Obras</option>
+                        <option value="Outro">Outro</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-[#525252] mb-2">
+                        Conte-nos sobre você
+                      </label>
+                      <textarea
+                        name="sobreVoce"
+                        value={formData.sobreVoce}
+                        onChange={handleChange}
+                        rows={4}
+                        placeholder="Descreva sua experiência e por que deseja trabalhar conosco..."
+                        required
+                        className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200 resize-none"
+                      />
+                    </div>
+
+                    {status === "error" && (
+                      <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm">
+                        Ocorreu um erro ao enviar. Por favor, tente novamente.
+                      </div>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={status === "loading"}
+                      className="w-full py-4 bg-[#c41e3a] text-white font-semibold rounded-xl hover:bg-[#a01830] transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    >
+                      {status === "loading" ? (
+                        <>
+                          <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                          </svg>
+                          Enviando...
+                        </>
+                      ) : (
+                        "Enviar Candidatura"
+                      )}
+                    </button>
+                  </motion.form>
+                )}
               </div>
             </motion.div>
           </motion.div>

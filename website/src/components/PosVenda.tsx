@@ -1,8 +1,54 @@
 "use client";
 
+import { useState } from "react";
 import { FadeIn } from "./ScrollAnimations";
 
 export default function PosVenda() {
+  const [formData, setFormData] = useState({
+    nome: "",
+    assunto: "",
+    descricao: "",
+  });
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("loading");
+
+    try {
+      const response = await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          formType: "pos-venda",
+          data: formData,
+        }),
+      });
+
+      if (response.ok) {
+        setStatus("success");
+        setFormData({
+          nome: "",
+          assunto: "",
+          descricao: "",
+        });
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
+  };
+
   return (
     <section id="pos-venda" className="py-24 lg:py-32 bg-[#f8f8f8]">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -13,44 +59,93 @@ export default function PosVenda() {
               <h3 className="font-[var(--font-playfair)] text-2xl font-bold text-[#1a1a1a] mb-6">
                 Fale com o Pós-venda
               </h3>
-              <form className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-[#525252] mb-2">
-                    Nome
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Seu nome"
-                    className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200"
-                  />
+
+              {status === "success" ? (
+                <div className="text-center py-12">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <h4 className="text-xl font-semibold text-[#1a1a1a] mb-2">Solicitação Enviada!</h4>
+                  <p className="text-[#525252] mb-6">Nossa equipe entrará em contato em breve.</p>
+                  <button
+                    onClick={() => setStatus("idle")}
+                    className="text-[#c41e3a] font-medium hover:underline"
+                  >
+                    Enviar outra solicitação
+                  </button>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-[#525252] mb-2">
-                    Assunto
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Qual o assunto?"
-                    className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-[#525252] mb-2">
-                    Descrição Detalhada
-                  </label>
-                  <textarea
-                    rows={6}
-                    placeholder="Descreva detalhadamente sua solicitação..."
-                    className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200 resize-none"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full py-4 bg-[#c41e3a] text-white font-semibold rounded-xl hover:bg-[#a01830] transition-colors"
-                >
-                  Enviar Solicitação
-                </button>
-              </form>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-medium text-[#525252] mb-2">
+                      Nome
+                    </label>
+                    <input
+                      type="text"
+                      name="nome"
+                      value={formData.nome}
+                      onChange={handleChange}
+                      placeholder="Seu nome"
+                      required
+                      className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-[#525252] mb-2">
+                      Assunto
+                    </label>
+                    <input
+                      type="text"
+                      name="assunto"
+                      value={formData.assunto}
+                      onChange={handleChange}
+                      placeholder="Qual o assunto?"
+                      required
+                      className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-[#525252] mb-2">
+                      Descrição Detalhada
+                    </label>
+                    <textarea
+                      name="descricao"
+                      value={formData.descricao}
+                      onChange={handleChange}
+                      rows={6}
+                      placeholder="Descreva detalhadamente sua solicitação..."
+                      required
+                      className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200 resize-none"
+                    />
+                  </div>
+
+                  {status === "error" && (
+                    <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm">
+                      Ocorreu um erro ao enviar. Por favor, tente novamente.
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={status === "loading"}
+                    className="w-full py-4 bg-[#c41e3a] text-white font-semibold rounded-xl hover:bg-[#a01830] transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  >
+                    {status === "loading" ? (
+                      <>
+                        <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                        Enviando...
+                      </>
+                    ) : (
+                      "Enviar Solicitação"
+                    )}
+                  </button>
+                </form>
+              )}
             </div>
           </FadeIn>
 
