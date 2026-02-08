@@ -7,10 +7,9 @@ import Link from "next/link";
 const navLinks = [
   { href: "#home", label: "Home" },
   { href: "#sobre", label: "Sobre Nós" },
-  { href: "#diferenciais", label: "Diferenciais" },
   { href: "#projetos", label: "Projetos" },
-  { href: "#depoimentos", label: "Depoimentos" },
   { href: "#contato", label: "Contato" },
+  { href: "#pos-venda", label: "Pós-venda" },
 ];
 
 export default function Header() {
