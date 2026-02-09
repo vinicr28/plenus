@@ -15,40 +15,6 @@ interface Review {
   created_at: string;
 }
 
-// Fallback testimonials when no reviews are in the database
-const fallbackTestimonials = [
-  {
-    id: "fallback-1",
-    name: "Carlos e Maria Silva",
-    email: "",
-    location: "Indaiatuba, SP",
-    comment: "A Plenus transformou nosso sonho em realidade. A equipe foi extremamente profissional e transparente durante todo o processo. Recomendamos de olhos fechados!",
-    rating: 5,
-    approved: true,
-    created_at: "",
-  },
-  {
-    id: "fallback-2",
-    name: "Roberto Fernandes",
-    email: "",
-    location: "Jundiaí, SP",
-    comment: "Qualidade excepcional e entrega no prazo. A economia prometida foi real e a casa ficou exatamente como imaginamos. Muito satisfeitos!",
-    rating: 5,
-    approved: true,
-    created_at: "",
-  },
-  {
-    id: "fallback-3",
-    name: "Ana Paula Oliveira",
-    email: "",
-    location: "Indaiatuba, SP",
-    comment: "Desde o primeiro contato até a entrega das chaves, a experiência foi incrível. A equipe Plenus está sempre disponível e pronta para ajudar.",
-    rating: 5,
-    approved: true,
-    created_at: "",
-  },
-];
-
 function StarRating({ rating }: { rating: number }) {
   return (
     <div className="flex gap-1">
@@ -359,12 +325,10 @@ export default function Testimonials() {
       const response = await fetch("/api/reviews");
       if (response.ok) {
         const data = await response.json();
-        setReviews(data.length > 0 ? data : fallbackTestimonials);
-      } else {
-        setReviews(fallbackTestimonials);
+        setReviews(data);
       }
     } catch {
-      setReviews(fallbackTestimonials);
+      // keep reviews as empty array
     } finally {
       setLoading(false);
     }
@@ -398,8 +362,6 @@ export default function Testimonials() {
       scrollContainerRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
     }
   };
-
-  const displayReviews = reviews.length > 0 ? reviews : fallbackTestimonials;
 
   return (
     <section id="depoimentos" className="py-24 lg:py-32 bg-[#1a1a1a] overflow-hidden">
@@ -448,6 +410,19 @@ export default function Testimonials() {
               </div>
             ))}
           </div>
+        ) : reviews.length === 0 ? (
+          <FadeIn delay={0.3}>
+            <div className="text-center py-12">
+              <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-white/30" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                </svg>
+              </div>
+              <p className="text-white/50 text-lg">
+                Ainda não há avaliações. Seja o primeiro a avaliar!
+              </p>
+            </div>
+          </FadeIn>
         ) : (
           <FadeIn delay={0.3}>
             <div
@@ -508,7 +483,7 @@ export default function Testimonials() {
                 }}
               >
 
-                {displayReviews.map((review, index) => (
+                {reviews.map((review, index) => (
                   <motion.div
                     key={review.id}
                     initial={{ opacity: 0, y: 20 }}
@@ -569,7 +544,7 @@ export default function Testimonials() {
 
               {/* Scroll indicator dots (mobile) */}
               <div className="flex justify-center gap-2 mt-6 lg:hidden">
-                {displayReviews.map((_, index) => (
+                {reviews.map((_, index) => (
                   <div
                     key={index}
                     className="w-2 h-2 rounded-full bg-white/30"
