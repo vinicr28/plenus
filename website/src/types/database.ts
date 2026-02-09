@@ -17,6 +17,8 @@ export interface Database {
           area: string
           category: string
           image_url: string
+          images: string[]
+          video_url: string | null
           description: string | null
           published: boolean
           created_at: string
@@ -29,6 +31,8 @@ export interface Database {
           area: string
           category: string
           image_url: string
+          images?: string[]
+          video_url?: string | null
           description?: string | null
           published?: boolean
           created_at?: string
@@ -41,6 +45,8 @@ export interface Database {
           area?: string
           category?: string
           image_url?: string
+          images?: string[]
+          video_url?: string | null
           description?: string | null
           published?: boolean
           created_at?: string

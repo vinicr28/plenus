@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import ImageUpload from "./ImageUpload";
+import MultiMediaUpload from "./MultiMediaUpload";
 import { Project } from "@/types/database";
 
 interface ProjectFormProps {
@@ -23,6 +23,8 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
     area: project?.area || "",
     category: project?.category || CATEGORIES[0],
     image_url: project?.image_url || "",
+    images: project?.images || [],
+    video_url: project?.video_url || "",
     description: project?.description || "",
     published: project?.published ?? false,
   });
@@ -37,8 +39,16 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
     }));
   };
 
-  const handleImageUploaded = (url: string) => {
+  const handleCoverImageChange = (url: string) => {
     setFormData((prev) => ({ ...prev, image_url: url }));
+  };
+
+  const handleImagesChange = (urls: string[]) => {
+    setFormData((prev) => ({ ...prev, images: urls }));
+  };
+
+  const handleVideoChange = (url: string) => {
+    setFormData((prev) => ({ ...prev, video_url: url }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -59,7 +69,7 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
       return;
     }
     if (!formData.image_url) {
-      setError("A imagem é obrigatória");
+      setError("A imagem de capa é obrigatória");
       return;
     }
 
@@ -102,8 +112,8 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Left Column */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Left Column - Form Fields */}
         <div className="space-y-6">
           {/* Title */}
           <div>
@@ -208,14 +218,15 @@ export default function ProjectForm({ project, isEditing = false }: ProjectFormP
           </div>
         </div>
 
-        {/* Right Column - Image Upload */}
+        {/* Right Column - Media Upload */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Imagem *
-          </label>
-          <ImageUpload
-            currentImage={formData.image_url}
-            onImageUploaded={handleImageUploaded}
+          <MultiMediaUpload
+            coverImage={formData.image_url}
+            images={formData.images}
+            videoUrl={formData.video_url}
+            onCoverImageChange={handleCoverImageChange}
+            onImagesChange={handleImagesChange}
+            onVideoChange={handleVideoChange}
           />
         </div>
       </div>

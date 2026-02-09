@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { title, location, area, category, image_url, description, published } = body;
+    const { title, location, area, category, image_url, images, video_url, description, published } = body;
 
     // Validation
     if (!title || !location || !area || !category || !image_url) {
@@ -57,6 +57,8 @@ export async function POST(request: NextRequest) {
         area,
         category,
         image_url,
+        images: images || [],
+        video_url: video_url || null,
         description: description || null,
         published: published ?? false,
       })

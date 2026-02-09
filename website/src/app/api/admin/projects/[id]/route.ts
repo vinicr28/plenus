@@ -47,7 +47,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     }
 
     const body = await request.json();
-    const { title, location, area, category, image_url, description, published } = body;
+    const { title, location, area, category, image_url, images, video_url, description, published } = body;
 
     // Build update object with only provided fields
     const updateData: ProjectUpdate = {
@@ -59,6 +59,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     if (area !== undefined) updateData.area = area;
     if (category !== undefined) updateData.category = category;
     if (image_url !== undefined) updateData.image_url = image_url;
+    if (images !== undefined) updateData.images = images;
+    if (video_url !== undefined) updateData.video_url = video_url;
     if (description !== undefined) updateData.description = description;
     if (published !== undefined) updateData.published = published;
 
@@ -92,12 +94,12 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // First, get the project to find the image URL
+    // First, get the project to find all media URLs
     const { data: project } = await supabase
       .from("projects")
-      .select("image_url")
+      .select("image_url, images, video_url")
       .eq("id", id)
-      .single() as { data: { image_url: string } | null };
+      .single() as { data: { image_url: string; images: string[]; video_url: string | null } | null };
 
     // Delete the project
     const { error } = await supabase
@@ -110,21 +112,32 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: "Failed to delete project" }, { status: 500 });
     }
 
-    // Try to delete the image from storage if it exists
-    if (project?.image_url && project.image_url.includes("supabase.co")) {
+    // Helper function to delete file from storage
+    const deleteFromStorage = async (url: string) => {
+      if (!url || !url.includes("supabase.co")) return;
       try {
-        // Extract the path from the URL
-        const urlParts = project.image_url.split("/storage/v1/object/public/");
+        const urlParts = url.split("/storage/v1/object/public/");
         if (urlParts.length > 1) {
           const pathParts = urlParts[1].split("/");
           const bucket = pathParts[0];
           const filePath = pathParts.slice(1).join("/");
-
           await supabase.storage.from(bucket).remove([filePath]);
         }
       } catch (storageError) {
-        // Log but don't fail if image deletion fails
-        console.warn("Could not delete image from storage:", storageError);
+        console.warn("Could not delete file from storage:", storageError);
+      }
+    };
+
+    // Try to delete all media from storage
+    if (project) {
+      await deleteFromStorage(project.image_url);
+      if (project.images && Array.isArray(project.images)) {
+        for (const imageUrl of project.images) {
+          await deleteFromStorage(imageUrl);
+        }
+      }
+      if (project.video_url) {
+        await deleteFromStorage(project.video_url);
       }
     }
 

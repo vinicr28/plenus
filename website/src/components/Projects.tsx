@@ -14,6 +14,8 @@ export interface Project {
   area: string;
   category: string;
   image: string;
+  images?: string[];
+  video_url?: string;
   description?: string;
 }
 

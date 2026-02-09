@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useSpring, useMotionValue, animate } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import { FadeIn, StaggerContainer, StaggerItem } from "./ScrollAnimations";
 
@@ -40,39 +41,45 @@ export default function Hero() {
     };
   }, [introScale, introOpacity]);
 
-  // Background parallax - subtle movement
-  const backgroundY = useTransform(scrollY, [0, 1000], [0, 300]);
-  const smoothBackgroundY = useSpring(backgroundY, { stiffness: 100, damping: 30 });
+  // Background parallax - light spring to prevent visible gaps during fast scroll
+  const backgroundYRaw = useTransform(scrollY, [0, 1000], [0, 300]);
+  const backgroundY = useSpring(backgroundYRaw, { stiffness: 200, damping: 40, restDelta: 0.5 });
 
   // Logo scroll effect - scales up from 0.6x to 6x as you scroll (after intro)
   const scrollLogoScale = useTransform(scrollY, [0, 600], [0.6, 6]);
   const scrollLogoOpacity = useTransform(scrollY, [0, 500], [0.65, 0]);
   const logoY = useTransform(scrollY, [0, 600], [0, -200]);
-  const smoothScrollLogoScale = useSpring(scrollLogoScale, { stiffness: 100, damping: 30 });
-  const smoothLogoY = useSpring(logoY, { stiffness: 100, damping: 30 });
+  const smoothScrollLogoScale = useSpring(scrollLogoScale, { stiffness: 100, damping: 30, restDelta: 0.01 });
+  const smoothLogoY = useSpring(logoY, { stiffness: 100, damping: 30, restDelta: 0.01 });
 
   // Use intro values until intro is complete, then switch to scroll values
   const logoScale = introComplete ? smoothScrollLogoScale : introScale;
   const logoOpacity = introComplete ? scrollLogoOpacity : introOpacity;
 
-  // Foreground elements parallax
-  const foregroundY = useTransform(scrollY, [0, 1000], [0, 500]);
-  const smoothForegroundY = useSpring(foregroundY, { stiffness: 100, damping: 30 });
+  // Foreground elements parallax - light spring to match background
+  const foregroundYRaw = useTransform(scrollY, [0, 1000], [0, 500]);
+  const foregroundY = useSpring(foregroundYRaw, { stiffness: 200, damping: 40, restDelta: 0.5 });
 
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black"
     >
       {/* Layer 1: Background image with parallax */}
       <motion.div
         className="absolute inset-0"
-        style={{ y: smoothBackgroundY }}
+        style={{ y: backgroundY }}
       >
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110"
-          style={{ backgroundImage: "url('/hero-background.png')" }}
-        />
+        <div className="absolute inset-0 scale-110">
+          <Image
+            src="/hero-background.webp"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+        </div>
         {/* Gradient overlay for depth */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#1a1a2e]/40 via-transparent to-[#0a0a0a]/80" />
       </motion.div>
@@ -107,10 +114,9 @@ export default function Hero() {
         }}
       >
         <span
-          className="font-[var(--font-playfair)] text-[30vw] font-bold text-white/30 whitespace-nowrap"
+          className="font-[var(--font-playfair)] text-[30vw] font-bold text-white/20 whitespace-nowrap"
           style={{
-            WebkitTextStroke: "3px rgba(255,255,255,0.8)",
-            textShadow: "0 0 60px rgba(255,255,255,0.5), 0 0 120px rgba(196,30,58,0.4)",
+            WebkitTextStroke: "1px rgba(255,255,255,0.6)",
           }}
         >
           PLENUS
@@ -120,7 +126,7 @@ export default function Hero() {
       {/* Layer 4: Foreground gradient overlay */}
       <motion.div
         className="absolute inset-0 pointer-events-none"
-        style={{ y: smoothForegroundY }}
+        style={{ y: foregroundY }}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
       </motion.div>
@@ -245,13 +251,15 @@ export default function Hero() {
       {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false }}
         transition={{ duration: 1, delay: 1.5, repeat: Infinity, repeatType: "reverse" }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2"
       >
         <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center pt-2">
           <motion.div
-            animate={{ y: [0, 12, 0] }}
+            whileInView={{ y: [0, 12, 0] }}
+            viewport={{ once: false }}
             transition={{ duration: 1.5, repeat: Infinity }}
             className="w-1.5 h-1.5 bg-white/60 rounded-full"
           />

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
-import SmoothScroll from "@/components/SmoothScroll";
 
 // TODO: Replace SITE_URL with actual domain when available
 const SITE_URL = 'https://plenusobras.com.br'; // placeholder
@@ -182,7 +181,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${playfair.variable} antialiased`}
       >
-        <SmoothScroll>{children}</SmoothScroll>
+        {children}
       </body>
     </html>
   );

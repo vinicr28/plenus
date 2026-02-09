@@ -27,6 +27,8 @@ export async function GET() {
       area: project.area,
       category: project.category,
       image: project.image_url,
+      images: project.images || [],
+      video_url: project.video_url || null,
       description: project.description,
     }));
 

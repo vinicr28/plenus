@@ -15,7 +15,7 @@ export const projects: Project[] = [
     location: "Indaiatuba, SP",
     area: "250m²",
     category: "Casa Térrea",
-    image: "/projects/project-1.png",
+    image: "/projects/project-1.webp",
     description: "Projeto contemporâneo com linhas retas e integração total entre os ambientes. A residência conta com amplas áreas de convivência, iluminação natural abundante e acabamentos de alto padrão.",
   },
   {
@@ -24,7 +24,7 @@ export const projects: Project[] = [
     location: "Jundiaí, SP",
     area: "320m²",
     category: "Sobrado",
-    image: "/projects/project-2.png",
+    image: "/projects/project-2.webp",
     description: "Sobrado elegante com design arrojado, combinando materiais nobres como madeira e vidro. Os dois pavimentos foram projetados para maximizar o conforto e a privacidade da família.",
   },
   {
@@ -33,7 +33,7 @@ export const projects: Project[] = [
     location: "Indaiatuba, SP",
     area: "280m²",
     category: "Casa Térrea",
-    image: "/projects/project-3.png",
+    image: "/projects/project-3.webp",
     description: "Residência desenvolvida sob medida para atender às necessidades específicas dos moradores. Cada ambiente foi pensado para proporcionar funcionalidade e bem-estar.",
   },
   {
@@ -42,7 +42,7 @@ export const projects: Project[] = [
     location: "Jundiaí, SP",
     area: "400m²",
     category: "Sobrado",
-    image: "/projects/project-4.png",
+    image: "/projects/project-4.webp",
     description: "Imponente sobrado com acabamentos premium e arquitetura sofisticada. A residência oferece amplos espaços de lazer, suítes confortáveis e áreas gourmet completas.",
   },
   {
@@ -51,7 +51,7 @@ export const projects: Project[] = [
     location: "Indaiatuba, SP",
     area: "220m²",
     category: "Casa Térrea",
-    image: "/projects/project-5.png",
+    image: "/projects/project-5.webp",
     description: "Casa térrea com design elegante e atemporal. O projeto prioriza a conexão com áreas externas e jardins, criando um ambiente de paz e tranquilidade.",
   },
   {
@@ -60,7 +60,7 @@ export const projects: Project[] = [
     location: "Jundiaí, SP",
     area: "350m²",
     category: "Sobrado",
-    image: "/projects/project-6.png",
+    image: "/projects/project-6.webp",
     description: "Projeto exclusivo com arquitetura única e personalizada. Cada detalhe foi cuidadosamente planejado para criar uma residência que reflete o estilo de vida dos moradores.",
   },
 ];

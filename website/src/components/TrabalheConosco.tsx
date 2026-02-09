@@ -88,7 +88,7 @@ export default function TrabalheConosco() {
         <div className="absolute inset-0">
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: "url('/hero-background.png')" }}
+            style={{ backgroundImage: "url('/hero-background.webp')" }}
           />
           {/* Gradient overlay for depth */}
           <div className="absolute inset-0 bg-gradient-to-b from-[#1a1a2e]/40 via-[#1a1a1a]/50 to-[#0a0a0a]/70" />

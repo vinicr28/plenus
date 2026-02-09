@@ -18,11 +18,22 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    // IntersectionObserver with rootMargin to detect when page has scrolled past 50px.
+    // Observes the document element — when top 50px scrolls out of the negative margin, header changes.
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsScrolled(!entry.isIntersecting);
+      },
+      { rootMargin: "-50px 0px 0px 0px", threshold: 1.0 }
+    );
+
+    // Observe a stable element at the top of the page
+    const heroSection = document.getElementById("home");
+    if (heroSection) {
+      observer.observe(heroSection);
+    }
+
+    return () => observer.disconnect();
   }, []);
 
   return (
