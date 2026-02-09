@@ -185,9 +185,126 @@ CREATE POLICY "Authenticated users can delete project images"
 -- 4. Click "Create user"
 
 -- ============================================
+-- 10. LEADS TABLE
+-- ============================================
+CREATE TABLE IF NOT EXISTS public.leads (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  form_type TEXT NOT NULL CHECK (form_type IN ('contact','pos-venda','trabalhe-conosco','financiamento')),
+  status TEXT NOT NULL DEFAULT 'novo' CHECK (status IN ('novo','em_negociacao','fechado')),
+  nome TEXT NOT NULL,
+  email TEXT,
+  telefone TEXT,
+  -- Contact-specific
+  tipo_projeto TEXT,
+  mensagem TEXT,
+  -- Pós-venda-specific
+  assunto TEXT,
+  descricao TEXT,
+  -- Trabalhe Conosco-specific
+  area_interesse TEXT,
+  sobre_voce TEXT,
+  -- Financiamento-specific
+  cpf TEXT,
+  endereco TEXT,
+  data_nascimento TEXT,
+  observacao TEXT,
+  -- Admin
+  notes TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+COMMENT ON TABLE public.leads IS 'Leads captured from website forms';
+
+-- ============================================
+-- 11. LEADS TRIGGER
+-- ============================================
+CREATE TRIGGER update_leads_updated_at
+  BEFORE UPDATE ON public.leads
+  FOR EACH ROW
+  EXECUTE FUNCTION update_updated_at_column();
+
+-- ============================================
+-- 12. LEADS INDEXES
+-- ============================================
+CREATE INDEX idx_leads_status_formtype_created
+  ON public.leads (status, form_type, created_at DESC);
+
+-- ============================================
+-- 13. ROW LEVEL SECURITY — LEADS
+-- ============================================
+ALTER TABLE public.leads ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Anyone can insert leads"
+  ON public.leads
+  FOR INSERT
+  WITH CHECK (true);
+
+CREATE POLICY "Authenticated users can read all leads"
+  ON public.leads
+  FOR SELECT
+  TO authenticated
+  USING (true);
+
+CREATE POLICY "Authenticated users can update leads"
+  ON public.leads
+  FOR UPDATE
+  TO authenticated
+  USING (true)
+  WITH CHECK (true);
+
+CREATE POLICY "Authenticated users can delete leads"
+  ON public.leads
+  FOR DELETE
+  TO authenticated
+  USING (true);
+
+-- ============================================
+-- 14. PROJECT EVENTS TABLE (click tracking)
+-- ============================================
+CREATE TABLE IF NOT EXISTS public.project_events (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  project_id UUID NOT NULL REFERENCES public.projects(id) ON DELETE CASCADE,
+  event_type TEXT NOT NULL CHECK (event_type IN ('modal_open','cta_click')),
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+COMMENT ON TABLE public.project_events IS 'Tracks user interactions with projects (modal opens, CTA clicks)';
+
+-- ============================================
+-- 15. PROJECT EVENTS INDEXES
+-- ============================================
+CREATE INDEX idx_project_events_project_type_created
+  ON public.project_events (project_id, event_type, created_at DESC);
+
+-- ============================================
+-- 16. ROW LEVEL SECURITY — PROJECT EVENTS
+-- ============================================
+ALTER TABLE public.project_events ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Anyone can insert project events"
+  ON public.project_events
+  FOR INSERT
+  WITH CHECK (true);
+
+CREATE POLICY "Authenticated users can read project events"
+  ON public.project_events
+  FOR SELECT
+  TO authenticated
+  USING (true);
+
+CREATE POLICY "Authenticated users can delete project events"
+  ON public.project_events
+  FOR DELETE
+  TO authenticated
+  USING (true);
+
+-- ============================================
 -- VERIFICATION QUERIES
 -- ============================================
 -- SELECT column_name, data_type FROM information_schema.columns WHERE table_name = 'projects';
 -- SELECT column_name, data_type FROM information_schema.columns WHERE table_name = 'reviews';
--- SELECT * FROM pg_policies WHERE tablename IN ('projects', 'reviews');
+-- SELECT column_name, data_type FROM information_schema.columns WHERE table_name = 'leads';
+-- SELECT column_name, data_type FROM information_schema.columns WHERE table_name = 'project_events';
+-- SELECT * FROM pg_policies WHERE tablename IN ('projects', 'reviews', 'leads', 'project_events');
 -- SELECT * FROM storage.buckets WHERE id = 'project-images';

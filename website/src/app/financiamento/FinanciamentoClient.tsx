@@ -54,6 +54,17 @@ ${formData.observacao || "Nenhuma observação"}
 
 Aguardo retorno. Obrigado!`;
 
+    // Save lead to database (fire-and-forget)
+    fetch('/api/save-lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        formType: 'financiamento',
+        data: formData,
+      }),
+      keepalive: true,
+    }).catch(() => {});
+
     const encodedMessage = encodeURIComponent(message);
     const phoneNumber = "5519992057955";
     const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;

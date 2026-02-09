@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
+import { saveLead } from "@/lib/leads";
+import { LeadInsert } from "@/types/database";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -132,6 +134,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Save lead to database (non-blocking — failure does not affect response)
+    try {
+      const lead = mapFormDataToLead(formType, data);
+      await saveLead(lead);
+    } catch (leadError) {
+      console.error("Error saving lead to DB:", leadError);
+    }
+
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("API error:", error);
@@ -139,5 +149,25 @@ export async function POST(request: NextRequest) {
       { error: "Erro interno do servidor" },
       { status: 500 }
     );
+  }
+}
+
+function mapFormDataToLead(formType: string, data: Record<string, string>): LeadInsert {
+  const base: LeadInsert = {
+    form_type: formType,
+    nome: data.nome || 'Não informado',
+    email: data.email || null,
+    telefone: data.telefone || null,
+  };
+
+  switch (formType) {
+    case 'contact':
+      return { ...base, tipo_projeto: data.tipoProjeto || null, mensagem: data.mensagem || null };
+    case 'pos-venda':
+      return { ...base, assunto: data.assunto || null, descricao: data.descricao || null };
+    case 'trabalhe-conosco':
+      return { ...base, area_interesse: data.areaInteresse || null, sobre_voce: data.sobreVoce || null };
+    default:
+      return base;
   }
 }

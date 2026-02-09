@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState, useCallback } from "react";
 import { Project } from "@/components/Projects";
+import { trackProjectEvent } from "@/lib/tracking";
 
 // Extract YouTube video ID from various URL formats
 function getYouTubeId(url: string): string | null {
@@ -440,7 +441,10 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                   >
                     <a
                       href="#contato"
-                      onClick={onClose}
+                      onClick={() => {
+                        if (project) trackProjectEvent(project.id, 'cta_click');
+                        onClose();
+                      }}
                       className="inline-flex items-center justify-center w-full md:w-auto px-8 py-4 bg-[#1a1a1a] text-white font-semibold rounded-xl hover:bg-[#333] transition-colors"
                     >
                       Quero um Projeto Assim

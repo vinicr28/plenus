@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FadeIn } from "./ScrollAnimations";
 import ProjectModal from "./ProjectModal";
+import { trackProjectEvent } from "@/lib/tracking";
 
 export interface Project {
   id: string;
@@ -57,6 +58,7 @@ export default function Projects() {
   }, []);
 
   const openModal = (project: Project) => {
+    trackProjectEvent(project.id, 'modal_open');
     setSelectedProject(project);
     setIsModalOpen(true);
   };

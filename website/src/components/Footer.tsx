@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -207,9 +208,21 @@ export default function Footer() {
           <p className="text-white/40 text-sm">
             &copy; {currentYear} Plenus Obras. Todos os direitos reservados.
           </p>
-          <p className="text-white/40 text-sm">
-            CNPJ: 00.000.000/0001-00
-          </p>
+          <a
+            href="https://www.instagram.com/creativevisual.films?igsh=aGo4dXo1NTgxbHdm&utm_source=qr"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-white/40 text-sm hover:text-white/60 transition-colors"
+          >
+            criado por:
+            <Image
+              src="/creative_logo.png"
+              alt="Creative Visual Films"
+              width={20}
+              height={20}
+              className="opacity-40 hover:opacity-60 transition-opacity"
+            />
+          </a>
         </div>
       </div>
     </footer>

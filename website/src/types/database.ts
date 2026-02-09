@@ -87,6 +87,100 @@ export interface Database {
         }
         Relationships: []
       }
+      project_events: {
+        Row: {
+          id: string
+          project_id: string
+          event_type: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          project_id: string
+          event_type: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          project_id?: string
+          event_type?: string
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_events_project_id_fkey"
+            columns: ["project_id"]
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      leads: {
+        Row: {
+          id: string
+          form_type: string
+          status: string
+          nome: string
+          email: string | null
+          telefone: string | null
+          tipo_projeto: string | null
+          mensagem: string | null
+          assunto: string | null
+          descricao: string | null
+          area_interesse: string | null
+          sobre_voce: string | null
+          cpf: string | null
+          endereco: string | null
+          data_nascimento: string | null
+          observacao: string | null
+          notes: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          form_type: string
+          status?: string
+          nome: string
+          email?: string | null
+          telefone?: string | null
+          tipo_projeto?: string | null
+          mensagem?: string | null
+          assunto?: string | null
+          descricao?: string | null
+          area_interesse?: string | null
+          sobre_voce?: string | null
+          cpf?: string | null
+          endereco?: string | null
+          data_nascimento?: string | null
+          observacao?: string | null
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          form_type?: string
+          status?: string
+          nome?: string
+          email?: string | null
+          telefone?: string | null
+          tipo_projeto?: string | null
+          mensagem?: string | null
+          assunto?: string | null
+          descricao?: string | null
+          area_interesse?: string | null
+          sobre_voce?: string | null
+          cpf?: string | null
+          endereco?: string | null
+          data_nascimento?: string | null
+          observacao?: string | null
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -112,3 +206,15 @@ export type ProjectUpdate = Database['public']['Tables']['projects']['Update'];
 export type Review = Database['public']['Tables']['reviews']['Row'];
 export type ReviewInsert = Database['public']['Tables']['reviews']['Insert'];
 export type ReviewUpdate = Database['public']['Tables']['reviews']['Update'];
+
+// Convenience type for leads
+export type Lead = Database['public']['Tables']['leads']['Row'];
+export type LeadInsert = Database['public']['Tables']['leads']['Insert'];
+export type LeadUpdate = Database['public']['Tables']['leads']['Update'];
+export type LeadFormType = 'contact' | 'pos-venda' | 'trabalhe-conosco' | 'financiamento';
+export type LeadStatus = 'novo' | 'em_negociacao' | 'fechado';
+
+// Convenience type for project events
+export type ProjectEvent = Database['public']['Tables']['project_events']['Row'];
+export type ProjectEventInsert = Database['public']['Tables']['project_events']['Insert'];
+export type ProjectEventType = 'modal_open' | 'cta_click';

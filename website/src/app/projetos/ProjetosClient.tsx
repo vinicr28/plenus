@@ -8,6 +8,7 @@ import ProjectModal from "@/components/ProjectModal";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Project } from "@/components/Projects";
+import { trackProjectEvent } from "@/lib/tracking";
 
 export default function ProjetosClient() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -41,6 +42,7 @@ export default function ProjetosClient() {
       : projects.filter((p) => p.category === filter);
 
   const openModal = (project: Project) => {
+    trackProjectEvent(project.id, 'modal_open');
     setSelectedProject(project);
     setIsModalOpen(true);
   };
