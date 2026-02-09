@@ -79,10 +79,10 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="#diferenciais"
+                  href="#processo"
                   className="text-white/60 hover:text-white transition-colors duration-200 text-sm"
                 >
-                  Diferenciais
+                  Como Funciona
                 </Link>
               </li>
               <li>

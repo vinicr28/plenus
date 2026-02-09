@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
-import Differentials from "@/components/Differentials";
+import Process from "@/components/Process";
 import Projects from "@/components/Projects";
 import Map3D from "@/components/Map3D";
 import Testimonials from "@/components/Testimonials";
@@ -20,7 +20,7 @@ export default function Home() {
         <About />
         <Map3D />
         <Projects />
-        <Differentials />
+        <Process />
         <Testimonials />
         <Contact />
         <PosVenda />
