@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 export default function FloatingCTA() {
   return (
     <motion.a
-      href="https://wa.me/5519999999999?text=Olá! Gostaria de solicitar um orçamento."
+      href="https://wa.me/5519992057955?text=Olá! Gostaria de solicitar um orçamento."
       target="_blank"
       rel="noopener noreferrer"
       initial={{ scale: 0, opacity: 0 }}

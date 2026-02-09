@@ -48,6 +48,39 @@ export interface Database {
         }
         Relationships: []
       }
+      reviews: {
+        Row: {
+          id: string
+          name: string
+          email: string
+          rating: number
+          comment: string
+          location: string | null
+          approved: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          email: string
+          rating: number
+          comment: string
+          location?: string | null
+          approved?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          email?: string
+          rating?: number
+          comment?: string
+          location?: string | null
+          approved?: boolean
+          created_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -68,3 +101,8 @@ export interface Database {
 export type Project = Database['public']['Tables']['projects']['Row'];
 export type ProjectInsert = Database['public']['Tables']['projects']['Insert'];
 export type ProjectUpdate = Database['public']['Tables']['projects']['Update'];
+
+// Convenience type for reviews
+export type Review = Database['public']['Tables']['reviews']['Row'];
+export type ReviewInsert = Database['public']['Tables']['reviews']['Insert'];
+export type ReviewUpdate = Database['public']['Tables']['reviews']['Update'];

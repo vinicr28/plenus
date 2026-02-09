@@ -64,6 +64,16 @@ body {
   background: var(--plenus-gray-500);
 }
 
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Deep Parallax Hero Styles */
 .parallax-container {
   perspective: 1000px;

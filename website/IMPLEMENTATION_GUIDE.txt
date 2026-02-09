@@ -1,0 +1,414 @@
+================================================================================
+PLENUS WEBSITE - VISUAL ENHANCEMENT IMPLEMENTATION GUIDE
+================================================================================
+
+This document describes how to implement scroll-based parallax animations with
+plant/nature elements and apply liquid glass (glassmorphism) effects across all
+boxes while maintaining the current Hero color scheme.
+
+--------------------------------------------------------------------------------
+SECTION 1: CURRENT VISUAL IDENTITY (TO PRESERVE)
+--------------------------------------------------------------------------------
+
+COLOR PALETTE FROM HERO:
+- Primary text: #FFFFFF (white)
+- Accent/highlight text: #000000 (black)
+- Brand accent: #c41e3a (Plenus red)
+- Secondary text: rgba(255,255,255,0.80) to rgba(255,255,255,0.90)
+- Labels/small text: #000000 (black)
+
+GLASS EFFECT BASE (from Hero):
+- Background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 100%)
+- Border: 1px solid rgba(255,255,255,0.3)
+- Blur: backdrop-blur-2xl (24px)
+- Shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.1)
+
+--------------------------------------------------------------------------------
+SECTION 2: PARALLAX SCROLL EFFECT WITH PLANTS
+--------------------------------------------------------------------------------
+
+CONCEPT:
+Add decorative plant/leaf PNG images that move at different speeds during scroll,
+creating depth and a natural, organic feel that complements the home construction theme.
+
+STEP 1: Create Plant Assets
+- Create or source 4-6 PNG images of plants/leaves with transparent backgrounds
+- Suggested elements: monstera leaves, ferns, eucalyptus branches, palm fronds
+- Place in: /public/decorative/plant-1.png, plant-2.png, etc.
+- Recommended sizes: 200-400px width, optimized for web
+
+STEP 2: Create ParallaxPlants Component
+
+File: /src/components/ParallaxPlants.tsx
+
+```tsx
+"use client";
+
+import { useScroll, useTransform, motion } from "framer-motion";
+import { useRef } from "react";
+
+interface PlantLayer {
+  src: string;
+  position: { top?: string; bottom?: string; left?: string; right?: string };
+  speed: number; // negative = moves up, positive = moves down
+  scale?: number;
+  rotation?: number;
+  opacity?: number;
+}
+
+const plants: PlantLayer[] = [
+  {
+    src: "/decorative/plant-1.png",
+    position: { top: "10%", left: "-5%" },
+    speed: -100,
+    scale: 1.2,
+    rotation: -15,
+    opacity: 0.7,
+  },
+  {
+    src: "/decorative/plant-2.png",
+    position: { top: "30%", right: "-8%" },
+    speed: -150,
+    scale: 1,
+    rotation: 10,
+    opacity: 0.6,
+  },
+  {
+    src: "/decorative/plant-3.png",
+    position: { bottom: "20%", left: "-3%" },
+    speed: -80,
+    scale: 0.8,
+    rotation: 5,
+    opacity: 0.5,
+  },
+  {
+    src: "/decorative/plant-4.png",
+    position: { bottom: "10%", right: "-6%" },
+    speed: -120,
+    scale: 1.1,
+    rotation: -8,
+    opacity: 0.65,
+  },
+];
+
+export default function ParallaxPlants() {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+
+  return (
+    <div ref={ref} className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+      {plants.map((plant, index) => {
+        const y = useTransform(scrollYProgress, [0, 1], [0, plant.speed]);
+
+        return (
+          <motion.img
+            key={index}
+            src={plant.src}
+            alt=""
+            style={{
+              y,
+              ...plant.position,
+              scale: plant.scale || 1,
+              rotate: plant.rotation || 0,
+              opacity: plant.opacity || 0.5,
+            }}
+            className="absolute w-auto h-auto max-w-[300px]"
+          />
+        );
+      })}
+    </div>
+  );
+}
+```
+
+STEP 3: Alternative Pure CSS Approach (Better Performance)
+
+Add to globals.css:
+
+```css
+@supports (animation-timeline: scroll()) {
+  .parallax-plant {
+    animation: parallax-move linear;
+    animation-timeline: scroll(root);
+  }
+
+  .parallax-plant-slow {
+    animation-range: 0% 100%;
+  }
+
+  .parallax-plant-medium {
+    animation-range: 0% 150%;
+  }
+
+  .parallax-plant-fast {
+    animation-range: 0% 200%;
+  }
+
+  @keyframes parallax-move {
+    from { transform: translateY(0); }
+    to { transform: translateY(-200px); }
+  }
+}
+
+/* Respect user preferences */
+@media (prefers-reduced-motion: reduce) {
+  .parallax-plant {
+    animation: none;
+  }
+}
+```
+
+STEP 4: Add to Layout
+
+In layout.tsx or a wrapper component:
+
+```tsx
+import ParallaxPlants from "@/components/ParallaxPlants";
+
+// Inside the body:
+<ParallaxPlants />
+<main className="relative z-10">
+  {children}
+</main>
+```
+
+--------------------------------------------------------------------------------
+SECTION 3: LIQUID GLASS EFFECT FOR ALL BOXES
+--------------------------------------------------------------------------------
+
+STEP 1: Create Reusable Glass Card Component
+
+File: /src/components/GlassCard.tsx
+
+```tsx
+interface GlassCardProps {
+  children: React.ReactNode;
+  className?: string;
+  intensity?: "light" | "medium" | "strong";
+}
+
+const intensityStyles = {
+  light: {
+    background: "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)",
+    border: "1px solid rgba(255,255,255,0.15)",
+    blur: "backdrop-blur-md",
+  },
+  medium: {
+    background: "linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%)",
+    border: "1px solid rgba(255,255,255,0.25)",
+    blur: "backdrop-blur-xl",
+  },
+  strong: {
+    background: "linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 100%)",
+    border: "1px solid rgba(255,255,255,0.3)",
+    blur: "backdrop-blur-2xl",
+  },
+};
+
+export default function GlassCard({
+  children,
+  className = "",
+  intensity = "medium"
+}: GlassCardProps) {
+  const styles = intensityStyles[intensity];
+
+  return (
+    <div
+      className={`rounded-2xl p-6 ${styles.blur} ${className}`}
+      style={{
+        background: styles.background,
+        border: styles.border,
+        boxShadow: "0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.1)",
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+```
+
+STEP 2: Update About.tsx - Mission/Vision/Essence Cards
+
+Replace the existing card divs with:
+
+```tsx
+<div
+  className="backdrop-blur-xl rounded-2xl p-8 h-full"
+  style={{
+    background: "linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%)",
+    border: "1px solid rgba(255,255,255,0.25)",
+    boxShadow: "0 8px 32px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.2)",
+  }}
+>
+  {/* Update text colors to match Hero */}
+  <h3 className="font-[var(--font-playfair)] text-xl font-bold text-white mb-4">
+    Missão
+  </h3>
+  <p className="text-white/80 leading-relaxed">
+    ...content...
+  </p>
+</div>
+```
+
+IMPORTANT: Section backgrounds need to change from white to support glass effect:
+- Change: bg-white -> bg-gradient-to-br from-[#1a1a1a] via-[#262626] to-[#171717]
+- Or use a background image like the Hero
+
+STEP 3: Update Differentials.tsx
+
+```tsx
+<div
+  className="group backdrop-blur-xl rounded-2xl p-8 h-full transition-all duration-500 hover:scale-[1.02]"
+  style={{
+    background: "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.08) 100%)",
+    border: "1px solid rgba(255,255,255,0.2)",
+    boxShadow: "0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.15)",
+  }}
+>
+  <div className="w-16 h-16 bg-[#c41e3a]/20 backdrop-blur-lg rounded-2xl flex items-center justify-center mb-6 text-[#c41e3a] group-hover:bg-[#c41e3a] group-hover:text-white transition-all duration-300">
+    {item.icon}
+  </div>
+  <h3 className="font-[var(--font-playfair)] text-xl font-bold text-white mb-3">
+    {item.title}
+  </h3>
+  <p className="text-white/70 leading-relaxed">
+    {item.description}
+  </p>
+</div>
+```
+
+STEP 4: Update Projects.tsx Cards
+
+```tsx
+<div
+  className="backdrop-blur-xl rounded-2xl overflow-hidden"
+  style={{
+    background: "linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%)",
+    border: "1px solid rgba(255,255,255,0.18)",
+    boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
+  }}
+>
+  {/* Image area */}
+  <div className="aspect-[4/3] relative overflow-hidden">
+    {/* ... image content ... */}
+  </div>
+
+  {/* Info area with glass effect */}
+  <div className="p-6">
+    <span className="text-xs font-medium text-[#c41e3a] bg-[#c41e3a]/20 backdrop-blur-sm px-3 py-1 rounded-full">
+      {project.category}
+    </span>
+    <h3 className="font-[var(--font-playfair)] text-lg font-bold text-white mt-3">
+      {project.title}
+    </h3>
+    <p className="text-sm text-white/60">{project.location}</p>
+  </div>
+</div>
+```
+
+--------------------------------------------------------------------------------
+SECTION 4: GLOBAL BACKGROUND CHANGES
+--------------------------------------------------------------------------------
+
+To properly support the glass effect across all sections, update section backgrounds:
+
+OPTION A: Dark Gradient Background (Recommended)
+
+```tsx
+// Each section should have a dark background
+className="py-24 lg:py-32 bg-gradient-to-br from-[#1a1a1a] via-[#262626] to-[#171717]"
+```
+
+OPTION B: Background Image with Overlay
+
+```tsx
+<section className="relative py-24 lg:py-32">
+  <div className="absolute inset-0">
+    <div
+      className="absolute inset-0 bg-cover bg-center bg-fixed"
+      style={{ backgroundImage: "url('/section-background.jpg')" }}
+    />
+    <div className="absolute inset-0 bg-[#1a1a1a]/80" />
+  </div>
+  <div className="relative z-10">
+    {/* content */}
+  </div>
+</section>
+```
+
+--------------------------------------------------------------------------------
+SECTION 5: TEXT COLOR STANDARDIZATION
+--------------------------------------------------------------------------------
+
+Apply Hero color scheme across all components:
+
+HEADINGS:
+- Main titles: text-white
+- Highlighted words: text-[#c41e3a] (brand red) OR text-[#000000] (black on glass)
+
+BODY TEXT:
+- Primary: text-white/80
+- Secondary: text-white/60
+
+LABELS & TAGS:
+- Uppercase labels: text-[#c41e3a] or text-[#000000]
+- Small caps: tracking-[0.2em] or tracking-[0.3em]
+
+BUTTONS:
+- Primary: bg-[#c41e3a] text-white
+- Secondary (glass):
+  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%)
+  border: 1px solid rgba(255,255,255,0.3)
+  text-white
+
+--------------------------------------------------------------------------------
+SECTION 6: IMPLEMENTATION ORDER
+--------------------------------------------------------------------------------
+
+1. Create plant PNG assets and add to /public/decorative/
+2. Create ParallaxPlants.tsx component
+3. Add ParallaxPlants to layout.tsx
+4. Create GlassCard.tsx reusable component
+5. Update section backgrounds to dark gradients
+6. Update About.tsx with glass cards and new text colors
+7. Update Differentials.tsx with glass cards and new text colors
+8. Update Projects.tsx with glass cards and new text colors
+9. Update Testimonials.tsx with glass cards and new text colors
+10. Update Contact.tsx with glass effect form
+11. Test on different screen sizes
+12. Add prefers-reduced-motion support for accessibility
+
+--------------------------------------------------------------------------------
+SECTION 7: PERFORMANCE CONSIDERATIONS
+--------------------------------------------------------------------------------
+
+- Use will-change: transform on parallax elements
+- Implement lazy loading for plant images
+- Consider using CSS scroll-driven animations for better performance
+- Test backdrop-filter performance on mobile devices
+- Use transform: translateZ(0) to trigger GPU acceleration
+- Limit parallax elements to 4-6 for optimal performance
+
+--------------------------------------------------------------------------------
+SECTION 8: BROWSER SUPPORT
+--------------------------------------------------------------------------------
+
+- backdrop-filter: Supported in all modern browsers (Chrome 76+, Firefox 103+, Safari 9+)
+- CSS scroll-driven animations: Chrome 115+, Edge 115+ (use JavaScript fallback)
+- Provide fallback solid backgrounds for older browsers
+
+--------------------------------------------------------------------------------
+RESOURCES
+--------------------------------------------------------------------------------
+
+- CSS-Tricks Parallax: https://css-tricks.com/bringing-back-parallax-with-scroll-driven-css-animations/
+- Liquid Glass CSS: https://freefrontend.com/css-liquid-glass/
+- Glassmorphism Generator: https://css.glass/
+- Framer Motion Scroll: https://www.framer.com/motion/scroll-animations/
+
+================================================================================
+END OF IMPLEMENTATION GUIDE
+================================================================================

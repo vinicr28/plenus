@@ -195,18 +195,13 @@ export default function Projects() {
             {/* Scrollable container */}
             <div
               ref={scrollContainerRef}
-              className="flex gap-6 overflow-x-auto scroll-smooth pb-4"
+              className="flex gap-6 overflow-x-auto scroll-smooth pb-4 scrollbar-hide"
               style={{
                 scrollSnapType: "x mandatory",
                 scrollbarWidth: "none",
                 msOverflowStyle: "none",
               }}
             >
-              <style jsx>{`
-                div::-webkit-scrollbar {
-                  display: none;
-                }
-              `}</style>
 
               {projects.map((project, index) => (
                 <motion.div
