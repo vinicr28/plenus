@@ -99,7 +99,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <p className="font-semibold text-[#1a1a1a]">Telefone</p>
-                    <p className="text-[#525252]">(19) 99999-9999</p>
+                    <p className="text-[#525252]">(19) 99293-7486</p>
                   </div>
                 </div>
               </FadeIn>
@@ -123,7 +123,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <p className="font-semibold text-[#1a1a1a]">E-mail</p>
-                    <p className="text-[#525252]">contato@plenusobras.com.br</p>
+                    <p className="text-[#525252]">sistemasplenusobras@gmail.com</p>
                   </div>
                 </div>
               </FadeIn>
@@ -153,9 +153,14 @@ export default function Contact() {
                   </div>
                   <div>
                     <p className="font-semibold text-[#1a1a1a]">Localização</p>
-                    <p className="text-[#525252]">
-                      Indaiatuba e Jundiaí, SP
-                    </p>
+                    <a
+                      href="https://www.google.com/maps/search/?api=1&query=R.+Alm.+Tamandar%C3%A9%2C+365+-+Cidade+Nova+II%2C+Indaiatuba+-+SP%2C+13334-200"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#525252] hover:text-[#c41e3a] transition-colors"
+                    >
+                      R. Alm. Tamandaré, 365 - Cidade Nova II, Indaiatuba - SP, 13334-200
+                    </a>
                   </div>
                 </div>
               </FadeIn>
@@ -245,7 +250,7 @@ export default function Contact() {
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-medium text-[#525252] mb-2">
-                        E-mail
+                        E-mail <span className="text-[#c41e3a]">*</span>
                       </label>
                       <input
                         type="email"
@@ -259,7 +264,7 @@ export default function Contact() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-[#525252] mb-2">
-                        Telefone
+                        Telefone <span className="text-[#c41e3a]">*</span>
                       </label>
                       <input
                         type="tel"

@@ -55,6 +55,7 @@ type MediaItem =
 export default function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [videoModalOpen, setVideoModalOpen] = useState(false);
+  const [imageLightboxOpen, setImageLightboxOpen] = useState(false);
 
   // Combine cover image, additional images, and video into a single media array
   const mediaItems: MediaItem[] = project
@@ -79,6 +80,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
   useEffect(() => {
     setCurrentIndex(0);
     setVideoModalOpen(false);
+    setImageLightboxOpen(false);
   }, [project?.id]);
 
   // Navigation functions
@@ -102,13 +104,15 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        if (videoModalOpen) {
+        if (imageLightboxOpen) {
+          setImageLightboxOpen(false);
+        } else if (videoModalOpen) {
           setVideoModalOpen(false);
         } else {
           onClose();
         }
       }
-      if (!videoModalOpen) {
+      if (!videoModalOpen && !imageLightboxOpen) {
         if (e.key === "ArrowRight") goToNext();
         if (e.key === "ArrowLeft") goToPrev();
       }
@@ -121,7 +125,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "unset";
     };
-  }, [isOpen, onClose, goToNext, goToPrev, videoModalOpen]);
+  }, [isOpen, onClose, goToNext, goToPrev, videoModalOpen, imageLightboxOpen]);
 
   if (!project) return null;
 
@@ -211,8 +215,9 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                           src={currentMedia.url}
                           alt={`${project.title} - Foto ${currentIndex + 1}`}
                           fill
-                          className="object-cover"
+                          className="object-cover cursor-zoom-in"
                           sizes="(max-width: 768px) 100vw, 50vw"
+                          onDoubleClick={() => setImageLightboxOpen(true)}
                         />
                       ) : currentMedia?.type === 'video' ? (
                         <button
@@ -467,6 +472,55 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                 }}
               />
             </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Image Lightbox */}
+      <AnimatePresence>
+        {imageLightboxOpen && currentMedia?.type === 'image' && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[60] flex items-center justify-center p-4"
+            onClick={() => setImageLightboxOpen(false)}
+          >
+            <div className="absolute inset-0 bg-black/90" />
+
+            <motion.button
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+              onClick={() => setImageLightboxOpen(false)}
+              className="absolute top-4 right-4 z-10 w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-white/20 transition-colors"
+            >
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </motion.button>
+
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-6xl max-h-[90vh] aspect-auto"
+            >
+              <Image
+                src={currentMedia.url}
+                alt={`${project?.title} - Foto ${currentIndex + 1}`}
+                width={1920}
+                height={1080}
+                className="w-full h-full max-h-[90vh] object-contain rounded-xl cursor-zoom-out"
+                onClick={() => setImageLightboxOpen(false)}
+              />
+            </motion.div>
+
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/50 text-sm">
+              Pressione ESC para fechar
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

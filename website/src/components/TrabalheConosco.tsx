@@ -309,7 +309,7 @@ export default function TrabalheConosco() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-[#525252] mb-2">
-                        E-mail
+                        E-mail <span className="text-[#c41e3a]">*</span>
                       </label>
                       <input
                         type="email"
@@ -323,7 +323,7 @@ export default function TrabalheConosco() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-[#525252] mb-2">
-                        Telefone
+                        Telefone <span className="text-[#c41e3a]">*</span>
                       </label>
                       <input
                         type="tel"

@@ -82,6 +82,7 @@ function RatingModal({
   const [comment, setComment] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [telefone, setTelefone] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -91,6 +92,7 @@ function RatingModal({
     setComment("");
     setName("");
     setEmail("");
+    setTelefone("");
     setError("");
     setSuccess(false);
   };
@@ -114,6 +116,10 @@ function RatingModal({
     }
     if (!email.trim()) {
       setError("Por favor, informe seu e-mail");
+      return;
+    }
+    if (!telefone.trim()) {
+      setError("Por favor, informe seu telefone");
       return;
     }
     if (!comment.trim()) {
@@ -246,7 +252,7 @@ function RatingModal({
                 {/* Email */}
                 <div>
                   <label htmlFor="rating-email" className="block text-sm font-medium text-gray-700 mb-2">
-                    E-mail
+                    E-mail <span className="text-[#c41e3a]">*</span>
                   </label>
                   <input
                     id="rating-email"
@@ -255,6 +261,21 @@ function RatingModal({
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#c41e3a] focus:border-transparent outline-none transition-all"
                     placeholder="seu@email.com"
+                  />
+                </div>
+
+                {/* Phone */}
+                <div>
+                  <label htmlFor="rating-telefone" className="block text-sm font-medium text-gray-700 mb-2">
+                    Telefone <span className="text-[#c41e3a]">*</span>
+                  </label>
+                  <input
+                    id="rating-telefone"
+                    type="tel"
+                    value={telefone}
+                    onChange={(e) => setTelefone(e.target.value)}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#c41e3a] focus:border-transparent outline-none transition-all"
+                    placeholder="(00) 00000-0000"
                   />
                 </div>
 

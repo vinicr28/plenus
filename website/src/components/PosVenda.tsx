@@ -6,6 +6,8 @@ import { FadeIn } from "./ScrollAnimations";
 export default function PosVenda() {
   const [formData, setFormData] = useState({
     nome: "",
+    email: "",
+    telefone: "",
     assunto: "",
     descricao: "",
   });
@@ -38,6 +40,8 @@ export default function PosVenda() {
         setStatus("success");
         setFormData({
           nome: "",
+          email: "",
+          telefone: "",
           assunto: "",
           descricao: "",
         });
@@ -91,6 +95,36 @@ export default function PosVenda() {
                       required
                       className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200"
                     />
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-medium text-[#525252] mb-2">
+                        E-mail <span className="text-[#c41e3a]">*</span>
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder="seu@email.com"
+                        required
+                        className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-[#525252] mb-2">
+                        Telefone <span className="text-[#c41e3a]">*</span>
+                      </label>
+                      <input
+                        type="tel"
+                        name="telefone"
+                        value={formData.telefone}
+                        onChange={handleChange}
+                        placeholder="(00) 00000-0000"
+                        required
+                        className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200"
+                      />
+                    </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-[#525252] mb-2">
