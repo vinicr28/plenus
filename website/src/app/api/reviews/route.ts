@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server';
+import { createClient, createServiceClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 
 // GET - Fetch approved reviews (public)
@@ -33,7 +33,7 @@ export async function GET() {
 // POST - Submit a new review (public)
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const supabase = await createServiceClient();
     const body = await request.json();
     const { name, email, rating, comment, location } = body;
 
