@@ -13,6 +13,19 @@ const navLinks = [
   { href: "/financiamento", label: "Financiamento" },
 ];
 
+function handleHashClick(e: React.MouseEvent<HTMLAnchorElement>, href: string) {
+  const hash = href.split("#")[1];
+  if (!hash) return;
+  // Only handle if we're already on the home page
+  if (window.location.pathname !== "/" && !href.startsWith("/#")) return;
+  const el = document.getElementById(hash);
+  if (el) {
+    e.preventDefault();
+    el.scrollIntoView({ behavior: "smooth" });
+    window.history.replaceState(null, "", `/#${hash}`);
+  }
+}
+
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -74,6 +87,7 @@ export default function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
+                  onClick={(e) => handleHashClick(e, link.href)}
                   className={`text-sm font-medium transition-colors hover:text-[#c41e3a] ${
                     isScrolled ? "text-[#525252]" : "text-white/90"
                   }`}
@@ -87,6 +101,7 @@ export default function Header() {
             <div className="hidden lg:block">
               <Link
                 href="/#contato"
+                onClick={(e) => handleHashClick(e, "/#contato")}
                 className="inline-flex items-center px-6 py-3 bg-[#c41e3a] text-white text-sm font-semibold rounded-full hover:bg-[#a01830] transition-colors"
               >
                 Solicitar Orçamento
@@ -147,7 +162,7 @@ export default function Header() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={(e) => { handleHashClick(e, link.href); setIsMobileMenuOpen(false); }}
                     className="text-lg font-medium text-[#1a1a1a] hover:text-[#c41e3a] transition-colors"
                   >
                     {link.label}
@@ -155,7 +170,7 @@ export default function Header() {
                 ))}
                 <Link
                   href="/#contato"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={(e) => { handleHashClick(e, "/#contato"); setIsMobileMenuOpen(false); }}
                   className="mt-4 inline-flex items-center justify-center px-6 py-3 bg-[#c41e3a] text-white text-sm font-semibold rounded-full hover:bg-[#a01830] transition-colors"
                 >
                   Solicitar Orçamento
