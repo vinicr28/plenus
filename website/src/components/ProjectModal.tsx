@@ -168,7 +168,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                 duration: 0.5,
               }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-4xl max-h-[90vh] overflow-hidden rounded-3xl"
+              className="relative w-full max-w-6xl max-h-[90vh] overflow-hidden rounded-3xl"
               style={{ perspective: "1000px" }}
             >
               {/* Glassmorphism background */}
