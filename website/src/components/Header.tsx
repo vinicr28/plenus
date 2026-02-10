@@ -31,8 +31,14 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    // IntersectionObserver with rootMargin to detect when page has scrolled past 50px.
-    // Observes the document element — when top 50px scrolls out of the negative margin, header changes.
+    const heroSection = document.getElementById("home");
+
+    if (!heroSection) {
+      // Not on home page (e.g. /projetos) — always show solid header
+      setIsScrolled(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsScrolled(!entry.isIntersecting);
@@ -40,11 +46,7 @@ export default function Header() {
       { rootMargin: "-50px 0px 0px 0px", threshold: 1.0 }
     );
 
-    // Observe a stable element at the top of the page
-    const heroSection = document.getElementById("home");
-    if (heroSection) {
-      observer.observe(heroSection);
-    }
+    observer.observe(heroSection);
 
     return () => observer.disconnect();
   }, []);
@@ -64,7 +66,7 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link href="/#home" className="flex items-center">
+            <Link href="/#home" onClick={(e) => handleHashClick(e, "/#home")} className="flex items-center">
               <span
                 className={`font-[var(--font-playfair)] text-2xl font-bold tracking-tight transition-colors ${
                   isScrolled ? "text-[#1a1a1a]" : "text-white"

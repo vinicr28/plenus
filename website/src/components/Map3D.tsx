@@ -222,7 +222,7 @@ export default function Map3D() {
                     {/* Animated location markers */}
                     <motion.div
                       whileInView={{ y: [0, -5, 0] }}
-                      viewport={{ once: false }}
+                      viewport={{ once: true }}
                       transition={{ duration: 2, repeat: Infinity }}
                       className="absolute top-1/4 left-1/3"
                     >
@@ -234,7 +234,7 @@ export default function Map3D() {
 
                     <motion.div
                       whileInView={{ y: [0, -5, 0] }}
-                      viewport={{ once: false }}
+                      viewport={{ once: true }}
                       transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
                       className="absolute top-1/2 right-1/4"
                     >
@@ -246,7 +246,7 @@ export default function Map3D() {
 
                     <motion.div
                       whileInView={{ y: [0, -5, 0] }}
-                      viewport={{ once: false }}
+                      viewport={{ once: true }}
                       transition={{ duration: 2, repeat: Infinity, delay: 1 }}
                       className="absolute bottom-1/3 left-1/2"
                     >
@@ -260,7 +260,7 @@ export default function Map3D() {
                     <div className="relative z-10 flex flex-col items-center">
                       <motion.div
                         whileInView={{ rotateY: [0, 360] }}
-                        viewport={{ once: false }}
+                        viewport={{ once: true }}
                         transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
                         className="w-24 h-24 bg-gradient-to-br from-[#c41e3a]/20 to-transparent rounded-full flex items-center justify-center border border-[#c41e3a]/30"
                       >

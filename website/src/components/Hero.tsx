@@ -250,16 +250,14 @@ export default function Hero() {
 
       {/* Scroll indicator */}
       <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false }}
-        transition={{ duration: 1, delay: 1.5, repeat: Infinity, repeatType: "reverse" }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 1.5 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2"
       >
         <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center pt-2">
           <motion.div
-            whileInView={{ y: [0, 12, 0] }}
-            viewport={{ once: false }}
+            animate={{ y: [0, 12, 0] }}
             transition={{ duration: 1.5, repeat: Infinity }}
             className="w-1.5 h-1.5 bg-white/60 rounded-full"
           />
