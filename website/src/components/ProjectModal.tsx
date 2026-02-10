@@ -200,7 +200,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                   initial={{ opacity: 0, x: -50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.2, duration: 0.5 }}
-                  className="relative w-full md:w-1/2 aspect-[4/3] md:aspect-auto md:min-h-[500px] overflow-hidden bg-gray-100"
+                  className="relative w-full md:w-[55%] aspect-[4/3] md:aspect-auto md:min-h-[550px] overflow-hidden bg-gray-100"
                 >
                   {/* Media display (images or video thumbnail) */}
                   <AnimatePresence mode="wait">
@@ -340,7 +340,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                 </motion.div>
 
                 {/* Info section */}
-                <div className="w-full md:w-1/2 p-6 md:p-10 flex flex-col justify-center">
+                <div className="w-full md:w-[45%] p-6 md:p-10 flex flex-col justify-center">
                   {/* Title */}
                   <motion.h2
                     initial={{ opacity: 0, y: 30 }}
