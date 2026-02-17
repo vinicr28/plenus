@@ -27,6 +27,7 @@ function formatEmailHtml(formType: string, data: Record<string, string>): string
     telefone: "Telefone",
     tipoProjeto: "Tipo de Projeto",
     mensagem: "Mensagem",
+    endereco: "Endereço da Obra",
     assunto: "Assunto",
     descricao: "Descrição",
     areaInteresse: "Área de Interesse",
@@ -164,7 +165,7 @@ function mapFormDataToLead(formType: string, data: Record<string, string>): Lead
     case 'contact':
       return { ...base, tipo_projeto: data.tipoProjeto || null, mensagem: data.mensagem || null };
     case 'pos-venda':
-      return { ...base, assunto: data.assunto || null, descricao: data.descricao || null };
+      return { ...base, endereco: data.endereco || null, mensagem: data.mensagem || null };
     case 'trabalhe-conosco':
       return { ...base, area_interesse: data.areaInteresse || null, sobre_voce: data.sobreVoce || null };
     default:

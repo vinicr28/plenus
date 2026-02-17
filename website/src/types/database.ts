@@ -115,6 +115,27 @@ export interface Database {
           }
         ]
       }
+      financing_settings: {
+        Row: {
+          id: string
+          key: string
+          value: Json
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          key: string
+          value: Json
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          key?: string
+          value?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
       leads: {
         Row: {
           id: string
@@ -213,6 +234,16 @@ export type LeadInsert = Database['public']['Tables']['leads']['Insert'];
 export type LeadUpdate = Database['public']['Tables']['leads']['Update'];
 export type LeadFormType = 'contact' | 'pos-venda' | 'trabalhe-conosco' | 'financiamento';
 export type LeadStatus = 'novo' | 'em_negociacao' | 'fechado';
+
+// Convenience type for financing settings
+export type FinancingSetting = Database['public']['Tables']['financing_settings']['Row'];
+export type FinancingSettingInsert = Database['public']['Tables']['financing_settings']['Insert'];
+export type FinancingSettingUpdate = Database['public']['Tables']['financing_settings']['Update'];
+
+export interface InterestRateValue {
+  annual_rate: number;
+  description?: string;
+}
 
 // Convenience type for project events
 export type ProjectEvent = Database['public']['Tables']['project_events']['Row'];

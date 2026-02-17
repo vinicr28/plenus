@@ -300,6 +300,51 @@ CREATE POLICY "Authenticated users can delete project events"
   USING (true);
 
 -- ============================================
+-- 17. FINANCING SETTINGS TABLE
+-- ============================================
+CREATE TABLE IF NOT EXISTS public.financing_settings (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  key TEXT UNIQUE NOT NULL,
+  value JSONB NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+COMMENT ON TABLE public.financing_settings IS 'Key-value settings for the financing simulator (e.g. interest rate)';
+
+CREATE TRIGGER update_financing_settings_updated_at
+  BEFORE UPDATE ON public.financing_settings
+  FOR EACH ROW
+  EXECUTE FUNCTION update_updated_at_column();
+
+-- ============================================
+-- 18. ROW LEVEL SECURITY — FINANCING SETTINGS
+-- ============================================
+ALTER TABLE public.financing_settings ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Anyone can read financing settings"
+  ON public.financing_settings
+  FOR SELECT
+  USING (true);
+
+CREATE POLICY "Authenticated users can insert financing settings"
+  ON public.financing_settings
+  FOR INSERT
+  TO authenticated
+  WITH CHECK (true);
+
+CREATE POLICY "Authenticated users can update financing settings"
+  ON public.financing_settings
+  FOR UPDATE
+  TO authenticated
+  USING (true)
+  WITH CHECK (true);
+
+-- Seed default interest rate
+INSERT INTO public.financing_settings (key, value)
+VALUES ('interest_rate', '{"annual_rate": 10.49, "description": "Taxa de juros anual padrão"}')
+ON CONFLICT (key) DO NOTHING;
+
+-- ============================================
 -- VERIFICATION QUERIES
 -- ============================================
 -- SELECT column_name, data_type FROM information_schema.columns WHERE table_name = 'projects';

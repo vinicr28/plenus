@@ -1,0 +1,154 @@
+# Implementar LLM (Claude Haiku 4.5) no Chatbot Plenus
+# ====================================================
+
+## Contexto
+
+O chatbot atual usa um fluxo fixo via state machine (getBotResponse(step, userData) — switch/case).
+A arquitetura já foi preparada para trocar por LLM. O objetivo é substituir o fluxo rígido por
+conversas naturais usando Claude Haiku 4.5, mantendo a coleta de leads e integração com WhatsApp.
+
+Abordagem: Usar tool_use (function calling) do Claude para extração de dados estruturados.
+O LLM conversa naturalmente e, quando tem todos os dados, chama a tool "submit_lead".
+Isso elimina parsing de JSON no texto e dá um sinal confiável de "conversa completa".
+
+---
+
+## Custo Estimado da API
+
+### Tokens por conversa (estimativa)
+- System prompt: ~400-600 tokens
+- Mensagens do usuário (5 turnos x ~30 tokens): ~150
+- Respostas do bot (5 turnos x ~50 tokens): ~250
+- Total por conversa: ~1.500 tokens input + ~250 tokens output
+
+### Custo por conversa
+- Claude Haiku 4.5: $1.00/MTok input, $5.00/MTok output
+- Por conversa: ~$0.003 (~R$0.016)
+
+### Projeção mensal
+- 100 conversas/mês: ~R$1.60
+- 500 conversas/mês: ~R$8.00
+- 1.000 conversas/mês: ~R$16.00
+- 5.000 conversas/mês: ~R$80.00
+
+Para o volume esperado de um site de construtora (100-500 conversas/mês): R$1.60 a R$8.00/mês.
+
+---
+
+## Arquivos Afetados
+
+| Ação    | Arquivo                                    |
+|---------|--------------------------------------------|
+| NOVO    | website/src/app/api/chat/route.ts          |
+| Editar  | website/src/components/ChatBot.tsx         |
+| Editar  | website/package.json (via npm install)     |
+| Editar  | website/.env.local (add ANTHROPIC_API_KEY) |
+
+Não muda: send-email/route.ts, banco de dados, tipos.
+
+---
+
+## Steps de Implementação
+
+### 1. Instalar SDK + variável de ambiente
+
+npm install @anthropic-ai/sdk
+
+Adicionar em .env.local:
+ANTHROPIC_API_KEY=sk-ant-...
+
+### 2. Criar POST /api/chat (website/src/app/api/chat/route.ts)
+
+Request:
+{ messages: Array<{ role: "user" | "assistant"; content: string }> }
+
+Response:
+{ reply: string; done: boolean; userData: UserData | null }
+
+Tool definition (submit_lead):
+- interesse (enum: Quero construir | Quero reformar | Financiamento | Pós-venda | Outro) — required
+- nome (string) — required
+- telefone (string) — required
+- endereco (string) — optional (required apenas p/ Pós-venda)
+- mensagem (string) — optional
+
+Lógica:
+1. Recebe messages[] do frontend
+2. Limita a 20 mensagens (previne abuso)
+3. Chama anthropic.messages.create() com model "claude-haiku-4-5-20251001", max_tokens: 300, system prompt + tools
+4. Se resposta contém tool_use block → extrai userData, retorna { reply, done: true, userData }
+5. Se resposta é só texto → retorna { reply, done: false, userData: null }
+
+System prompt — instruções para o bot:
+- Contexto sobre a Plenus Obras (construtora em Campinas/Indaiatuba, alto padrão)
+- Papel: cumprimentar, entender necessidade, coletar nome+telefone (e endereço se pós-venda)
+- Regras: português BR, respostas curtas (2-3 frases), não inventar info, não coletar dados desnecessários
+
+### 3. Refatorar ChatBot.tsx
+
+Mudanças no estado:
+- Remover Step (8 estados) → novo ChatPhase: "idle" | "chatting" | "sending" | "done"
+- Adicionar apiMessages: Array<{role, content}> — histórico enviado à API
+- Adicionar isLoading: boolean — controla spinner/typing indicator
+- Adicionar fallbackMode: boolean — se API falhar, volta ao fluxo fixo
+- Manter UserData, ChatMessage, inputValue, refs, animações
+
+Fluxo novo:
+1. Abrir chat: Mensagem de saudação estática (hardcoded, sem API call) + botões quick-reply
+2. Usuário clica opção ou digita: Adiciona à messages + apiMessages, chama POST /api/chat
+3. Resposta da API: Adiciona reply do bot às messages + apiMessages
+4. Se done: true → Seta userData, chama sendLead(), mostra botão WhatsApp
+5. Se API falhar → Ativa fallbackMode, continua com getBotResponse() fixo
+
+Input area:
+- Sempre mostra input text durante "chatting" (não mais condicional por step)
+- Auto-detect phone: se input contém apenas dígitos (>=2), aplica máscara formatPhone()
+- Placeholder: "Digite sua mensagem..."
+
+O que NÃO muda:
+- sendLead(), openWhatsApp(), formatPhone(), WhatsAppIcon
+- Animações, CSS, floating button, header
+- Lógica de close/reset/restart/escape
+
+### 4. Fallback (se API falhar)
+
+A função getBotResponse() atual é preservada (renomeada para getFixedResponse()).
+Se o fetch("/api/chat") falhar:
+- fallbackMode = true
+- Determina o próximo passo baseado nos dados já coletados
+- Mostra mensagem "Desculpe, tive um problema técnico. Vamos continuar!"
+- Submits seguem a lógica step-by-step original
+
+---
+
+## O que ganha com LLM vs. fluxo fixo
+
+| Aspecto                  | Fluxo fixo (hoje)       | Com LLM                          |
+|--------------------------|-------------------------|----------------------------------|
+| Custo                    | R$0                     | ~R$1-8/mês                       |
+| Conversa natural         | Rígida, predefinida     | Fluida, entende variações        |
+| Perguntas sobre a empresa| Não responde            | Pode responder FAQ               |
+| Extração de dados        | Manual por step         | Automática do texto livre        |
+| Manutenção               | Código para cada fluxo  | Prompt em texto                  |
+| Fallback                 | N/A                     | Se API cair, volta ao fluxo fixo |
+| Dados fora de ordem      | Não funciona            | LLM extrai tudo de 1 mensagem   |
+
+---
+
+## Verificação
+
+1. npm run build — sem erros de tipo
+2. Abrir chat → saudação instantânea com botões
+3. Fluxo normal: escolher opção → conversar → nome → telefone → lead salvo
+4. Pós-venda: coleta endereço automaticamente
+5. Outro: conversa livre antes de coletar dados
+6. Dados fora de ordem: "Sou João, tel 19991234567, quero construir" → LLM extrai tudo em 1 turno
+7. Fallback: setar API key inválida → fluxo fixo ativa
+8. WhatsApp: botão abre wa.me com dados corretos
+9. Mobile: funciona igual
+
+---
+
+## Fontes de preço
+- Anthropic Claude API Pricing: https://platform.claude.com/docs/en/about-claude/pricing
+- OpenAI API Pricing: https://platform.openai.com/docs/pricing

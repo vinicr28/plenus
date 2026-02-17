@@ -5,14 +5,14 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import FinancingSimulator from "@/components/FinancingSimulator";
 
 export default function FinanciamentoClient() {
   const [formData, setFormData] = useState({
     nome: "",
-    cpf: "",
-    endereco: "",
-    dataNascimento: "",
-    observacao: "",
+    telefone: "",
+    email: "",
+    mensagem: "",
   });
 
   const handleChange = (
@@ -20,20 +20,6 @@ export default function FinanciamentoClient() {
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const formatCPF = (value: string) => {
-    const numbers = value.replace(/\D/g, "");
-    return numbers
-      .replace(/(\d{3})(\d)/, "$1.$2")
-      .replace(/(\d{3})(\d)/, "$1.$2")
-      .replace(/(\d{3})(\d{1,2})/, "$1-$2")
-      .replace(/(-\d{2})\d+?$/, "$1");
-  };
-
-  const handleCPFChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatCPF(e.target.value);
-    setFormData((prev) => ({ ...prev, cpf: formatted }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -45,12 +31,11 @@ Olá! Tenho interesse no serviço de financiamento.
 
 *Dados do Cliente:*
 • Nome: ${formData.nome}
-• CPF: ${formData.cpf}
-• Endereço: ${formData.endereco}
-• Data de Nascimento: ${formData.dataNascimento}
+• Telefone: ${formData.telefone}
+• E-mail: ${formData.email}
 
-*Observações:*
-${formData.observacao || "Nenhuma observação"}
+*Mensagem:*
+${formData.mensagem || "Nenhuma mensagem"}
 
 Aguardo retorno. Obrigado!`;
 
@@ -76,8 +61,13 @@ Aguardo retorno. Obrigado!`;
     <>
       <Header />
       <main>
-        {/* Hero Section with Form */}
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        {/* Simulator Section (Hero) */}
+        <section
+          className="relative min-h-screen flex items-center overflow-hidden pt-20"
+          style={{
+            background: "linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%)",
+          }}
+        >
           {/* Background image */}
           <div className="absolute inset-0">
             <div
@@ -87,7 +77,6 @@ Aguardo retorno. Obrigado!`;
                   "url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1973&q=80')",
               }}
             />
-            {/* Gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-[#1a1a2e]/70 via-[#1a1a1a]/60 to-[#0a0a0a]/80" />
           </div>
 
@@ -120,9 +109,8 @@ Aguardo retorno. Obrigado!`;
             }}
           />
 
-          {/* Content */}
           <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-8 py-16">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
               {/* Left - Info */}
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
@@ -150,13 +138,92 @@ Aguardo retorno. Obrigado!`;
                 </Link>
 
                 <p className="text-[#c41e3a] text-sm font-semibold tracking-[0.3em] uppercase mb-4">
-                  Realize Seu Sonho
+                  Planeje Seu Investimento
                 </p>
 
                 <h1 className="font-[var(--font-playfair)] text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+                  Simule seu{" "}
+                  <span className="text-white/50">Financiamento</span>
+                </h1>
+
+                <p className="text-lg text-white/70 leading-relaxed mb-8">
+                  Use nosso simulador para ter uma estimativa do valor das
+                  parcelas do seu financiamento imobiliário. Rápido, prático e
+                  sem compromisso.
+                </p>
+
+                <div className="space-y-4">
+                  {[
+                    "Resultado instantâneo e sem cadastro",
+                    "Taxa de juros atualizada pelo mercado",
+                    "Parcelas calculadas pelo sistema PRICE",
+                    "Compare diferentes prazos e entradas",
+                  ].map((benefit, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.3 + index * 0.1 }}
+                      className="flex items-center gap-3"
+                    >
+                      <div className="w-6 h-6 rounded-full bg-[#c41e3a]/20 flex items-center justify-center flex-shrink-0">
+                        <svg
+                          className="w-4 h-4 text-[#c41e3a]"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      </div>
+                      <span className="text-white/90">{benefit}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* Right - Simulator */}
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                <FinancingSimulator />
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* WhatsApp Contact Section */}
+        <section
+          id="contato"
+          className="relative py-20 lg:py-28 overflow-hidden"
+          style={{
+            background: "linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%)",
+          }}
+        >
+          <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-8">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+              {/* Left - Info */}
+              <motion.div
+                initial={{ opacity: 0, x: -40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6 }}
+              >
+                <p className="text-[#c41e3a] text-sm font-semibold tracking-[0.3em] uppercase mb-4">
+                  Realize Seu Sonho
+                </p>
+
+                <h2 className="font-[var(--font-playfair)] text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight mb-6">
                   Financiamento{" "}
                   <span className="text-white/80">Facilitado</span>
-                </h1>
+                </h2>
 
                 <p className="text-lg text-white/80 leading-relaxed mb-8">
                   A Plenus oferece assessoria completa para o seu financiamento
@@ -165,7 +232,6 @@ Aguardo retorno. Obrigado!`;
                   final.
                 </p>
 
-                {/* Benefits */}
                 <div className="space-y-4">
                   {[
                     "Análise de crédito personalizada",
@@ -176,8 +242,9 @@ Aguardo retorno. Obrigado!`;
                     <motion.div
                       key={index}
                       initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.3 + index * 0.1 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.2 + index * 0.1 }}
                       className="flex items-center gap-3"
                     >
                       <div className="w-6 h-6 rounded-full bg-[#c41e3a]/20 flex items-center justify-center">
@@ -203,8 +270,9 @@ Aguardo retorno. Obrigado!`;
 
               {/* Right - Form */}
               <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, x: 40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
                 <div
@@ -242,30 +310,14 @@ Aguardo retorno. Obrigado!`;
 
                     <div>
                       <label className="block text-sm font-medium text-[#525252] mb-2">
-                        CPF
+                        Telefone <span className="text-[#c41e3a]">*</span>
                       </label>
                       <input
-                        type="text"
-                        name="cpf"
-                        value={formData.cpf}
-                        onChange={handleCPFChange}
-                        placeholder="000.000.000-00"
-                        maxLength={14}
-                        required
-                        className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-[#525252] mb-2">
-                        Endereço
-                      </label>
-                      <input
-                        type="text"
-                        name="endereco"
-                        value={formData.endereco}
+                        type="tel"
+                        name="telefone"
+                        value={formData.telefone}
                         onChange={handleChange}
-                        placeholder="Rua, número, bairro, cidade"
+                        placeholder="(00) 00000-0000"
                         required
                         className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200"
                       />
@@ -273,13 +325,14 @@ Aguardo retorno. Obrigado!`;
 
                     <div>
                       <label className="block text-sm font-medium text-[#525252] mb-2">
-                        Data de Nascimento
+                        E-mail <span className="text-[#c41e3a]">*</span>
                       </label>
                       <input
-                        type="date"
-                        name="dataNascimento"
-                        value={formData.dataNascimento}
+                        type="email"
+                        name="email"
+                        value={formData.email}
                         onChange={handleChange}
+                        placeholder="seu@email.com"
                         required
                         className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200"
                       />
@@ -287,14 +340,15 @@ Aguardo retorno. Obrigado!`;
 
                     <div>
                       <label className="block text-sm font-medium text-[#525252] mb-2">
-                        Observação
+                        Mensagem
                       </label>
                       <textarea
-                        name="observacao"
-                        value={formData.observacao}
+                        name="mensagem"
+                        value={formData.mensagem}
                         onChange={handleChange}
                         rows={3}
-                        placeholder="Informações adicionais (opcional)"
+                        placeholder="Conte-nos mais sobre o que precisa..."
+                        required
                         className="w-full px-4 py-3 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-200 resize-none"
                       />
                     </div>

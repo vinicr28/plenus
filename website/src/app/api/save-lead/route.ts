@@ -19,10 +19,7 @@ export async function POST(request: NextRequest) {
       nome: data.nome,
       email: data.email || null,
       telefone: data.telefone || null,
-      cpf: data.cpf || null,
-      endereco: data.endereco || null,
-      data_nascimento: data.dataNascimento || null,
-      observacao: data.observacao || null,
+      mensagem: data.mensagem || null,
     };
 
     await saveLead(lead);

@@ -11,7 +11,7 @@ const Contact = dynamic(() => import("@/components/Contact"));
 const PosVenda = dynamic(() => import("@/components/PosVenda"));
 const TrabalheConosco = dynamic(() => import("@/components/TrabalheConosco"));
 const Footer = dynamic(() => import("@/components/Footer"));
-const FloatingCTA = dynamic(() => import("@/components/FloatingCTA"));
+const ChatBot = dynamic(() => import("@/components/ChatBot"));
 
 export default function Home() {
   return (
@@ -29,7 +29,7 @@ export default function Home() {
         <TrabalheConosco />
       </main>
       <Footer />
-      <FloatingCTA />
+      <ChatBot />
     </>
   );
 }
