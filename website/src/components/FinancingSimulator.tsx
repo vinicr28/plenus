@@ -65,7 +65,7 @@ export default function FinancingSimulator() {
 
   return (
     <div
-      className="backdrop-blur-2xl rounded-3xl p-5 sm:p-8 lg:p-10 shadow-2xl"
+      className="backdrop-blur-none md:backdrop-blur-2xl rounded-3xl p-5 sm:p-8 lg:p-10 shadow-2xl"
       style={{
         background:
           "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%)",

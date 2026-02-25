@@ -313,17 +313,26 @@ function RatingModal({
 
 function ScaleOnScrollCard({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "center center"],
   });
 
-  const scale = useTransform(scrollYProgress, [0, 1], [0.9, 1]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [0.6, 1]);
+  const scale = useTransform(scrollYProgress, [0, 1], [isMobile ? 1 : 0.9, 1]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [isMobile ? 1 : 0.6, 1]);
 
   const smoothScale = useSpring(scale, { stiffness: 100, damping: 30, restDelta: 0.001 });
   const smoothOpacity = useSpring(opacity, { stiffness: 100, damping: 30, restDelta: 0.001 });
+
+  if (isMobile) {
+    return <div ref={ref}>{children}</div>;
+  }
 
   return (
     <motion.div ref={ref} style={{ scale: smoothScale, opacity: smoothOpacity }}>
@@ -546,7 +555,7 @@ export default function Testimonials() {
                     style={{ scrollSnapAlign: "start" }}
                   >
                     <ScaleOnScrollCard>
-                      <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-2xl h-full shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
+                      <div className="bg-white/5 md:backdrop-blur-xl border border-white/10 p-8 rounded-2xl h-full shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
                         {/* Quote icon */}
                         <div className="mb-6">
                           <svg

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { FadeIn, StaggerContainer, StaggerItem } from "./ScrollAnimations";
 
@@ -21,15 +21,23 @@ function ParallaxCard({
   index?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
 
-  // All cards move at the same speed to stay aligned
-  const y = useTransform(scrollYProgress, [0, 1], [0, -50]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, isMobile ? 0 : -50]);
   const smoothY = useSpring(y, { stiffness: 100, damping: 30, restDelta: 0.001 });
+
+  if (isMobile) {
+    return <div ref={ref} className="h-full">{children}</div>;
+  }
 
   return (
     <motion.div ref={ref} style={{ y: smoothY }} className="h-full">

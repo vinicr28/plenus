@@ -17,24 +17,36 @@ interface HeroProps {
   stats?: { value: string; label: string; prefix?: string | null }[];
 }
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
+  return isMobile;
+}
+
 export default function Hero({ stats: propStats }: HeroProps) {
   const stats = propStats && propStats.length === 4 ? propStats : defaultStats;
   const { scrollY } = useScroll();
   const [introComplete, setIntroComplete] = useState(false);
+  const isMobile = useIsMobile();
 
-  // Intro animation scale (12x -> 0.6x on page load)
-  const introScale = useMotionValue(12);
-  const introOpacity = useMotionValue(0);
+  // Intro animation scale (12x -> 0.6x on page load) — desktop only
+  const introScale = useMotionValue(isMobile ? 0.6 : 12);
+  const introOpacity = useMotionValue(isMobile ? 0.65 : 0);
 
   useEffect(() => {
-    // Animate logo from 12x to 0.6x on page load
+    if (isMobile) {
+      setIntroComplete(true);
+      return;
+    }
+
     const scaleAnimation = animate(introScale, 0.6, {
       duration: 1.5,
-      ease: [0.22, 1, 0.36, 1], // Custom easing for smooth deceleration
+      ease: [0.22, 1, 0.36, 1],
       onComplete: () => setIntroComplete(true),
     });
 
-    // Fade in the logo
     const opacityAnimation = animate(introOpacity, 0.65, {
       duration: 0.8,
       ease: "easeOut",
@@ -44,25 +56,22 @@ export default function Hero({ stats: propStats }: HeroProps) {
       scaleAnimation.stop();
       opacityAnimation.stop();
     };
-  }, [introScale, introOpacity]);
+  }, [introScale, introOpacity, isMobile]);
 
-  // Background parallax - light spring to prevent visible gaps during fast scroll
-  const backgroundYRaw = useTransform(scrollY, [0, 1000], [0, 300]);
+  // Parallax and scroll effects — desktop only
+  const backgroundYRaw = useTransform(scrollY, [0, 1000], [0, isMobile ? 0 : 300]);
   const backgroundY = useSpring(backgroundYRaw, { stiffness: 200, damping: 40, restDelta: 0.5 });
 
-  // Logo scroll effect - scales up from 0.6x to 6x as you scroll (after intro)
   const scrollLogoScale = useTransform(scrollY, [0, 600], [0.6, 6]);
   const scrollLogoOpacity = useTransform(scrollY, [0, 500], [0.65, 0]);
   const logoY = useTransform(scrollY, [0, 600], [0, -200]);
   const smoothScrollLogoScale = useSpring(scrollLogoScale, { stiffness: 100, damping: 30, restDelta: 0.01 });
   const smoothLogoY = useSpring(logoY, { stiffness: 100, damping: 30, restDelta: 0.01 });
 
-  // Use intro values until intro is complete, then switch to scroll values
   const logoScale = introComplete ? smoothScrollLogoScale : introScale;
   const logoOpacity = introComplete ? scrollLogoOpacity : introOpacity;
 
-  // Foreground elements parallax - light spring to match background
-  const foregroundYRaw = useTransform(scrollY, [0, 1000], [0, 500]);
+  const foregroundYRaw = useTransform(scrollY, [0, 1000], [0, isMobile ? 0 : 500]);
   const foregroundY = useSpring(foregroundYRaw, { stiffness: 200, damping: 40, restDelta: 0.5 });
 
   return (
@@ -70,28 +79,42 @@ export default function Hero({ stats: propStats }: HeroProps) {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black"
     >
-      {/* Layer 1: Background image with parallax */}
-      <motion.div
-        className="absolute inset-0"
-        style={{ y: backgroundY }}
-      >
-        <div className="absolute inset-0 scale-110">
-          <Image
-            src="/hero-background.webp"
-            alt="Casa moderna construída pela Construtora Plenus em condomínio fechado em Indaiatuba"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center"
-          />
+      {/* Layer 1: Background image */}
+      {isMobile ? (
+        <div className="absolute inset-0">
+          <div className="absolute inset-0">
+            <Image
+              src="/hero-background.webp"
+              alt="Casa moderna construída pela Construtora Plenus em condomínio fechado em Indaiatuba"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1a1a2e]/40 via-transparent to-[#0a0a0a]/80" />
         </div>
-        {/* Gradient overlay for depth */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#1a1a2e]/40 via-transparent to-[#0a0a0a]/80" />
-      </motion.div>
+      ) : (
+        <motion.div
+          className="absolute inset-0"
+          style={{ y: backgroundY }}
+        >
+          <div className="absolute inset-0 scale-110">
+            <Image
+              src="/hero-background.webp"
+              alt="Casa moderna construída pela Construtora Plenus em condomínio fechado em Indaiatuba"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1a1a2e]/40 via-transparent to-[#0a0a0a]/80" />
+        </motion.div>
+      )}
 
-      {/* Layer 2: Atmospheric glows */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Red accent glow */}
+      {/* Layer 2: Atmospheric glows — hidden on mobile */}
+      <div className="absolute inset-0 pointer-events-none hidden md:block">
         <div
           className="absolute top-10 right-20 w-[500px] h-[500px] rounded-full opacity-20"
           style={{
@@ -99,7 +122,6 @@ export default function Hero({ stats: propStats }: HeroProps) {
             filter: "blur(60px)",
           }}
         />
-        {/* Blue ambient */}
         <div
           className="absolute bottom-20 left-20 w-[400px] h-[400px] rounded-full opacity-15"
           style={{
@@ -109,32 +131,40 @@ export default function Hero({ stats: propStats }: HeroProps) {
         />
       </div>
 
-      {/* Layer 3: Large PLENUS logo with scroll effect */}
-      <motion.div
-        className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
-        style={{
-          scale: logoScale,
-          opacity: logoOpacity,
-          y: introComplete ? smoothLogoY : 0,
-        }}
-      >
-        <span
-          className="font-[var(--font-playfair)] text-[30vw] font-bold text-white/20 whitespace-nowrap"
+      {/* Layer 3: Large PLENUS logo with scroll effect — hidden on mobile */}
+      {!isMobile && (
+        <motion.div
+          className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
           style={{
-            WebkitTextStroke: "1px rgba(255,255,255,0.6)",
+            scale: logoScale,
+            opacity: logoOpacity,
+            y: introComplete ? smoothLogoY : 0,
           }}
         >
-          PLENUS
-        </span>
-      </motion.div>
+          <span
+            className="font-[var(--font-playfair)] text-[30vw] font-bold text-white/20 whitespace-nowrap"
+            style={{
+              WebkitTextStroke: "1px rgba(255,255,255,0.6)",
+            }}
+          >
+            PLENUS
+          </span>
+        </motion.div>
+      )}
 
       {/* Layer 4: Foreground gradient overlay */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        style={{ y: foregroundY }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-      </motion.div>
+      {isMobile ? (
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+        </div>
+      ) : (
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          style={{ y: foregroundY }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+        </motion.div>
+      )}
 
       {/* Vignette */}
       <div
@@ -144,19 +174,20 @@ export default function Hero({ stats: propStats }: HeroProps) {
         }}
       />
 
-      {/* Content - completely static, no motion transforms */}
+      {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-32">
-        {/* Glass container */}
+        {/* Glass container — no backdrop-blur on mobile */}
         <div
-          className="backdrop-blur-2xl rounded-3xl p-8 md:p-12 lg:p-16 shadow-2xl"
+          className="backdrop-blur-none md:backdrop-blur-2xl rounded-3xl p-8 md:p-12 lg:p-16 shadow-2xl"
           style={{
-            background: 'linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 100%)',
+            background: isMobile
+              ? 'linear-gradient(135deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.4) 100%)'
+              : 'linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 100%)',
             border: '1px solid rgba(255,255,255,0.3)',
             boxShadow: '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.1)',
           }}
         >
           <div className="text-center">
-            {/* Main headline */}
             <FadeIn delay={0.2}>
               <h1 className="text-[#000000] text-sm font-semibold tracking-[0.3em] uppercase mb-6">
                 Construtora de Casas Personalizadas em Indaiatuba e Jundiaí
@@ -209,7 +240,7 @@ export default function Hero({ stats: propStats }: HeroProps) {
                 </Link>
                 <Link
                   href="#mapa"
-                  className="inline-flex items-center justify-center px-8 py-4 text-white text-base font-semibold rounded-full hover:scale-105 transition-all backdrop-blur-lg"
+                  className="inline-flex items-center justify-center px-8 py-4 text-white text-base font-semibold rounded-full hover:scale-105 transition-all backdrop-blur-none md:backdrop-blur-lg"
                   style={{
                     background: 'linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%)',
                     border: '1px solid rgba(255,255,255,0.3)',
@@ -221,7 +252,7 @@ export default function Hero({ stats: propStats }: HeroProps) {
               </div>
             </FadeIn>
 
-            {/* Stats with glass effect */}
+            {/* Stats */}
             <StaggerContainer
               className="hidden sm:grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto"
               staggerDelay={0.15}
@@ -229,7 +260,7 @@ export default function Hero({ stats: propStats }: HeroProps) {
               {stats.map((stat, index) => (
                 <StaggerItem key={index}>
                   <div
-                    className="text-center backdrop-blur-lg rounded-2xl p-4"
+                    className="text-center backdrop-blur-none md:backdrop-blur-lg rounded-2xl p-4"
                     style={{
                       background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)',
                       border: '1px solid rgba(255,255,255,0.2)',

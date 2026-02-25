@@ -94,8 +94,8 @@ export default function TrabalheConosco() {
           <div className="absolute inset-0 bg-gradient-to-b from-[#1a1a2e]/40 via-[#1a1a1a]/50 to-[#0a0a0a]/70" />
         </div>
 
-        {/* Atmospheric glows */}
-        <div className="absolute inset-0 pointer-events-none">
+        {/* Atmospheric glows — hidden on mobile */}
+        <div className="absolute inset-0 pointer-events-none hidden md:block">
           <div
             className="absolute top-10 left-20 w-[400px] h-[400px] rounded-full opacity-20"
             style={{
@@ -127,7 +127,7 @@ export default function TrabalheConosco() {
         <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 py-24">
           {/* Glass container */}
           <div
-            className="backdrop-blur-2xl rounded-3xl p-8 md:p-12 lg:p-16 shadow-2xl"
+            className="backdrop-blur-none md:backdrop-blur-2xl rounded-3xl p-8 md:p-12 lg:p-16 shadow-2xl"
             style={{
               background:
                 "linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 100%)",

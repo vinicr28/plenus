@@ -30,13 +30,18 @@ export default function Projects() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
   });
 
-  const x = useTransform(scrollYProgress, [0, 1], [50, -50]);
+  const x = useTransform(scrollYProgress, [0, 1], [isMobile ? 0 : 50, isMobile ? 0 : -50]);
   const smoothX = useSpring(x, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   // Fetch projects from API
@@ -132,12 +137,18 @@ export default function Projects() {
             </p>
           </FadeIn>
           <FadeIn delay={0.1}>
-            <motion.h2
-              className="font-[var(--font-playfair)] text-3xl md:text-5xl font-bold text-[#1a1a1a] mb-6"
-              style={{ x: smoothX }}
-            >
-              Nossos <span className="text-[#525252]">Projetos</span>
-            </motion.h2>
+            {isMobile ? (
+              <h2 className="font-[var(--font-playfair)] text-3xl md:text-5xl font-bold text-[#1a1a1a] mb-6">
+                Nossos <span className="text-[#525252]">Projetos</span>
+              </h2>
+            ) : (
+              <motion.h2
+                className="font-[var(--font-playfair)] text-3xl md:text-5xl font-bold text-[#1a1a1a] mb-6"
+                style={{ x: smoothX }}
+              >
+                Nossos <span className="text-[#525252]">Projetos</span>
+              </motion.h2>
+            )}
           </FadeIn>
           <FadeIn delay={0.2}>
             <p className="text-lg text-[#525252] leading-relaxed">
@@ -234,7 +245,7 @@ export default function Projects() {
 
                     {/* Liquid Glass info overlay at bottom */}
                     <div
-                      className="absolute bottom-0 left-0 right-0 p-6 backdrop-blur-xl transition-all duration-300 group-hover/card:backdrop-blur-2xl"
+                      className="absolute bottom-0 left-0 right-0 p-6 md:backdrop-blur-xl transition-all duration-300 md:group-hover/card:backdrop-blur-2xl"
                       style={{
                         background: "linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.08) 100%)",
                         borderTop: "1px solid rgba(255,255,255,0.2)",
