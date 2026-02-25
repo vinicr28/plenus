@@ -10,7 +10,10 @@ export async function sendPushNotification(
   data: Record<string, string>
 ): Promise<void> {
   const topic = process.env.NTFY_TOPIC;
-  if (!topic) return;
+  if (!topic) {
+    console.warn("NTFY_TOPIC not set, skipping push notification");
+    return;
+  }
 
   const label = formTypeLabels[formType] || formType;
   const nome = data.nome || "Não informado";
