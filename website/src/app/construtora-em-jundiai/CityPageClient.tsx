@@ -27,13 +27,22 @@ export default function CityPageClient({ stats: propStats }: CityPageClientProps
   const stats = propStats && propStats.length === 4 ? propStats : defaultStats;
   const economyValue = stats[1]?.value || "40%";
 
+  const [isMobile, setIsMobile] = useState(false);
   const { scrollY } = useScroll();
   const [introComplete, setIntroComplete] = useState(false);
 
-  const introScale = useMotionValue(12);
-  const introOpacity = useMotionValue(0);
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
+
+  const introScale = useMotionValue(isMobile ? 0.6 : 12);
+  const introOpacity = useMotionValue(isMobile ? 0.65 : 0);
 
   useEffect(() => {
+    if (isMobile) {
+      setIntroComplete(true);
+      return;
+    }
     const scaleAnimation = animate(introScale, 0.6, {
       duration: 1.5,
       ease: [0.22, 1, 0.36, 1],
@@ -44,7 +53,7 @@ export default function CityPageClient({ stats: propStats }: CityPageClientProps
       ease: "easeOut",
     });
     return () => { scaleAnimation.stop(); opacityAnimation.stop(); };
-  }, [introScale, introOpacity]);
+  }, [introScale, introOpacity, isMobile]);
 
   const scrollLogoScale = useTransform(scrollY, [0, 600], [0.6, 6]);
   const scrollLogoOpacity = useTransform(scrollY, [0, 500], [0.65, 0]);
@@ -75,7 +84,8 @@ export default function CityPageClient({ stats: propStats }: CityPageClientProps
             <div className="absolute inset-0 bg-gradient-to-b from-[#1a1a2e]/40 via-transparent to-[#0a0a0a]/80" />
           </div>
 
-          <div className="absolute inset-0 pointer-events-none">
+          {/* Atmospheric glows — hidden on mobile */}
+          <div className="absolute inset-0 pointer-events-none hidden md:block">
             <div
               className="absolute top-10 right-20 w-[500px] h-[500px] rounded-full opacity-20"
               style={{
@@ -92,22 +102,24 @@ export default function CityPageClient({ stats: propStats }: CityPageClientProps
             />
           </div>
 
-          {/* PLENUS watermark */}
-          <motion.div
-            className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
-            style={{
-              scale: logoScale,
-              opacity: logoOpacity,
-              y: introComplete ? smoothLogoY : 0,
-            }}
-          >
-            <span
-              className="font-[var(--font-playfair)] text-[30vw] font-bold text-white/20 whitespace-nowrap"
-              style={{ WebkitTextStroke: "1px rgba(255,255,255,0.6)" }}
+          {/* PLENUS watermark — hidden on mobile */}
+          {!isMobile && (
+            <motion.div
+              className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
+              style={{
+                scale: logoScale,
+                opacity: logoOpacity,
+                y: introComplete ? smoothLogoY : 0,
+              }}
             >
-              PLENUS
-            </span>
-          </motion.div>
+              <span
+                className="font-[var(--font-playfair)] text-[30vw] font-bold text-white/20 whitespace-nowrap"
+                style={{ WebkitTextStroke: "1px rgba(255,255,255,0.6)" }}
+              >
+                PLENUS
+              </span>
+            </motion.div>
+          )}
 
           <div
             className="absolute inset-0 pointer-events-none"
@@ -127,7 +139,7 @@ export default function CityPageClient({ stats: propStats }: CityPageClientProps
             </motion.div>
 
             <div
-              className="backdrop-blur-2xl rounded-3xl p-5 sm:p-8 md:p-12 lg:p-16 shadow-2xl"
+              className="backdrop-blur-xl md:backdrop-blur-2xl rounded-3xl p-5 sm:p-8 md:p-12 lg:p-16 shadow-2xl"
               style={{
                 background: "linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 100%)",
                 border: "1px solid rgba(255,255,255,0.3)",
