@@ -23,6 +23,11 @@ export default function PosVenda() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!formData.nome.trim() || !formData.telefone.trim() || !formData.endereco.trim()) {
+      return;
+    }
+
     setStatus("loading");
 
     try {
@@ -57,7 +62,7 @@ export default function PosVenda() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
           {/* Left column - Form */}
           <FadeIn delay={0.2} direction="right">
-            <div className="bg-white/90 backdrop-blur-md p-8 lg:p-10 rounded-3xl border border-gray-200/60 shadow-[0_4px_40px_-8px_rgba(0,0,0,0.1)]">
+            <div className="bg-white/90 backdrop-blur-md p-5 sm:p-8 lg:p-10 rounded-3xl border border-gray-200/60 shadow-[0_4px_40px_-8px_rgba(0,0,0,0.1)]">
               <h3 className="font-[var(--font-playfair)] text-2xl font-bold text-[#1a1a1a] mb-6">
                 Fale com o Pós-venda
               </h3>
@@ -82,7 +87,7 @@ export default function PosVenda() {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
                     <label className="block text-sm font-medium text-[#525252] mb-2">
-                      Nome
+                      Nome completo <span className="text-[#c41e3a]">*</span>
                     </label>
                     <input
                       type="text"
@@ -110,7 +115,7 @@ export default function PosVenda() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-[#525252] mb-2">
-                      Endereço da obra
+                      Endereço da obra <span className="text-[#c41e3a]">*</span>
                     </label>
                     <input
                       type="text"

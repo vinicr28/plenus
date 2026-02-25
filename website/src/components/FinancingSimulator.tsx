@@ -65,7 +65,7 @@ export default function FinancingSimulator() {
 
   return (
     <div
-      className="backdrop-blur-2xl rounded-3xl p-8 lg:p-10 shadow-2xl"
+      className="backdrop-blur-2xl rounded-3xl p-5 sm:p-8 lg:p-10 shadow-2xl"
       style={{
         background:
           "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%)",
@@ -189,26 +189,12 @@ export default function FinancingSimulator() {
               </p>
             </div>
 
-            {/* Details grid */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-gray-50 rounded-xl p-4 text-center">
-                <p className="text-xs text-[#525252] mb-1">Valor financiado</p>
-                <p className="text-lg font-semibold text-[#1a1a1a]">
-                  {formatBRL(result.financedAmount)}
-                </p>
-              </div>
-              <div className="bg-gray-50 rounded-xl p-4 text-center">
-                <p className="text-xs text-[#525252] mb-1">Total pago</p>
-                <p className="text-lg font-semibold text-[#1a1a1a]">
-                  {formatBRL(result.totalPaid)}
-                </p>
-              </div>
-              <div className="bg-gray-50 rounded-xl p-4 text-center col-span-2">
-                <p className="text-xs text-[#525252] mb-1">Total de juros</p>
-                <p className="text-lg font-semibold text-[#1a1a1a]">
-                  {formatBRL(result.totalInterest)}
-                </p>
-              </div>
+            {/* Valor financiado */}
+            <div className="bg-gray-50 rounded-xl p-4 text-center">
+              <p className="text-xs text-[#525252] mb-1">Valor financiado</p>
+              <p className="text-lg font-semibold text-[#1a1a1a]">
+                {formatBRL(result.financedAmount)}
+              </p>
             </div>
 
             {/* Disclaimer */}

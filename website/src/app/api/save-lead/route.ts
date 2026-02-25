@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { saveLead } from '@/lib/leads';
+import { sendPushNotification } from '@/lib/notify';
 import { LeadInsert } from '@/types/database';
 
 export async function POST(request: NextRequest) {
@@ -23,6 +24,8 @@ export async function POST(request: NextRequest) {
     };
 
     await saveLead(lead);
+
+    sendPushNotification(formType, data).catch(() => {});
 
     return NextResponse.json({ success: true });
   } catch (error) {

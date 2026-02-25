@@ -215,7 +215,7 @@ export default function TrabalheConosco() {
                 duration: 0.5,
               }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-lg max-h-[90vh] overflow-hidden rounded-3xl"
+              className="relative w-full max-w-lg mx-4 max-h-[90vh] overflow-hidden rounded-3xl"
             >
               {/* Glassmorphism background */}
               <div
@@ -251,7 +251,7 @@ export default function TrabalheConosco() {
               </motion.button>
 
               {/* Content */}
-              <div className="relative z-10 p-8 lg:p-10 max-h-[90vh] overflow-y-auto">
+              <div className="relative z-10 p-5 sm:p-8 lg:p-10 max-h-[90vh] overflow-y-auto">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -291,7 +291,7 @@ export default function TrabalheConosco() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
                     onSubmit={handleSubmit}
-                    className="space-y-6"
+                    className="space-y-4 sm:space-y-6"
                   >
                     <div>
                       <label className="block text-sm font-medium text-[#525252] mb-2">

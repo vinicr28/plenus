@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import FinancingSimulator from "@/components/FinancingSimulator";
 
 export default function FinanciamentoClient() {
@@ -24,6 +25,10 @@ export default function FinanciamentoClient() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!formData.nome.trim() || !formData.telefone.trim() || !formData.email.trim()) {
+      return;
+    }
 
     const message = `*Financiamento - Plenus Obras*
 
@@ -117,25 +122,9 @@ Aguardo retorno. Obrigado!`;
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6 }}
               >
-                <Link
-                  href="/"
-                  className="inline-flex items-center text-white/70 hover:text-white mb-8 transition-colors"
-                >
-                  <svg
-                    className="w-5 h-5 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 19l-7-7 7-7"
-                    />
-                  </svg>
-                  Voltar para Home
-                </Link>
+                <div className="mb-8 [&_a]:text-white/70 [&_a:hover]:text-white [&_span]:text-white [&_svg]:text-white/40">
+                  <Breadcrumbs items={[{ label: "Financiamento" }]} />
+                </div>
 
                 <p className="text-[#c41e3a] text-sm font-semibold tracking-[0.3em] uppercase mb-4">
                   Planeje Seu Investimento
@@ -276,7 +265,7 @@ Aguardo retorno. Obrigado!`;
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
                 <div
-                  className="backdrop-blur-2xl rounded-3xl p-8 lg:p-10 shadow-2xl"
+                  className="backdrop-blur-2xl rounded-3xl p-5 sm:p-8 lg:p-10 shadow-2xl"
                   style={{
                     background:
                       "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%)",
@@ -295,7 +284,7 @@ Aguardo retorno. Obrigado!`;
                   <form onSubmit={handleSubmit} className="space-y-5">
                     <div>
                       <label className="block text-sm font-medium text-[#525252] mb-2">
-                        Nome completo
+                        Nome completo <span className="text-[#c41e3a]">*</span>
                       </label>
                       <input
                         type="text"

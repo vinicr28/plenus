@@ -51,7 +51,7 @@ export default function About() {
           </FadeIn>
           <FadeIn delay={0.1}>
             <h2 className="font-[var(--font-playfair)] text-3xl md:text-5xl font-bold text-[#1a1a1a] mb-6">
-              8 Anos Transformando
+              9 Anos Transformando
               <br />
               <span className="text-[#525252]">Sonhos em Realidade</span>
             </h2>

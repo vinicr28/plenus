@@ -11,6 +11,7 @@ const navLinks = [
   { href: "/#contato", label: "Contato" },
   { href: "/#pos-venda", label: "Pós-venda" },
   { href: "/financiamento", label: "Financiamento" },
+  { href: "/blog", label: "Blog" },
 ];
 
 function handleHashClick(e: React.MouseEvent<HTMLAnchorElement>, href: string) {

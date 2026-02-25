@@ -384,8 +384,39 @@ export default function Testimonials() {
     }
   };
 
+  const reviewSchema = reviews.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "HomeAndConstructionBusiness",
+    "@id": "https://plenusobras.com.br/#localbusiness",
+    name: "Plenus Obras",
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1),
+      reviewCount: String(reviews.length),
+      bestRating: "5",
+      worstRating: "1",
+    },
+    review: reviews.map((r) => ({
+      "@type": "Review",
+      author: { "@type": "Person", name: r.name },
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: String(r.rating),
+        bestRating: "5",
+      },
+      reviewBody: r.comment,
+      datePublished: r.created_at.split("T")[0],
+    })),
+  } : null;
+
   return (
     <section id="depoimentos" className="py-24 lg:py-32 bg-[#1a1a1a] overflow-hidden">
+      {reviewSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema) }}
+        />
+      )}
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Section header */}
         <div className="max-w-3xl mx-auto text-center mb-16">

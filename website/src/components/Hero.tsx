@@ -6,14 +6,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { FadeIn, StaggerContainer, StaggerItem } from "./ScrollAnimations";
 
-const stats = [
-  { value: "150+", label: "Obras Entregues" },
+const defaultStats = [
+  { value: "150+", label: "Obras Entregues", prefix: null },
   { value: "40%", label: "de Economia Garantida", prefix: "Até " },
-  { value: "8", label: "Anos de Mercado" },
-  { value: "150+", label: "Famílias Satisfeitas" },
+  { value: "9", label: "Anos de Mercado", prefix: null },
+  { value: "150+", label: "Famílias Satisfeitas", prefix: null },
 ];
 
-export default function Hero() {
+interface HeroProps {
+  stats?: { value: string; label: string; prefix?: string | null }[];
+}
+
+export default function Hero({ stats: propStats }: HeroProps) {
+  const stats = propStats && propStats.length === 4 ? propStats : defaultStats;
   const { scrollY } = useScroll();
   const [introComplete, setIntroComplete] = useState(false);
 
@@ -73,7 +78,7 @@ export default function Hero() {
         <div className="absolute inset-0 scale-110">
           <Image
             src="/hero-background.webp"
-            alt=""
+            alt="Casa moderna construída pela Construtora Plenus em condomínio fechado em Indaiatuba"
             fill
             priority
             sizes="100vw"
@@ -153,23 +158,23 @@ export default function Hero() {
           <div className="text-center">
             {/* Main headline */}
             <FadeIn delay={0.2}>
-              <p className="text-[#000000] text-sm font-semibold tracking-[0.3em] uppercase mb-6">
-                Construção de Casas Personalizadas
-              </p>
-            </FadeIn>
-
-            <FadeIn delay={0.4}>
-              <h1 className="font-[var(--font-playfair)] text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-4">
-                Você sonha,
-                <br />
-                <span className="text-[#000000]">a Plenus realiza</span>
+              <h1 className="text-[#000000] text-sm font-semibold tracking-[0.3em] uppercase mb-6">
+                Construtora de Casas Personalizadas em Indaiatuba e Jundiaí
               </h1>
             </FadeIn>
 
-            <FadeIn delay={0.6}>
-              <h2 className="font-[var(--font-playfair)] text-2xl md:text-3xl text-white/90 font-light mb-8">
-                Sua Casa do Sonho à Realidade
+            <FadeIn delay={0.4}>
+              <h2 className="font-[var(--font-playfair)] text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-4">
+                Você sonha,
+                <br />
+                <span className="text-[#000000]">a Plenus realiza</span>
               </h2>
+            </FadeIn>
+
+            <FadeIn delay={0.6}>
+              <p className="font-[var(--font-playfair)] text-2xl md:text-3xl text-white/90 font-light mb-8">
+                Sua Casa do Sonho à Realidade
+              </p>
             </FadeIn>
 
             <FadeIn delay={0.8}>
@@ -218,7 +223,7 @@ export default function Hero() {
 
             {/* Stats with glass effect */}
             <StaggerContainer
-              className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto"
+              className="hidden sm:grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto"
               staggerDelay={0.15}
             >
               {stats.map((stat, index) => (

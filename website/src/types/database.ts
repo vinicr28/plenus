@@ -136,6 +136,33 @@ export interface Database {
         }
         Relationships: []
       }
+      hero_stats: {
+        Row: {
+          id: string
+          position: number
+          value: string
+          label: string
+          prefix: string | null
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          position: number
+          value: string
+          label: string
+          prefix?: string | null
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          position?: number
+          value?: string
+          label?: string
+          prefix?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       leads: {
         Row: {
           id: string
@@ -234,6 +261,11 @@ export type LeadInsert = Database['public']['Tables']['leads']['Insert'];
 export type LeadUpdate = Database['public']['Tables']['leads']['Update'];
 export type LeadFormType = 'contact' | 'pos-venda' | 'trabalhe-conosco' | 'financiamento';
 export type LeadStatus = 'novo' | 'em_negociacao' | 'fechado';
+
+// Convenience type for hero stats
+export type HeroStat = Database['public']['Tables']['hero_stats']['Row'];
+export type HeroStatInsert = Database['public']['Tables']['hero_stats']['Insert'];
+export type HeroStatUpdate = Database['public']['Tables']['hero_stats']['Update'];
 
 // Convenience type for financing settings
 export type FinancingSetting = Database['public']['Tables']['financing_settings']['Row'];

@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: "%s | Plenus Obras",
   },
   description:
-    "Você sonha, a Plenus realiza. Especialistas em terreno + construção personalizada com economia de até 40%. 8 anos transformando sonhos em realidade em Indaiatuba e Jundiaí.",
+    "Você sonha, a Plenus realiza. Especialistas em terreno + construção personalizada com economia de até 40%. 9 anos transformando sonhos em realidade em Indaiatuba e Jundiaí.",
   keywords: [
     "construção de casas",
     "terreno e construção",
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     siteName: "Plenus Obras",
     title: "Plenus Obras | Construção de Casas Personalizadas",
     description:
-      "Você sonha, a Plenus realiza. Especialistas em terreno + construção personalizada com economia de até 40%. 8 anos transformando sonhos em realidade.",
+      "Você sonha, a Plenus realiza. Especialistas em terreno + construção personalizada com economia de até 40%. 9 anos transformando sonhos em realidade.",
     images: [
       {
         url: "/og-image.jpg",
@@ -79,7 +79,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: SITE_URL,
+    canonical: '/',
   },
 };
 
@@ -91,7 +91,7 @@ const organizationSchema = {
   url: SITE_URL,
   logo: `${SITE_URL}/logo.png`,
   description:
-    "Especialistas em terreno + construção personalizada com economia de até 40%. 8 anos transformando sonhos em realidade.",
+    "Especialistas em terreno + construção personalizada com economia de até 40%. 9 anos transformando sonhos em realidade.",
   foundingDate: "2016",
   areaServed: [
     {

@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Projetos",
   description:
     "Explore nossa galeria de projetos realizados. Casas personalizadas construídas com excelência em Indaiatuba e Jundiaí. Veja nosso portfólio completo.",
+  alternates: {
+    canonical: '/projetos',
+  },
   openGraph: {
     title: "Projetos | Plenus Obras",
     description:

@@ -23,6 +23,11 @@ export default function Contact() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!formData.nome.trim() || !formData.telefone.trim()) {
+      return;
+    }
+
     setStatus("loading");
 
     try {
@@ -208,7 +213,7 @@ export default function Contact() {
 
           {/* Right column - Form */}
           <FadeIn delay={0.2} direction="left">
-            <div className="bg-white/90 backdrop-blur-md p-8 lg:p-10 rounded-3xl border border-gray-200/60 shadow-[0_4px_40px_-8px_rgba(0,0,0,0.1)]">
+            <div className="bg-white/90 backdrop-blur-md p-5 sm:p-8 lg:p-10 rounded-3xl border border-gray-200/60 shadow-[0_4px_40px_-8px_rgba(0,0,0,0.1)]">
               <h3 className="font-[var(--font-playfair)] text-2xl font-bold text-[#1a1a1a] mb-6">
                 Solicite seu Orçamento
               </h3>
@@ -233,7 +238,7 @@ export default function Contact() {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
                     <label className="block text-sm font-medium text-[#525252] mb-2">
-                      Nome completo
+                      Nome completo <span className="text-[#c41e3a]">*</span>
                     </label>
                     <input
                       type="text"
@@ -275,7 +280,6 @@ export default function Contact() {
                         Terreno + Construção
                       </option>
                       <option value="Apenas Construção">Apenas Construção</option>
-                      <option value="Reforma">Reforma</option>
                       <option value="Outro">Outro</option>
                     </select>
                   </div>

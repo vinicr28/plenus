@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { saveLead } from "@/lib/leads";
+import { sendPushNotification } from "@/lib/notify";
 import { LeadInsert } from "@/types/database";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -135,13 +136,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Save lead to database (non-blocking — failure does not affect response)
+    // Save lead and send push notification (non-blocking)
     try {
       const lead = mapFormDataToLead(formType, data);
       await saveLead(lead);
     } catch (leadError) {
       console.error("Error saving lead to DB:", leadError);
     }
+
+    sendPushNotification(formType, data).catch(() => {});
 
     return NextResponse.json({ success: true });
   } catch (error) {

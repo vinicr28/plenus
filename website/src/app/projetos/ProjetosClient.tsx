@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import ProjectModal from "@/components/ProjectModal";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { Project } from "@/components/Projects";
 import { trackProjectEvent } from "@/lib/tracking";
 
@@ -66,25 +67,7 @@ export default function ProjetosClient() {
             transition={{ duration: 0.5 }}
             className="mb-8"
           >
-            <Link
-              href="/"
-              className="inline-flex items-center text-[#525252] hover:text-[#c41e3a] transition-colors"
-            >
-              <svg
-                className="w-4 h-4 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-              Voltar para Home
-            </Link>
+            <Breadcrumbs items={[{ label: "Projetos" }]} />
           </motion.div>
 
           {/* Title */}

@@ -32,7 +32,7 @@ function getBotResponse(
     case "greeting":
       return {
         text: "Olá! Sou o assistente da Plenus Obras. Como posso te ajudar?",
-        options: ["Quero construir", "Quero reformar", "Financiamento", "Pós-venda", "Outro"],
+        options: ["Quero construir", "Financiamento", "Pós-venda", "Outro"],
         nextStep: "greeting",
       };
     case "ask_mensagem":
@@ -289,7 +289,7 @@ export default function ChatBot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.95 }}
             transition={{ duration: 0.25 }}
-            className="fixed bottom-24 right-6 z-50 w-[calc(100vw-3rem)] sm:w-[380px] max-h-[70vh] sm:max-h-[500px] flex flex-col bg-white/95 backdrop-blur-2xl rounded-2xl shadow-2xl overflow-hidden border border-gray-200/60"
+            className="fixed bottom-24 right-6 z-50 w-[calc(100vw-2rem)] max-w-[380px] max-h-[70vh] sm:max-h-[500px] flex flex-col bg-white/95 backdrop-blur-2xl rounded-2xl shadow-2xl overflow-hidden border border-gray-200/60"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 bg-[#c41e3a] text-white shrink-0">

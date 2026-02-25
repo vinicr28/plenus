@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Financiamento",
   description:
     "Assessoria completa para seu financiamento imobiliário. Análise de crédito personalizada, parceria com os principais bancos e taxas competitivas.",
+  alternates: {
+    canonical: '/financiamento',
+  },
   openGraph: {
     title: "Financiamento | Plenus Obras",
     description:

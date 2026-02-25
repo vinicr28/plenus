@@ -168,7 +168,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                 duration: 0.5,
               }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-6xl max-h-[90vh] overflow-hidden rounded-3xl"
+              className="relative w-full max-w-6xl mx-4 max-h-[90vh] overflow-hidden rounded-3xl"
               style={{ perspective: "1000px" }}
             >
               {/* Glassmorphism background */}
@@ -340,7 +340,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                 </motion.div>
 
                 {/* Info section */}
-                <div className="w-full md:w-[45%] p-6 md:p-10 flex flex-col justify-center">
+                <div className="w-full md:w-[45%] p-4 sm:p-6 md:p-10 flex flex-col justify-center">
                   {/* Title */}
                   <motion.h2
                     initial={{ opacity: 0, y: 30 }}
@@ -375,7 +375,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5, duration: 0.5 }}
-                    className={`grid gap-4 mb-6 ${hasVideo ? 'grid-cols-3' : 'grid-cols-2'}`}
+                    className={`grid gap-4 mb-6 ${hasVideo ? 'grid-cols-2 sm:grid-cols-3' : 'grid-cols-2'}`}
                   >
                     <div className="bg-[#fafafa] rounded-2xl p-4">
                       <p className="text-sm text-[#737373] mb-1">Área Total</p>
@@ -445,7 +445,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                         if (project) trackProjectEvent(project.id, 'cta_click');
                         onClose();
                       }}
-                      className="inline-flex items-center justify-center w-full md:w-auto px-8 py-4 bg-[#1a1a1a] text-white font-semibold rounded-xl hover:bg-[#333] transition-colors"
+                      className="inline-flex items-center justify-center w-full md:w-auto px-6 py-3 sm:px-8 sm:py-4 text-sm sm:text-base bg-[#1a1a1a] text-white font-semibold rounded-xl hover:bg-[#333] transition-colors"
                     >
                       Quero um Projeto Assim
                       <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

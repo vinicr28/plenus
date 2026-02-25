@@ -21,7 +21,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-white/60 text-sm leading-relaxed mb-6">
-              Transformando sonhos em realidade há mais de 8 anos. Especialistas
+              Transformando sonhos em realidade há mais de 9 anos. Especialistas
               em construção de casas personalizadas com economia real.
             </p>
             <div className="flex gap-4">
@@ -108,6 +108,22 @@ export default function Footer() {
                   className="text-white/60 hover:text-white transition-colors duration-200 text-sm"
                 >
                   Contato
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/construtora-em-indaiatuba"
+                  className="text-white/60 hover:text-white transition-colors duration-200 text-sm"
+                >
+                  Construtora em Indaiatuba
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/construtora-em-jundiai"
+                  className="text-white/60 hover:text-white transition-colors duration-200 text-sm"
+                >
+                  Construtora em Jundiaí
                 </Link>
               </li>
             </ul>
