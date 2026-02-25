@@ -40,10 +40,10 @@ export default async function Home() {
         <About />
         <Map3D />
         <Process />
-        <Testimonials />
-        <FAQ />
         <Contact />
+        <Testimonials />
         <PosVenda />
+        <FAQ />
         <TrabalheConosco />
       </main>
       <Footer />
