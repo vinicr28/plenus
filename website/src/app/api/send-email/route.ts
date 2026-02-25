@@ -144,7 +144,7 @@ export async function POST(request: NextRequest) {
       console.error("Error saving lead to DB:", leadError);
     }
 
-    sendPushNotification(formType, data).catch(() => {});
+    await sendPushNotification(formType, data);
 
     return NextResponse.json({ success: true });
   } catch (error) {

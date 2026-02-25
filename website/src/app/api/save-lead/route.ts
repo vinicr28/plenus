@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
 
     await saveLead(lead);
 
-    sendPushNotification(formType, data).catch(() => {});
+    await sendPushNotification(formType, data);
 
     return NextResponse.json({ success: true });
   } catch (error) {
