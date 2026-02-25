@@ -85,8 +85,8 @@ Aguardo retorno. Obrigado!`;
             <div className="absolute inset-0 bg-gradient-to-b from-[#1a1a2e]/70 via-[#1a1a1a]/60 to-[#0a0a0a]/80" />
           </div>
 
-          {/* Atmospheric glows */}
-          <div className="absolute inset-0 pointer-events-none">
+          {/* Atmospheric glows — hidden on mobile */}
+          <div className="absolute inset-0 pointer-events-none hidden md:block">
             <div
               className="absolute top-20 right-20 w-[500px] h-[500px] rounded-full opacity-20"
               style={{
@@ -265,7 +265,7 @@ Aguardo retorno. Obrigado!`;
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
                 <div
-                  className="backdrop-blur-2xl rounded-3xl p-5 sm:p-8 lg:p-10 shadow-2xl"
+                  className="backdrop-blur-none md:backdrop-blur-2xl rounded-3xl p-5 sm:p-8 lg:p-10 shadow-2xl"
                   style={{
                     background:
                       "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%)",
