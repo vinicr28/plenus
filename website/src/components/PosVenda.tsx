@@ -60,8 +60,8 @@ export default function PosVenda() {
     <section id="pos-venda" className="py-24 lg:py-32 bg-[#f8f8f8]">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
-          {/* Left column - Form */}
-          <FadeIn delay={0.2} direction="right">
+          {/* Left column - Form (appears second on mobile) */}
+          <FadeIn delay={0.2} direction="right" className="order-2 lg:order-1">
             <div className="bg-white/90 backdrop-blur-md p-5 sm:p-8 lg:p-10 rounded-3xl border border-gray-200/60 shadow-[0_4px_40px_-8px_rgba(0,0,0,0.1)]">
               <h3 className="font-[var(--font-playfair)] text-2xl font-bold text-[#1a1a1a] mb-6">
                 Fale com o Pós-venda
@@ -170,8 +170,8 @@ export default function PosVenda() {
             </div>
           </FadeIn>
 
-          {/* Right column - Info */}
-          <div>
+          {/* Right column - Info (appears first on mobile) */}
+          <div className="order-1 lg:order-2">
             <FadeIn>
               <p className="text-[#737373] text-sm font-semibold tracking-[0.2em] uppercase mb-4">
                 Pós-venda
