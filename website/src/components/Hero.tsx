@@ -181,20 +181,20 @@ export default function Hero({ stats: propStats }: HeroProps) {
           className="backdrop-blur-none md:backdrop-blur-2xl rounded-3xl p-8 md:p-12 lg:p-16 shadow-2xl"
           style={{
             background: isMobile
-              ? 'linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%)'
+              ? 'linear-gradient(135deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.25) 100%)'
               : 'linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 100%)',
             border: '1px solid rgba(255,255,255,0.3)',
             boxShadow: '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.1)',
           }}
         >
           <div className="text-center">
-            <FadeIn delay={0.2}>
+            <FadeIn delay={isMobile ? 0.1 : 0.2}>
               <h1 className="text-[#000000] text-sm font-semibold tracking-[0.3em] uppercase mb-6">
                 Construtora de Casas Personalizadas em Indaiatuba e Jundiaí
               </h1>
             </FadeIn>
 
-            <FadeIn delay={0.4}>
+            <FadeIn delay={isMobile ? 0.15 : 0.4}>
               <h2 className="font-[var(--font-playfair)] text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-4">
                 Você sonha,
                 <br />
@@ -202,13 +202,13 @@ export default function Hero({ stats: propStats }: HeroProps) {
               </h2>
             </FadeIn>
 
-            <FadeIn delay={0.6}>
+            <FadeIn delay={isMobile ? 0.2 : 0.6}>
               <p className="font-[var(--font-playfair)] text-2xl md:text-3xl text-white/90 font-light mb-8">
                 Sua Casa do Sonho à Realidade
               </p>
             </FadeIn>
 
-            <FadeIn delay={0.8}>
+            <FadeIn delay={isMobile ? 0.25 : 0.8}>
               <p className="max-w-2xl mx-auto text-lg text-white/80 leading-relaxed mb-12">
                 Oferecemos a solução completa: terreno selecionado e construção
                 personalizada. Qualidade premium com economia de até 40% no seu
@@ -217,7 +217,7 @@ export default function Hero({ stats: propStats }: HeroProps) {
             </FadeIn>
 
             {/* CTA Buttons */}
-            <FadeIn delay={1}>
+            <FadeIn delay={isMobile ? 0.3 : 1}>
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
                 <Link
                   href="#contato"
