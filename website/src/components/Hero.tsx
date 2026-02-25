@@ -178,11 +178,9 @@ export default function Hero({ stats: propStats }: HeroProps) {
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-32">
         {/* Glass container — no backdrop-blur on mobile */}
         <div
-          className="backdrop-blur-none md:backdrop-blur-2xl rounded-3xl p-8 md:p-12 lg:p-16 shadow-2xl"
+          className="backdrop-blur-xl md:backdrop-blur-2xl rounded-3xl p-8 md:p-12 lg:p-16 shadow-2xl"
           style={{
-            background: isMobile
-              ? 'linear-gradient(135deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.25) 100%)'
-              : 'linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 100%)',
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 100%)',
             border: '1px solid rgba(255,255,255,0.3)',
             boxShadow: '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.1)',
           }}
