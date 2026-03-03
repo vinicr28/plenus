@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FadeIn } from "./ScrollAnimations";
+import { useScrollLock } from "@/lib/useScrollLock";
 
 export default function TrabalheConosco() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,20 +16,18 @@ export default function TrabalheConosco() {
   });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
-  // Close on escape key and handle body scroll
+  useScrollLock(isModalOpen);
+
+  // Close on escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsModalOpen(false);
     };
     if (isModalOpen) {
       document.addEventListener("keydown", handleEscape);
-      document.body.style.overflow = "hidden";
     }
     return () => {
       document.removeEventListener("keydown", handleEscape);
-      if (isModalOpen) {
-        document.body.style.overflow = "";
-      }
     };
   }, [isModalOpen]);
 

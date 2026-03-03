@@ -1,0 +1,679 @@
+================================================================================
+  PLENUS OBRAS — DOCUMENTAÇÃO INTERNA DO SISTEMA
+  Última atualização: 03/03/2026
+  Acesso restrito: Vinicius (dev) + Claude (AI)
+================================================================================
+
+Este documento descreve TUDO sobre o sistema da Plenus Obras: estrutura,
+funcionalidades, configurações, serviços externos e como manter/debugar.
+
+================================================================================
+  ÍNDICE
+================================================================================
+
+  1. Visão Geral
+  2. Estrutura de Pastas
+  3. Variáveis de Ambiente (.env.local)
+  4. Páginas Públicas
+  5. Páginas Admin
+  6. Rotas de API
+  7. Componentes
+  8. Formulários (Fluxo Completo)
+  9. Banco de Dados (Supabase)
+ 10. Autenticação (Login Admin)
+ 11. Email (Resend)
+ 12. Notificações Push (ntfy.sh)
+ 13. WhatsApp
+ 14. Hospedagem (Vercel)
+ 15. Comandos do Projeto
+ 16. Troubleshooting / Erros Comuns
+
+
+================================================================================
+  1. VISÃO GERAL
+================================================================================
+
+Site institucional + dashboard admin da Plenus Obras (construtora).
+
+Stack:
+  - Framework:     Next.js 16 (App Router)
+  - Linguagem:     TypeScript
+  - Estilo:        Tailwind CSS v4
+  - Animações:     Framer Motion
+  - Banco:         Supabase (PostgreSQL + Auth + Storage)
+  - Email:         Resend
+  - Push:          ntfy.sh
+  - Hospedagem:    Vercel
+  - Domínio:       plenusobras.com.br
+
+Repositório Git:
+  - URL:    github.com/vinicr28/plenus.git
+  - Branch: master (único)
+
+
+================================================================================
+  2. ESTRUTURA DE PASTAS
+================================================================================
+
+website/
+├── src/
+│   ├── app/                          # Páginas e rotas (App Router)
+│   │   ├── page.tsx                  # Home (/)
+│   │   ├── layout.tsx                # Layout raiz (fontes, meta tags, SEO)
+│   │   ├── globals.css               # CSS global + variáveis
+│   │   ├── robots.ts                 # Regras para crawlers
+│   │   ├── sitemap.ts                # Sitemap XML automático
+│   │   │
+│   │   ├── projetos/page.tsx         # /projetos
+│   │   ├── financiamento/            # /financiamento
+│   │   │   ├── page.tsx
+│   │   │   └── FinanciamentoClient.tsx
+│   │   ├── blog/                     # /blog e /blog/[slug]
+│   │   ├── construtora-em-indaiatuba/  # Página SEO cidade
+│   │   ├── construtora-em-jundiai/     # Página SEO cidade
+│   │   │
+│   │   ├── admin/                    # Dashboard admin
+│   │   │   ├── layout.tsx            # Layout com sidebar
+│   │   │   ├── page.tsx              # Redirect → dashboard
+│   │   │   ├── login/page.tsx        # Tela de login
+│   │   │   ├── dashboard/page.tsx    # Painel principal
+│   │   │   ├── projects/             # CRUD de projetos
+│   │   │   │   ├── page.tsx          # Lista
+│   │   │   │   ├── new/page.tsx      # Criar novo
+│   │   │   │   └── [id]/edit/page.tsx  # Editar
+│   │   │   ├── reviews/page.tsx      # Gerenciar avaliações
+│   │   │   ├── leads/page.tsx        # Gerenciar leads
+│   │   │   ├── financing/page.tsx    # Config financiamento
+│   │   │   ├── hero-stats/page.tsx   # Editar stats da home
+│   │   │   └── settings/page.tsx     # Config + gerenciar admins
+│   │   │
+│   │   └── api/                      # Endpoints de API
+│   │       ├── send-email/route.ts
+│   │       ├── save-lead/route.ts
+│   │       ├── projects/route.ts
+│   │       ├── reviews/route.ts
+│   │       ├── hero-stats/route.ts
+│   │       ├── financing/settings/route.ts
+│   │       ├── track-event/route.ts
+│   │       └── admin/                # APIs protegidas
+│   │           ├── projects/route.ts + [id]/route.ts
+│   │           ├── reviews/route.ts  + [id]/route.ts
+│   │           ├── leads/route.ts    + [id]/route.ts
+│   │           ├── financing/route.ts
+│   │           ├── hero-stats/route.ts
+│   │           ├── upload/route.ts
+│   │           └── users/route.ts
+│   │
+│   ├── components/                   # Componentes React
+│   │   ├── Header.tsx                # Navbar fixa
+│   │   ├── Hero.tsx                  # Banner principal com stats
+│   │   ├── About.tsx                 # Seção sobre a empresa
+│   │   ├── Projects.tsx              # Carrossel de projetos
+│   │   ├── ProjectModal.tsx          # Modal detalhes do projeto
+│   │   ├── Process.tsx               # Timeline do processo construtivo
+│   │   ├── Contact.tsx               # Formulário de contato
+│   │   ├── PosVenda.tsx              # Formulário pós-venda
+│   │   ├── TrabalheConosco.tsx       # Modal trabalhe conosco
+│   │   ├── Testimonials.tsx          # Carrossel de depoimentos
+│   │   ├── FAQ.tsx                   # Perguntas frequentes
+│   │   ├── Map3D.tsx                 # Mapa 3D de atuação
+│   │   ├── FinancingSimulator.tsx    # Calculadora de financiamento
+│   │   ├── ChatBot.tsx               # Bot conversacional
+│   │   ├── FloatingCTA.tsx           # Botão WhatsApp flutuante
+│   │   ├── Footer.tsx                # Rodapé
+│   │   ├── Breadcrumbs.tsx           # Navegação breadcrumb
+│   │   ├── ScrollAnimations.tsx      # Animações de scroll
+│   │   ├── SmoothScroll.tsx          # Scroll suave (Lenis)
+│   │   │
+│   │   └── admin/                    # Componentes do admin
+│   │       ├── Sidebar.tsx           # Menu lateral
+│   │       ├── ProjectsTable.tsx     # Tabela de projetos
+│   │       ├── ProjectForm.tsx       # Form criar/editar projeto
+│   │       ├── ReviewsTable.tsx      # Tabela de avaliações
+│   │       ├── LeadsTable.tsx        # Tabela de leads
+│   │       ├── LeadAnalytics.tsx     # Gráficos de leads
+│   │       ├── ImageUpload.tsx       # Upload de imagem única
+│   │       └── MultiMediaUpload.tsx  # Upload múltiplas mídias
+│   │
+│   ├── lib/                          # Bibliotecas e utilitários
+│   │   ├── supabase/
+│   │   │   ├── client.ts             # Cliente browser (com cookies)
+│   │   │   └── server.ts             # Cliente server (SSR + service role)
+│   │   ├── leads.ts                  # Salvar lead no banco
+│   │   ├── notify.ts                 # Push notification (ntfy.sh)
+│   │   ├── financing.ts              # Cálculo PRICE + formatação BRL
+│   │   ├── tracking.ts              # Tracking de eventos de projetos
+│   │   ├── blog.ts                   # Gerenciamento de blog posts
+│   │   └── useScrollLock.ts          # Hook para travar scroll em modais
+│   │
+│   ├── hooks/
+│   │   └── useParallax.ts            # Hook de efeito parallax
+│   │
+│   └── types/
+│       └── database.ts               # Tipos do Supabase (auto-gerado)
+│
+├── public/                           # Assets estáticos
+├── supabase/                         # Config Supabase local
+├── .env.local                        # Variáveis de ambiente (NÃO commitar)
+├── supabase-production.sql           # Schema SQL completo
+├── package.json
+├── tsconfig.json
+├── next.config.ts
+└── postcss.config.mjs
+
+
+================================================================================
+  3. VARIÁVEIS DE AMBIENTE (.env.local)
+================================================================================
+
+NUNCA commitar este arquivo. Ele está no .gitignore.
+
+  RESEND_API_KEY=<sua chave da API do Resend>
+  EMAIL_TO=Alison@plenusobras.com.br,Danilo@plenusobras.com.br
+
+  NEXT_PUBLIC_SUPABASE_URL=https://ktpmwrjlargiyszzleve.supabase.co
+  NEXT_PUBLIC_SUPABASE_ANON_KEY=<anon key do Supabase (eyJ... ou sb_publishable_...)>
+  SUPABASE_SERVICE_ROLE_KEY=<service role key do Supabase (sb_secret_...)>
+
+  NTFY_TOPIC=plenus_obras
+
+Explicação:
+  - RESEND_API_KEY        → Chave da API do Resend para enviar emails
+  - EMAIL_TO              → Destinatários dos formulários (separados por vírgula)
+  - NEXT_PUBLIC_*         → Variáveis expostas ao browser (prefixo obrigatório)
+  - SUPABASE_SERVICE_ROLE_KEY → Chave admin do Supabase (NUNCA expor ao client)
+  - NTFY_TOPIC            → Tópico do ntfy.sh para push notifications
+
+
+================================================================================
+  4. PÁGINAS PÚBLICAS
+================================================================================
+
+  /                           → Home (todas as seções)
+  /projetos                   → Lista de projetos publicados
+  /financiamento              → Simulador + formulário de financiamento
+  /blog                       → Lista de posts do blog
+  /blog/[slug]                → Post individual
+  /construtora-em-indaiatuba  → Página SEO para Indaiatuba
+  /construtora-em-jundiai     → Página SEO para Jundiaí
+
+Seções da Home (em ordem):
+  1. Header (navbar fixa)
+  2. Hero (banner + stats animados)
+  3. About (sobre a empresa)
+  4. Projects (carrossel de projetos)
+  5. Process (timeline do processo)
+  6. Map3D (mapa de atuação)
+  7. Contact (formulário de contato)
+  8. Testimonials (depoimentos)
+  9. FAQ (perguntas frequentes)
+ 10. PosVenda (formulário pós-venda)
+ 11. TrabalheConosco (modal candidatura)
+ 12. Footer
+ 13. ChatBot (widget flutuante)
+ 14. FloatingCTA (botão WhatsApp flutuante)
+
+
+================================================================================
+  5. PÁGINAS ADMIN
+================================================================================
+
+URL base: /admin
+
+  /admin/login        → Tela de login (email + senha)
+  /admin/dashboard    → Painel com métricas e atividade recente
+  /admin/projects     → Lista de projetos (publicados + rascunhos)
+  /admin/projects/new → Criar novo projeto
+  /admin/projects/[id]/edit → Editar projeto existente
+  /admin/reviews      → Gerenciar avaliações (aprovar/rejeitar)
+  /admin/leads        → Gerenciar leads (status + notas)
+  /admin/financing    → Configurar taxa de juros do simulador
+  /admin/hero-stats   → Editar as 4 estatísticas do banner da home
+  /admin/settings     → Gerenciar administradores + links rápidos
+
+Dashboard mostra:
+  - Total de projetos (publicados vs rascunhos)
+  - Total de avaliações (aprovadas vs pendentes)
+  - Total de leads (novos vs em negociação vs fechados)
+  - 5 leads mais recentes
+  - 5 projetos mais recentes
+  - Projetos mais visualizados (analytics)
+
+
+================================================================================
+  6. ROTAS DE API
+================================================================================
+
+─── PÚBLICAS ───
+
+POST /api/send-email
+  → Envia email via Resend + salva lead + push ntfy
+  → Usado por: contact, pos-venda, trabalhe-conosco
+  → Body: { formType: string, data: { nome, telefone, ... } }
+
+POST /api/save-lead
+  → Salva lead direto no banco + push ntfy (sem email)
+  → Usado por: financiamento
+  → Body: { formType: string, data: { nome, telefone, email, ... } }
+
+GET  /api/projects          → Projetos publicados (published=true)
+GET  /api/reviews           → Avaliações aprovadas (approved=true)
+GET  /api/hero-stats        → Estatísticas do hero
+GET  /api/financing/settings → Taxa de juros atual
+POST /api/track-event       → Registrar evento de projeto (view/click)
+
+─── ADMIN (requerem autenticação) ───
+
+GET/POST     /api/admin/projects       → Listar / criar projetos
+GET/PUT/DEL  /api/admin/projects/[id]  → Detalhe / editar / deletar projeto
+GET/POST     /api/admin/reviews        → Listar / criar avaliações
+PUT/DEL      /api/admin/reviews/[id]   → Aprovar / deletar avaliação
+GET          /api/admin/leads          → Listar leads
+PUT/DEL      /api/admin/leads/[id]     → Atualizar status / deletar lead
+GET/PUT      /api/admin/financing      → Ver / atualizar taxa de juros
+GET/PUT      /api/admin/hero-stats     → Ver / atualizar stats
+POST         /api/admin/upload         → Upload de imagem (Supabase Storage)
+GET/POST/DEL /api/admin/users          → Listar / criar / remover admins
+
+
+================================================================================
+  7. COMPONENTES PRINCIPAIS
+================================================================================
+
+─── SITE PÚBLICO ───
+
+Header.tsx          → Navbar fixa, menu mobile hamburger
+Hero.tsx            → Banner com background image + 4 stats animados
+About.tsx           → Seção institucional com texto + imagem
+Projects.tsx        → Carrossel horizontal de cards de projetos
+ProjectModal.tsx    → Modal com galeria de imagens, vídeo, detalhes
+Process.tsx         → Timeline visual do processo de construção
+Contact.tsx         → Form de contato (nome, telefone, tipo, mensagem)
+PosVenda.tsx        → Form pós-venda (nome, telefone, endereço, mensagem)
+TrabalheConosco.tsx → Modal com form de candidatura
+Testimonials.tsx    → Carrossel de depoimentos de clientes
+FAQ.tsx             → Accordion de perguntas frequentes
+Map3D.tsx           → Mapa interativo de áreas de atuação
+FinancingSimulator  → Calculadora PRICE (valor, entrada, prazo, taxa)
+ChatBot.tsx         → Widget de chat com fluxo conversacional
+FloatingCTA.tsx     → Botão WhatsApp fixo no canto inferior direito
+Footer.tsx          → Rodapé com links, contato, redes sociais
+
+─── ADMIN ───
+
+Sidebar.tsx         → Menu lateral (navegação + logout)
+ProjectsTable.tsx   → Tabela com lista de projetos
+ProjectForm.tsx     → Formulário criar/editar projeto
+ReviewsTable.tsx    → Tabela com avaliações (aprovar/rejeitar)
+LeadsTable.tsx      → Tabela com leads (filtros, status, notas)
+LeadAnalytics.tsx   → Gráficos e métricas de leads
+ImageUpload.tsx     → Upload de imagem única com preview
+MultiMediaUpload.tsx → Upload de múltiplas imagens + vídeo
+
+
+================================================================================
+  8. FORMULÁRIOS (FLUXO COMPLETO)
+================================================================================
+
+─── CONTATO (Contact.tsx) ───
+  Campos: nome*, telefone*, tipoProjeto, mensagem
+  API:    POST /api/send-email { formType: "contact", data: {...} }
+  Fluxo:
+    1. Usuário preenche → submit
+    2. API envia email (Resend) para Alison e Danilo
+    3. API salva lead na tabela "leads" (form_type="contact")
+    4. API envia push notification (ntfy.sh)
+    5. Mostra mensagem de sucesso
+
+─── PÓS-VENDA (PosVenda.tsx) ───
+  Campos: nome*, telefone*, endereco*, mensagem
+  API:    POST /api/send-email { formType: "pos-venda", data: {...} }
+  Fluxo:  Mesmo do contato
+
+─── TRABALHE CONOSCO (TrabalheConosco.tsx) ───
+  Campos: nome*, email*, telefone*, areaInteresse*, sobreVoce*
+  API:    POST /api/send-email { formType: "trabalhe-conosco", data: {...} }
+  Fluxo:  Mesmo do contato (abre em modal)
+
+─── FINANCIAMENTO (FinanciamentoClient.tsx) ───
+  Campos: nome*, telefone*, email*, mensagem
+  API:    POST /api/save-lead { formType: "financiamento", data: {...} }
+  Fluxo:
+    1. Usuário preenche → submit
+    2. API salva lead na tabela "leads" (form_type="financiamento")
+    3. API envia push notification (ntfy.sh)
+    4. NÃO envia email
+    5. Abre WhatsApp com mensagem pré-formatada
+
+
+================================================================================
+  9. BANCO DE DADOS (SUPABASE)
+================================================================================
+
+Projeto: ktpmwrjlargiyszzleve
+URL:     https://ktpmwrjlargiyszzleve.supabase.co
+Painel:  https://supabase.com/dashboard/project/ktpmwrjlargiyszzleve
+
+─── TABELAS ───
+
+projects
+  - id (uuid, PK)
+  - title, location, area, category
+  - image_url (imagem principal)
+  - images (text[] — array de URLs)
+  - video_url
+  - description
+  - published (boolean — só publicados aparecem no site)
+  - created_at, updated_at
+
+reviews
+  - id (uuid, PK)
+  - name, email, rating (1-5), comment, location
+  - approved (boolean — só aprovados aparecem no site)
+  - created_at
+
+leads
+  - id (uuid, PK)
+  - form_type ('contact' | 'pos-venda' | 'trabalhe-conosco' | 'financiamento')
+  - status ('novo' | 'em_negociacao' | 'fechado')
+  - nome, email, telefone
+  - tipo_projeto, mensagem, assunto, descricao
+  - area_interesse, sobre_voce
+  - cpf, endereco, data_nascimento, observacao
+  - notes (notas internas do admin)
+  - created_at, updated_at
+
+project_events
+  - id (uuid, PK)
+  - project_id (FK → projects)
+  - event_type ('modal_open' | 'cta_click')
+  - created_at
+
+financing_settings
+  - id (uuid, PK)
+  - key (text, ex: 'interest_rate')
+  - value (jsonb, ex: { annual_rate: 12.5, description: "..." })
+  - updated_at
+
+hero_stats
+  - id (uuid, PK)
+  - position (int, 1-4)
+  - value (text, ex: "500+")
+  - label (text, ex: "Casas Entregues")
+  - prefix (text, opcional, ex: "R$")
+  - updated_at
+
+─── STORAGE ───
+
+Bucket: project-images (público)
+  - Usado para imagens de projetos
+  - Upload via /api/admin/upload
+  - URL formato: {SUPABASE_URL}/storage/v1/object/public/project-images/{filename}
+
+─── RLS (Row Level Security) ───
+
+  - Público pode LER projects (published=true) e reviews (approved=true)
+  - Público pode INSERIR leads e reviews
+  - Admin (autenticado) tem acesso total a todas as tabelas
+  - Service role key bypassa RLS (usado no server)
+
+─── SCHEMA SQL ───
+
+O arquivo supabase-production.sql na raiz do projeto contém o schema
+completo para recriar o banco do zero se necessário.
+
+
+================================================================================
+  10. AUTENTICAÇÃO (LOGIN ADMIN)
+================================================================================
+
+Sistema: Supabase Auth (email + senha)
+
+Fluxo:
+  1. Usuário acessa /admin/login
+  2. Digita email e senha
+  3. Chama supabase.auth.signInWithPassword()
+  4. Sucesso → redireciona para /admin/dashboard
+  5. Erro → mostra "Email ou senha incorretos"
+
+Sessão:
+  - Armazenada em cookies (SSR) e localStorage (client)
+  - Gerenciada pelo @supabase/ssr
+
+Criar novo admin:
+  - Via /admin/settings → form "Adicionar novo administrador"
+  - Ou via Supabase Dashboard → Authentication → Users → Add user
+
+Logout:
+  - Botão "Sair" na sidebar
+  - Chama supabase.auth.signOut()
+  - Redireciona para /admin/login
+
+API admin:
+  - Todas as rotas /api/admin/* verificam autenticação
+  - createClient() (com cookies) → getUser() → se não autenticado, retorna 401
+  - Operações admin (listar/criar/deletar users) usam createServiceClient()
+    que usa a service role key (sb_secret_...)
+
+
+================================================================================
+  11. EMAIL (RESEND)
+================================================================================
+
+Serviço: Resend (resend.dev)
+API Key: RESEND_API_KEY no .env.local
+
+Remetente: "Plenus Obras <onboarding@resend.dev>"
+  (Para usar domínio próprio, configurar DNS no Resend)
+
+Destinatários (EMAIL_TO):
+  - Alison@plenusobras.com.br
+  - Danilo@plenusobras.com.br
+
+Assuntos dos emails:
+  - Contato:         [Plenus] Contato - {nome}
+  - Pós-venda:       [Plenus] Pós-venda - {assunto}
+  - Trabalhe Conosco: [Plenus] Trabalhe Conosco - {nome}
+
+Template: HTML formatado com tabela de dados, cabeçalho vermelho (#c41e3a),
+          timestamp em horário de Brasília.
+
+Código: src/app/api/send-email/route.ts
+
+
+================================================================================
+  12. NOTIFICAÇÕES PUSH (ntfy.sh)
+================================================================================
+
+ntfy.sh é um serviço gratuito de push notifications via HTTP.
+Não requer conta — qualquer pessoa com o nome do tópico pode receber.
+
+─── COMO FUNCIONA ───
+
+  1. Quando um lead é capturado, a API faz POST para:
+     https://ntfy.sh/plenus_obras
+
+  2. O POST envia:
+     - Título: "Novo Lead - {tipo do formulário}"
+     - Corpo: nome + telefone + horário
+     - Prioridade: high
+     - Tag: incoming_envelope (emoji de carta)
+
+  3. Qualquer dispositivo inscrito no tópico recebe a notificação.
+
+Código: src/lib/notify.ts
+
+─── COMO CONFIGURAR UM CELULAR ───
+
+  Android:
+    1. Instalar app "ntfy" da Play Store
+       (https://play.google.com/store/apps/details?id=io.heckel.ntfy)
+    2. Abrir o app
+    3. Tocar no "+" (adicionar assinatura)
+    4. Em "Topic name", digitar: plenus_obras
+    5. Manter o servidor padrão (ntfy.sh)
+    6. Tocar em "Subscribe"
+    7. Pronto! Vai receber notificação a cada novo lead.
+
+  iPhone:
+    1. Instalar app "ntfy" da App Store
+       (https://apps.apple.com/app/ntfy/id1625396347)
+    2. Abrir o app
+    3. Tocar no "+" para adicionar
+    4. Em "Topic", digitar: plenus_obras
+    5. Server: ntfy.sh (padrão)
+    6. Tocar em "Subscribe"
+    7. IMPORTANTE: Permitir notificações quando o iOS pedir
+    8. Pronto!
+
+  Desktop (browser):
+    1. Acessar https://ntfy.sh/plenus_obras
+    2. Clicar em "Subscribe" / permitir notificações
+    3. Vai receber push no browser
+
+─── TESTAR ───
+
+  Para testar se está funcionando, rodar no terminal:
+
+    curl -d "Teste de notificação" ntfy.sh/plenus_obras
+
+  Ou acessar https://ntfy.sh/plenus_obras e enviar uma mensagem.
+
+─── TROCAR O TÓPICO ───
+
+  Se precisar trocar (ex: por segurança), basta:
+    1. Mudar NTFY_TOPIC no .env.local
+    2. Reinscrever os celulares no novo tópico
+    3. Deploy
+
+─── SEGURANÇA ───
+
+  O tópico "plenus_obras" é público. Qualquer pessoa que souber o nome
+  pode se inscrever. Se for um problema, considere:
+    - Usar um nome aleatório difícil de adivinhar
+    - Ou usar ntfy.sh com autenticação (plano pago)
+
+
+================================================================================
+  13. WHATSAPP
+================================================================================
+
+Número: (19) 99293-7486
+Formato internacional: 5519992937486
+
+Usado em:
+  - FloatingCTA.tsx → Botão flutuante no canto inferior direito
+    URL: https://wa.me/5519992937486?text=Olá! Gostaria de solicitar um orçamento.
+
+  - ChatBot.tsx → Ao finalizar o fluxo do bot, abre WhatsApp
+    URL: https://wa.me/5519992937486?text={mensagem dinâmica com dados do lead}
+
+  - FinanciamentoClient.tsx → Após enviar form de financiamento
+    URL: https://wa.me/5519992937486?text={dados do financiamento}
+
+  - Páginas de cidade (Indaiatuba/Jundiaí) → Links diretos
+
+Para trocar o número:
+  - Buscar "5519992937486" em todos os arquivos e substituir
+  - Ou buscar "wa.me" para encontrar todos os pontos de uso
+
+
+================================================================================
+  14. HOSPEDAGEM (VERCEL)
+================================================================================
+
+O site roda na Vercel com deploy automático a cada push no master.
+
+  - Framework: Next.js (detectado automaticamente)
+  - Build:     npm run build
+  - Domínio:   plenusobras.com.br
+
+Variáveis de ambiente no Vercel:
+  Todas as variáveis do .env.local devem ser configuradas
+  no painel da Vercel: Settings → Environment Variables.
+
+Speed Insights:
+  - @vercel/speed-insights integrado
+  - Monitora Core Web Vitals automaticamente
+
+
+================================================================================
+  15. COMANDOS DO PROJETO
+================================================================================
+
+  npm run dev       → Inicia servidor de desenvolvimento (localhost:3000)
+  npm run build     → Build de produção
+  npm run start     → Inicia build de produção
+  npm run lint      → Executa ESLint
+
+  Instalar dependências:
+    npm install
+
+  Limpar cache do Next.js (resolver bugs de build):
+    rm -rf .next/cache
+
+
+================================================================================
+  16. TROUBLESHOOTING / ERROS COMUNS
+================================================================================
+
+─── Scroll travado no site público ───
+  Causa: Componentes que setam body.style.overflow = "hidden" ao abrir modal
+         e não restauram corretamente ao fechar.
+  Solução: Todos os modais devem usar o hook useScrollLock (src/lib/useScrollLock.ts).
+           Ele usa um counter para gerenciar múltiplos modais simultâneos.
+  Componentes que usam: Process.tsx, ProjectModal.tsx, TrabalheConosco.tsx
+  CSS importante: globals.css usa overflow-x: clip no body (não hidden!).
+                  "clip" esconde overflow horizontal sem criar scroll container.
+
+─── Admin scroll não funciona ───
+  O layout admin (src/app/admin/layout.tsx) usa:
+    - Wrapper: fixed inset-0 (posição fixa cobrindo toda a viewport)
+    - Sidebar: h-full shrink-0
+    - Main: flex-1 overflow-y-auto
+  Se mudar para h-screen ou min-h-screen, o scroll pode quebrar porque
+  html/body podem criar scroll containers conflitantes.
+
+─── API /api/admin/users retorna 500 ───
+  Causa: SUPABASE_SERVICE_ROLE_KEY incorreta.
+  A service role key NÃO é a mesma que a anon key.
+  - Anon key: começa com "eyJ..." ou "sb_publishable_..."
+  - Service role key: começa com "sb_secret_..."
+  Encontrar no painel: Supabase Dashboard → Settings → API Keys
+
+─── Emails não chegam ───
+  1. Verificar RESEND_API_KEY no .env.local
+  2. Verificar EMAIL_TO (emails separados por vírgula)
+  3. Verificar logs no Resend Dashboard (resend.dev)
+  4. O remetente é onboarding@resend.dev — pode cair no spam
+
+─── Notificações push não chegam ───
+  1. Verificar NTFY_TOPIC no .env.local
+  2. Testar manualmente: curl -d "teste" ntfy.sh/plenus_obras
+  3. Verificar se o app ntfy está instalado e inscrito no tópico correto
+  4. No iPhone, verificar se notificações estão permitidas
+
+─── Imagens de projeto não carregam ───
+  1. Verificar se o bucket "project-images" existe no Supabase Storage
+  2. Verificar se o bucket é público
+  3. Verificar se a URL da imagem está correta
+
+─── Login admin não funciona ───
+  1. Verificar NEXT_PUBLIC_SUPABASE_URL e NEXT_PUBLIC_SUPABASE_ANON_KEY
+  2. Verificar se o usuário existe no Supabase Auth
+  3. Criar usuário via /admin/settings ou via Supabase Dashboard
+
+─── Build falha ───
+  1. Limpar cache: rm -rf .next/cache
+  2. Reinstalar deps: rm -rf node_modules && npm install
+  3. Verificar erros de TypeScript: npm run lint
+
+─── Financiamento mostra taxa errada ───
+  A taxa é configurável em /admin/financing.
+  Tabela: financing_settings, key: "interest_rate"
+  Valor: { annual_rate: X.XX }
+
+
+================================================================================
+  FIM DO DOCUMENTO
+================================================================================

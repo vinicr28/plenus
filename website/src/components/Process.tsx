@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { FadeIn, StaggerContainer, StaggerItem } from "./ScrollAnimations";
+import { useScrollLock } from "@/lib/useScrollLock";
 
 const steps = [
   {
@@ -138,16 +139,16 @@ export default function Process() {
     }
   }, []);
 
+  useScrollLock(isOpen);
+
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeModal();
     };
     if (isOpen) {
-      document.body.style.overflow = "hidden";
       window.addEventListener("keydown", handleEsc);
     }
     return () => {
-      document.body.style.overflow = "";
       window.removeEventListener("keydown", handleEsc);
     };
   }, [isOpen, closeModal]);

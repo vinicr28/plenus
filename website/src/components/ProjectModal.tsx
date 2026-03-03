@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useEffect, useState, useCallback } from "react";
 import { Project } from "@/components/Projects";
 import { trackProjectEvent } from "@/lib/tracking";
+import { useScrollLock } from "@/lib/useScrollLock";
 
 // Extract YouTube video ID from various URL formats
 function getYouTubeId(url: string): string | null {
@@ -101,6 +102,8 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
     setCurrentIndex(index);
   };
 
+  useScrollLock(isOpen);
+
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -120,13 +123,9 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
     };
     if (isOpen) {
       document.addEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "hidden";
     }
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-      if (isOpen) {
-        document.body.style.overflow = "";
-      }
     };
   }, [isOpen, onClose, goToNext, goToPrev, videoModalOpen, imageLightboxOpen]);
 
