@@ -26,7 +26,9 @@ export default function TrabalheConosco() {
     }
     return () => {
       document.removeEventListener("keydown", handleEscape);
-      document.body.style.overflow = "unset";
+      if (isModalOpen) {
+        document.body.style.overflow = "";
+      }
     };
   }, [isModalOpen]);
 

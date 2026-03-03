@@ -124,7 +124,9 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
     }
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "unset";
+      if (isOpen) {
+        document.body.style.overflow = "";
+      }
     };
   }, [isOpen, onClose, goToNext, goToPrev, videoModalOpen, imageLightboxOpen]);
 
