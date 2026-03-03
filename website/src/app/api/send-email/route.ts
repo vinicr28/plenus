@@ -119,7 +119,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const emailTo = process.env.EMAIL_TO || "vinidev28@gmail.com";
+    const emailTo = (process.env.EMAIL_TO || "Alison@plenusobras.com.br,Danilo@plenusobras.com.br")
+      .split(",")
+      .map((e) => e.trim());
 
     const { error } = await resend.emails.send({
       from: "Plenus Obras <onboarding@resend.dev>",

@@ -260,7 +260,7 @@ export default function ChatBot() {
     let text = `Olá! Sou ${userData.nome}, tenho interesse em: ${userData.interesse}. Meu telefone: ${userData.telefone}.`;
     if (userData.endereco) text += ` Endereço da obra: ${userData.endereco}.`;
     if (userData.mensagem) text += ` ${userData.mensagem}`;
-    window.open(`https://wa.me/5519992057955?text=${encodeURIComponent(text)}`, "_blank");
+    window.open(`https://wa.me/5519992937486?text=${encodeURIComponent(text)}`, "_blank");
   }, [userData]);
 
   const restart = useCallback(() => {

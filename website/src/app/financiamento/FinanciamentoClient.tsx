@@ -56,7 +56,7 @@ Aguardo retorno. Obrigado!`;
     }).catch(() => {});
 
     const encodedMessage = encodeURIComponent(message);
-    const phoneNumber = "5519992057955";
+    const phoneNumber = "5519992937486";
     const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
 
     window.open(whatsappURL, "_blank");
