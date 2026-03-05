@@ -88,6 +88,7 @@ export default function Hero({ stats: propStats }: HeroProps) {
               alt="Casa moderna construída pela Construtora Plenus em condomínio fechado em Indaiatuba"
               fill
               priority
+              quality={60}
               sizes="100vw"
               className="object-cover object-center"
             />
