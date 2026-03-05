@@ -221,14 +221,14 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-white/40 text-sm">
+          <p className="text-white/60 text-sm">
             &copy; {currentYear} Plenus Obras. Todos os direitos reservados.
           </p>
           <a
             href="https://www.instagram.com/creativevisual.films?igsh=aGo4dXo1NTgxbHdm&utm_source=qr"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 text-white/40 text-sm hover:text-white/60 transition-colors"
+            className="flex items-center gap-2 text-white/60 text-sm hover:text-white/60 transition-colors"
           >
             criado por:
             <Image
