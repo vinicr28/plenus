@@ -3,6 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import {
+  ADMIN_SESSION_KEY,
+  ADMIN_SESSION_DURATION_MS,
+} from "@/lib/useAdminSessionTimeout";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -27,6 +31,11 @@ export default function LoginPage() {
         setError("Email ou senha incorretos");
         return;
       }
+
+      localStorage.setItem(
+        ADMIN_SESSION_KEY,
+        String(Date.now() + ADMIN_SESSION_DURATION_MS),
+      );
 
       router.push("/admin/dashboard");
       router.refresh();

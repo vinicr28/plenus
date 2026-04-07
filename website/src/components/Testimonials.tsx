@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
 import { FadeIn } from "./ScrollAnimations";
+import { useScrollLock } from "@/lib/useScrollLock";
 
 interface Review {
   id: string;
@@ -349,6 +350,30 @@ export default function Testimonials() {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [isHovering, setIsHovering] = useState(false);
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const closeVideoModal = useCallback(() => {
+    setIsVideoOpen(false);
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+  }, []);
+
+  useScrollLock(isVideoOpen);
+
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeVideoModal();
+    };
+    if (isVideoOpen) {
+      window.addEventListener("keydown", handleEsc);
+    }
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [isVideoOpen, closeVideoModal]);
 
   const fetchReviews = async () => {
     try {
@@ -630,7 +655,85 @@ export default function Testimonials() {
             </button>
           </div>
         </FadeIn>
+
+        {/* Video Thumbnail */}
+        <FadeIn delay={0.5}>
+          <div
+            className="mt-12 max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-lg cursor-pointer group relative"
+            onClick={() => setIsVideoOpen(true)}
+          >
+            <video
+              className="w-full aspect-video object-cover"
+              muted
+              playsInline
+              preload="metadata"
+              src="/0113-compressed.mp4#t=26"
+            />
+            {/* Play button overlay */}
+            <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
+              <div className="w-20 h-20 bg-white/90 group-hover:bg-white group-hover:scale-110 transition-all duration-300 rounded-full flex items-center justify-center shadow-xl">
+                <svg
+                  className="w-8 h-8 text-[#c41e3a] ml-1"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </FadeIn>
       </div>
+
+      {/* Video Modal */}
+      {isVideoOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          onClick={closeVideoModal}
+        >
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+
+          {/* Modal content */}
+          <div
+            className="relative w-full max-w-5xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button
+              onClick={closeVideoModal}
+              className="absolute -top-12 right-0 text-white/80 hover:text-white transition-colors"
+            >
+              <svg
+                className="w-8 h-8"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+
+            <div className="rounded-2xl overflow-hidden shadow-2xl">
+              <video
+                ref={videoRef}
+                className="w-full aspect-video"
+                controls
+                autoPlay
+                playsInline
+              >
+                <source src="/0113-compressed.mp4" type="video/mp4" />
+                Seu navegador não suporta a reprodução de vídeos.
+              </video>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Rating Modal */}
       <RatingModal

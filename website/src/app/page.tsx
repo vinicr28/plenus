@@ -3,6 +3,8 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import { createServiceClient } from "@/lib/supabase/server";
 
+export const revalidate = 0;
+
 const About = dynamic(() => import("@/components/About"));
 const Process = dynamic(() => import("@/components/Process"));
 const Projects = dynamic(() => import("@/components/Projects"));
@@ -22,7 +24,7 @@ async function getHeroStats() {
       .from('hero_stats')
       .select('position, value, label, prefix')
       .order('position');
-    return data && data.length === 4 ? data : undefined;
+    return data && data.length === 3 ? data : undefined;
   } catch {
     return undefined;
   }
@@ -36,12 +38,12 @@ export default async function Home() {
       <Header />
       <main>
         <Hero stats={heroStats ?? undefined} />
+        <Testimonials />
         <Projects />
         <About />
         <Map3D />
         <Process />
         <Contact />
-        <Testimonials />
         <PosVenda />
         <FAQ />
         <TrabalheConosco />

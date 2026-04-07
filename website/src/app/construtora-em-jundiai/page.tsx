@@ -2,6 +2,8 @@ import { Metadata } from "next";
 import { createServiceClient } from "@/lib/supabase/server";
 import CityPageClient from "./CityPageClient";
 
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: "Construtora em Jundiaí | Casas Personalizadas",
   description:
@@ -24,7 +26,7 @@ async function getHeroStats() {
       .from('hero_stats')
       .select('position, value, label, prefix')
       .order('position');
-    return data && data.length === 4 ? data : undefined;
+    return data && data.length === 3 ? data : undefined;
   } catch {
     return undefined;
   }

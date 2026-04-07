@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
 
 export async function GET() {
@@ -31,13 +32,13 @@ export async function PUT(request: Request) {
 
   const body = await request.json();
 
-  if (!Array.isArray(body) || body.length !== 4) {
-    return NextResponse.json({ error: 'Deve enviar exatamente 4 stats' }, { status: 400 });
+  if (!Array.isArray(body) || body.length !== 3) {
+    return NextResponse.json({ error: 'Deve enviar exatamente 3 stats' }, { status: 400 });
   }
 
   for (const stat of body) {
-    if (!stat.value || !stat.label || typeof stat.position !== 'number' || stat.position < 1 || stat.position > 4) {
-      return NextResponse.json({ error: 'Cada stat deve ter position (1-4), value e label' }, { status: 400 });
+    if (!stat.value || !stat.label || typeof stat.position !== 'number' || stat.position < 1 || stat.position > 3) {
+      return NextResponse.json({ error: 'Cada stat deve ter position (1-3), value e label' }, { status: 400 });
     }
   }
 
@@ -58,6 +59,10 @@ export async function PUT(request: Request) {
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
+
+  revalidatePath('/');
+  revalidatePath('/construtora-em-indaiatuba');
+  revalidatePath('/construtora-em-jundiai');
 
   return NextResponse.json(data);
 }

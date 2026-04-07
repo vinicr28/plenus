@@ -9,6 +9,14 @@ interface AdminUser {
   created_at: string;
 }
 
+const SITE_URLS = [
+  { label: "Home", path: "/" },
+  { label: "Projetos", path: "/projetos" },
+  { label: "Financiamento", path: "/financiamento" },
+  { label: "Construtora em Indaiatuba", path: "/construtora-em-indaiatuba" },
+  { label: "Construtora em Jundiaí", path: "/construtora-em-jundiai" },
+];
+
 export default function SettingsPage() {
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(true);
@@ -17,6 +25,11 @@ export default function SettingsPage() {
   const [adding, setAdding] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [origin, setOrigin] = useState("");
+
+  useEffect(() => {
+    setOrigin(window.location.origin);
+  }, []);
 
   const fetchUsers = async () => {
     try {
@@ -105,7 +118,7 @@ export default function SettingsPage() {
             </svg>
           </div>
           <div>
-            <p className="font-medium text-[#1a1a1a]">Hero Stats</p>
+            <p className="font-medium text-[#1a1a1a]">Status do Card</p>
             <p className="text-sm text-gray-500">Editar estatísticas da home</p>
           </div>
         </Link>
@@ -123,6 +136,37 @@ export default function SettingsPage() {
             <p className="text-sm text-gray-500">Gerenciar leads de financiamento</p>
           </div>
         </Link>
+      </div>
+
+      {/* Site URLs */}
+      <div className="max-w-3xl mb-8">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <h2 className="text-lg font-semibold text-[#1a1a1a] mb-1">URLs do Site</h2>
+          <p className="text-sm text-gray-500 mb-6">
+            Links das páginas públicas do site. Clique para abrir em uma nova aba.
+          </p>
+          <div className="space-y-2">
+            {SITE_URLS.map((url) => (
+              <a
+                key={url.path}
+                href={url.path}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between gap-4 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors group"
+              >
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-medium text-[#1a1a1a]">{url.label}</p>
+                  <p className="text-xs text-gray-500 font-mono truncate">
+                    {origin}{url.path}
+                  </p>
+                </div>
+                <svg className="w-4 h-4 text-gray-400 group-hover:text-[#c41e3a] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Admin Management */}

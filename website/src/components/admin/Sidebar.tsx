@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { ADMIN_SESSION_KEY } from "@/lib/useAdminSessionTimeout";
 
 const navigation = [
   {
@@ -68,6 +69,7 @@ export default function Sidebar() {
   const supabase = createClient();
 
   const handleSignOut = async () => {
+    localStorage.removeItem(ADMIN_SESSION_KEY);
     await supabase.auth.signOut();
     router.push("/admin/login");
   };

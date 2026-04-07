@@ -10,7 +10,6 @@ const defaultStats = [
   { value: "150+", label: "Obras Entregues", prefix: null },
   { value: "40%", label: "de Economia Garantida", prefix: "Até " },
   { value: "9", label: "Anos de Mercado", prefix: null },
-  { value: "150+", label: "Famílias Satisfeitas", prefix: null },
 ];
 
 interface HeroProps {
@@ -26,7 +25,7 @@ function useIsMobile() {
 }
 
 export default function Hero({ stats: propStats }: HeroProps) {
-  const stats = propStats && propStats.length === 4 ? propStats : defaultStats;
+  const stats = propStats && propStats.length === 3 ? propStats : defaultStats;
   const { scrollY } = useScroll();
   const [introComplete, setIntroComplete] = useState(false);
   const isMobile = useIsMobile();
@@ -218,10 +217,10 @@ export default function Hero({ stats: propStats }: HeroProps) {
             <FadeIn delay={isMobile ? 0.3 : 1}>
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
                 <Link
-                  href="#contato"
+                  href="#projetos"
                   className="inline-flex items-center justify-center px-8 py-4 bg-[#c41e3a] text-white text-base font-semibold rounded-full hover:bg-[#a01830] transition-all hover:scale-105"
                 >
-                  Solicitar Orçamento
+                  Ver Projetos
                   <svg
                     className="ml-2 w-5 h-5"
                     fill="none"
@@ -252,7 +251,7 @@ export default function Hero({ stats: propStats }: HeroProps) {
 
             {/* Stats */}
             <StaggerContainer
-              className="hidden sm:grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto"
+              className="hidden sm:grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto"
               staggerDelay={0.15}
             >
               {stats.map((stat, index) => (

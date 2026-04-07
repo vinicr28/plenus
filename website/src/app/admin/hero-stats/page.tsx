@@ -13,7 +13,6 @@ const DEFAULT_STATS: StatField[] = [
   { position: 1, value: "150+", label: "Obras Entregues", prefix: "" },
   { position: 2, value: "40%", label: "de Economia Garantida", prefix: "Até " },
   { position: 3, value: "9", label: "Anos de Mercado", prefix: "" },
-  { position: 4, value: "150+", label: "Famílias Satisfeitas", prefix: "" },
 ];
 
 export default function HeroStatsPage() {
@@ -26,7 +25,7 @@ export default function HeroStatsPage() {
     fetch("/api/admin/hero-stats")
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data) && data.length === 4) {
+        if (Array.isArray(data) && data.length === 3) {
           setStats(
             data.map((s: { position: number; value: string; label: string; prefix: string | null }) => ({
               position: s.position,
@@ -88,7 +87,7 @@ export default function HeroStatsPage() {
     return (
       <div className="p-8">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-[#1a1a1a]">Hero Stats</h1>
+          <h1 className="text-2xl font-bold text-[#1a1a1a]">Status do Card</h1>
           <p className="text-gray-500 mt-1">Carregando...</p>
         </div>
       </div>
@@ -98,8 +97,8 @@ export default function HeroStatsPage() {
   return (
     <div className="p-8">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-[#1a1a1a]">Hero Stats</h1>
-        <p className="text-gray-500 mt-1">Edite os 4 cards de estatísticas exibidos no Hero da home page</p>
+        <h1 className="text-2xl font-bold text-[#1a1a1a]">Status do Card</h1>
+        <p className="text-gray-500 mt-1">Edite os 3 cards de estatísticas exibidos no Hero da home page</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl">

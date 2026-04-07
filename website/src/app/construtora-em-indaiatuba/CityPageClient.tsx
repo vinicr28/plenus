@@ -16,7 +16,6 @@ const defaultStats = [
   { value: "150+", label: "Obras Entregues", prefix: null },
   { value: "40%", label: "de Economia Garantida", prefix: "Até " },
   { value: "9", label: "Anos de Mercado", prefix: null },
-  { value: "150+", label: "Famílias Satisfeitas", prefix: null },
 ];
 
 interface CityPageClientProps {
@@ -24,7 +23,7 @@ interface CityPageClientProps {
 }
 
 export default function CityPageClient({ stats: propStats }: CityPageClientProps) {
-  const stats = propStats && propStats.length === 4 ? propStats : defaultStats;
+  const stats = propStats && propStats.length === 3 ? propStats : defaultStats;
   const economyValue = stats[1]?.value || "40%";
 
   const [isMobile, setIsMobile] = useState(false);
@@ -192,7 +191,7 @@ export default function CityPageClient({ stats: propStats }: CityPageClientProps
                   </div>
                 </FadeIn>
 
-                <StaggerContainer className="hidden sm:grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto" staggerDelay={0.15}>
+                <StaggerContainer className="hidden sm:grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto" staggerDelay={0.15}>
                   {stats.map((stat, i) => (
                     <StaggerItem key={i}>
                       <div
@@ -372,7 +371,7 @@ export default function CityPageClient({ stats: propStats }: CityPageClientProps
           {/* SEO text */}
           <div className="border-t border-white/5">
             <div className="max-w-3xl mx-auto px-6 lg:px-8 py-12">
-              <article className="text-sm text-white/30 space-y-3 leading-relaxed">
+              <article className="text-base md:text-lg text-white/60 space-y-4 leading-relaxed">
                 <p>
                   Indaiatuba é uma das cidades que mais crescem no interior de São Paulo, com um dos maiores IDHs do Brasil, parques ecológicos, ciclovias e um dos menores índices de criminalidade do estado. A apenas 100 km de São Paulo e próxima ao Aeroporto Internacional de Viracopos, é uma escolha inteligente para quem busca qualidade de vida.
                 </p>
