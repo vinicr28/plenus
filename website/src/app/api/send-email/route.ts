@@ -119,9 +119,29 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const emailTo = (process.env.EMAIL_TO || "Alison@plenusobras.com.br,Danilo@plenusobras.com.br")
+    const recipientsByType: Record<EmailPayload["formType"], string | undefined> = {
+      contact: process.env.EMAIL_TO_COMERCIAL,
+      "pos-venda": process.env.EMAIL_TO_POSVENDA,
+      "trabalhe-conosco": process.env.EMAIL_TO_POSVENDA,
+    };
+
+    const alwaysCc = (process.env.EMAIL_ALWAYS_CC || "")
       .split(",")
-      .map((e) => e.trim());
+      .map((e) => e.trim())
+      .filter(Boolean);
+
+    const primary = recipientsByType[formType];
+    const emailTo = Array.from(
+      new Set([...(primary ? [primary] : []), ...alwaysCc])
+    );
+
+    if (emailTo.length === 0) {
+      console.error("Nenhum destinatário configurado para formType:", formType);
+      return NextResponse.json(
+        { error: "Configuração de email ausente" },
+        { status: 500 }
+      );
+    }
 
     const { error } = await resend.emails.send({
       from: "Plenus Obras <onboarding@resend.dev>",
