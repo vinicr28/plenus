@@ -144,7 +144,7 @@ export async function POST(request: NextRequest) {
     }
 
     const { error } = await resend.emails.send({
-      from: "Plenus Obras <onboarding@resend.dev>",
+      from: process.env.EMAIL_FROM || "Plenus Obras <contato@plenusobras.com.br>",
       to: emailTo,
       subject: getEmailSubject(formType, data),
       html: formatEmailHtml(formType, data),
