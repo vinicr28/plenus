@@ -322,14 +322,14 @@ function ScaleOnScrollCard({ children }: { children: React.ReactNode }) {
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start end", "center center"],
+    offset: ["start end", "end end"],
   });
 
-  const scale = useTransform(scrollYProgress, [0, 1], [isMobile ? 1 : 0.9, 1]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [isMobile ? 1 : 0.6, 1]);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [isMobile ? 1 : 0.97, 1]);
+  const opacity = useTransform(scrollYProgress, [0, 0.3], [isMobile ? 1 : 0.85, 1]);
 
-  const smoothScale = useSpring(scale, { stiffness: 100, damping: 30, restDelta: 0.001 });
-  const smoothOpacity = useSpring(opacity, { stiffness: 100, damping: 30, restDelta: 0.001 });
+  const smoothScale = useSpring(scale, { stiffness: 200, damping: 30, restDelta: 0.001 });
+  const smoothOpacity = useSpring(opacity, { stiffness: 200, damping: 30, restDelta: 0.001 });
 
   if (isMobile) {
     return <div ref={ref}>{children}</div>;

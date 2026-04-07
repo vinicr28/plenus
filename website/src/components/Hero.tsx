@@ -188,29 +188,36 @@ export default function Hero({ stats: propStats }: HeroProps) {
           <div className="text-center">
             <FadeIn delay={isMobile ? 0 : 0.2}>
               <h1 className="text-[#000000] text-sm font-semibold tracking-[0.3em] uppercase mb-6">
-                Construtora de Casas Personalizadas em Indaiatuba e Jundiaí
+                <span className="md:hidden">Construtora em Indaiatuba e Jundiaí</span>
+                <span className="hidden md:inline">Construtora de Casas Personalizadas em Indaiatuba e Jundiaí</span>
               </h1>
             </FadeIn>
 
             <FadeIn delay={isMobile ? 0 : 0.4}>
               <h2 className="font-[var(--font-playfair)] text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-4">
-                Você sonha,
+                Construção personalizada
                 <br />
-                <span className="text-[#000000]">a Plenus realiza</span>
+                <span className="text-[#000000]">com qualidade premium.</span>
               </h2>
             </FadeIn>
 
             <FadeIn delay={isMobile ? 0 : 0.6}>
               <p className="font-[var(--font-playfair)] text-2xl md:text-3xl text-white/90 font-light mb-8">
-                Sua Casa do Sonho à Realidade
+                Economize até {stats[1]?.value} no seu investimento.
               </p>
             </FadeIn>
 
             <FadeIn delay={isMobile ? 0 : 0.8}>
               <p className="max-w-2xl mx-auto text-lg text-white/80 leading-relaxed mb-12">
-                Oferecemos a solução completa: terreno selecionado e construção
-                personalizada. Qualidade premium com economia de até 40% no seu
-                investimento.
+                <span className="md:hidden">
+                  Casas personalizadas em Indaiatuba e Jundiaí. Solução completa
+                  com qualidade premium e {stats[2]?.value} anos de mercado.
+                </span>
+                <span className="hidden md:inline">
+                  Especialistas em casas personalizadas em Indaiatuba e Jundiaí.
+                  Solução completa: terreno, projeto e obra entregues com qualidade
+                  premium. {stats[2]?.value} anos de experiência.
+                </span>
               </p>
             </FadeIn>
 
@@ -218,10 +225,13 @@ export default function Hero({ stats: propStats }: HeroProps) {
             <FadeIn delay={isMobile ? 0.1 : 1}>
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
                 <Link
-                  href="#projetos"
+                  href="https://wa.me/5519992937486?text=Olá! Gostaria de solicitar um orçamento gratuito."
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center justify-center px-8 py-4 bg-[#c41e3a] text-white text-base font-semibold rounded-full hover:bg-[#a01830] transition-all hover:scale-105"
                 >
-                  Ver Projetos
+                  <span className="md:hidden">Orçamento Grátis</span>
+                  <span className="hidden md:inline">Solicitar Orçamento Gratuito</span>
                   <svg
                     className="ml-2 w-5 h-5"
                     fill="none"
@@ -237,7 +247,7 @@ export default function Hero({ stats: propStats }: HeroProps) {
                   </svg>
                 </Link>
                 <Link
-                  href="#mapa"
+                  href="/projetos"
                   className="inline-flex items-center justify-center px-8 py-4 text-white text-base font-semibold rounded-full hover:scale-105 transition-all backdrop-blur-none md:backdrop-blur-lg"
                   style={{
                     background: 'linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%)',
@@ -245,7 +255,7 @@ export default function Hero({ stats: propStats }: HeroProps) {
                     boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2)',
                   }}
                 >
-                  Explorar no Mapa
+                  Ver Projetos Realizados
                 </Link>
               </div>
             </FadeIn>
