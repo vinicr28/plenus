@@ -16,6 +16,18 @@ interface Review {
   created_at: string;
 }
 
+const videoSchema = {
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  name: "Construtora Plenus - Entrega de Casa Personalizada em Indaiatuba e Jundiaí",
+  description:
+    "Entrega de uma casa realizada pela Plenus Obras, construtora especializada em casas personalizadas em Indaiatuba e Jundiaí. Solução completa: terreno selecionado, projeto arquitetônico e construção com qualidade premium.",
+  thumbnailUrl: "https://plenusobras.com.br/video-thumb.jpg",
+  uploadDate: "2026-02-09",
+  contentUrl: "https://plenusobras.com.br/0113-compressed.mp4",
+  duration: "PT1M26S",
+};
+
 function StarRating({ rating }: { rating: number }) {
   return (
     <div className="flex gap-1">
@@ -445,6 +457,10 @@ export default function Testimonials() {
 
   return (
     <section id="depoimentos" className="py-24 lg:py-32 bg-[#1a1a1a] overflow-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema) }}
+      />
       {reviewSchema && (
         <script
           type="application/ld+json"
