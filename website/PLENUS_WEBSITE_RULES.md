@@ -101,6 +101,48 @@ If a change involves:
 | 2026-02-02 | Company Values | Refactored: removed glass, shortened text, flex layout with centered wrap, increased gap | Approved |
 | 2026-02-02 | Section Order | New order: About → Map3D → Projects → Differentials | Approved |
 | 2026-02-02 | Projects | Netflix-style horizontal scroll with liquid glass cards, navigation arrows, scroll snap, white background | Approved |
+| 2026-05-15 | Site-wide | Centralized founding year via `src/lib/empresa.ts` (getAnosDeMercado) and fixed copy inconsistencies (phone schema, Instagram, FAQ year, public email) | Approved |
+| 2026-05-15 | Blog | Added post "Como Escolher o Terreno Ideal" under new category "Terreno e Localização" | Approved |
+| 2026-05-15 | Smoke tests | Rodadas APIs públicas (200), admin endpoints (401 sem auth), 11 páginas estáticas (200), sitemap (10 URLs), robots.txt, validação de form (400 em body inválido), 4 submits reais de teste (success), integração admin→Hero stats, track-event. Tudo OK. | Approved |
+
+---
+
+## 9. To Do (pós-deploy / pendências)
+
+### 9.1. Indexação no Google Search Console
+
+Conferir se todas as URLs do site estão indexadas no [Google Search Console](https://search.google.com/search-console). URLs do sitemap atual (10):
+
+```
+https://plenusobras.com.br/
+https://plenusobras.com.br/blog
+https://plenusobras.com.br/blog/como-escolher-terreno-ideal-indaiatuba-jundiai
+https://plenusobras.com.br/blog/como-escolher-construtora-ideal-indaiatuba-jundiai
+https://plenusobras.com.br/blog/quanto-custa-construir-casa-2026
+https://plenusobras.com.br/blog/construir-ou-comprar-casa-pronta
+https://plenusobras.com.br/projetos
+https://plenusobras.com.br/financiamento
+https://plenusobras.com.br/construtora-em-indaiatuba
+https://plenusobras.com.br/construtora-em-jundiai
+```
+
+Passos:
+1. Search Console → Sitemaps → submeter `https://plenusobras.com.br/sitemap.xml` (se ainda não foi)
+2. Em "Inspeção de URL", colar cada URL acima e verificar status "Está no Google"
+3. Solicitar indexação manual pras URLs novas (o post de terreno foi adicionado em 2026-05-15)
+4. Monitorar a aba "Páginas" pra ver erros de cobertura
+
+### 9.2. Limpar leads de teste
+
+Após smoke tests de 2026-05-15, foram criados 4 leads de teste em produção (filtrar por "TESTE AUTOMATICO" no `/admin/leads`):
+- contact (tel 19000000001)
+- pos-venda (tel 19000000002)
+- trabalhe-conosco (tel 19000000003)
+- financiamento (tel 19000000004)
+
+### 9.3. Integração Vimob CRM
+
+Branch `feat/vimob-leads-integration` pushada e aguardando key válida do CRM. Detalhes no commit `0cdbf7b`.
 
 ---
 
