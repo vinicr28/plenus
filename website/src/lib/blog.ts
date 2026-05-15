@@ -11,6 +11,93 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "como-escolher-terreno-ideal-indaiatuba-jundiai",
+    title: "Como Escolher o Terreno Ideal para Construir sua Casa em Indaiatuba e Jundiaí",
+    excerpt:
+      "Veja os 7 critérios essenciais para escolher o terreno certo antes de construir e descubra como a Plenus encontra a localização perfeita para sua casa em Indaiatuba e Jundiaí.",
+    coverImage: "/images/blog/escolher-terreno-indaiatuba.jpg",
+    date: "2026-05-15",
+    readTime: "6 min de leitura",
+    category: "Terreno e Localização",
+    content: `
+Antes de construir a casa dos sonhos, existe uma decisão que pesa tanto quanto o projeto arquitetônico ou a escolha da construtora: o terreno. Um bom terreno valoriza o investimento, simplifica a obra e garante qualidade de vida pelos próximos anos. Um terreno errado pode encarecer a construção, atrasar o cronograma e gerar frustrações que poderiam ter sido evitadas.
+
+Neste guia, a equipe da Construtora Plenus reuniu 7 critérios essenciais para você escolher o terreno ideal em Indaiatuba ou Jundiaí, duas das regiões mais promissoras do interior paulista.
+
+## 1. Avalie a Localização e a Infraestrutura
+
+A localização é o critério que mais impacta o valor do terreno e a sua qualidade de vida. Verifique a proximidade com escolas, supermercados, hospitais e vias de acesso. Um terreno bem localizado economiza tempo no dia a dia e tende a se valorizar mais rápido.
+
+Confira também a infraestrutura básica disponível: água tratada, energia elétrica, esgoto, iluminação pública e coleta de lixo. Em loteamentos novos, alguns desses serviços ainda podem estar em fase de implantação, o que afeta o cronograma da sua obra.
+
+A Plenus conhece em detalhes os bairros de Indaiatuba e Jundiaí e ajuda você a comparar opções pelo que realmente importa: o que o terreno entrega de retorno no curto e no longo prazo.
+
+## 2. Confira a Topografia e o Tipo de Solo
+
+A topografia do terreno influencia diretamente o custo da construção. Terrenos planos exigem fundações simples e são mais econômicos. Terrenos em aclive ou declive são interessantes pelo desnível e pela vista, mas demandam fundações reforçadas, muros de arrimo e movimentação de terra, encarecendo a obra em 15% a 30%.
+
+O tipo de solo também importa. Solos arenosos ou com lençol freático raso exigem estudos geotécnicos e soluções específicas de fundação. Antes de fechar a compra, peça um laudo técnico ou converse com uma construtora experiente que possa avaliar o terreno presencialmente.
+
+Na Plenus, fazemos essa avaliação técnica antes mesmo da compra, evitando que você invista em um terreno que vai gerar custos extras durante a obra. Veja mais detalhes no nosso guia sobre [quanto custa construir uma casa em 2026](/blog/quanto-custa-construir-casa-2026).
+
+## 3. Verifique a Documentação e a Regularidade
+
+Esse é o ponto que mais gera dor de cabeça quando ignorado. Antes de qualquer pagamento, confira se o terreno está devidamente registrado no cartório de imóveis, se a matrícula é atualizada e se não existem pendências judiciais, dívidas de IPTU ou ônus reais sobre o imóvel.
+
+Para terrenos em loteamentos, verifique se o empreendimento foi aprovado pela prefeitura e se possui registro no cartório. Comprar um terreno irregular pode inviabilizar a aprovação do projeto e até a emissão do alvará de construção.
+
+A equipe da Plenus orienta cada cliente nessa análise documental, garantindo que sua compra seja segura desde o primeiro passo.
+
+## 4. Considere a Orientação Solar e a Ventilação
+
+A orientação do terreno define o conforto térmico da sua casa pelos próximos anos. Idealmente, os dormitórios ficam voltados para o leste, recebendo sol da manhã. Áreas sociais e de lazer ganham com a face norte, que recebe luz boa parte do dia sem ser excessiva no verão.
+
+A ventilação cruzada também depende da forma e da orientação do lote. Um terreno comprido e estreito permite menos opções de planta do que um terreno mais quadrado. Por isso, avaliar a posição cardeal e o formato é tão importante quanto o tamanho em metros quadrados.
+
+No projeto arquitetônico da Plenus, levamos esses fatores em conta antes mesmo da assinatura do contrato, para que cada cômodo da sua casa aproveite o máximo de luz natural e ventilação.
+
+## 5. Analise as Regras do Condomínio ou Loteamento
+
+Se o terreno está em um condomínio fechado ou loteamento planejado, leia com calma o regulamento interno. Existem regras sobre altura máxima de muros, recuos obrigatórios, área mínima construída, padrão de fachada, prazo para iniciar a obra e até cor da pintura externa.
+
+Esses parâmetros podem limitar bastante o que você consegue construir, e descobrir isso depois da compra costuma custar caro. Algumas regras inviabilizam projetos específicos, como casas com mais de dois pavimentos ou piscinas em determinadas posições do lote.
+
+A Plenus tem ampla experiência em construções dentro de condomínios fechados em Indaiatuba e Jundiaí. Conhecemos as regras de cada empreendimento e ajudamos você a desenhar um projeto que respeite o regulamento sem abrir mão do que importa.
+
+## 6. Confirme a Viabilidade de Construção
+
+Cada cidade tem um plano diretor que define o que pode ser construído em cada zona. Coeficiente de aproveitamento, taxa de ocupação, gabarito de altura, recuos mínimos e uso permitido variam entre bairros e às vezes entre quadras.
+
+Antes de fechar a compra, faça uma consulta prévia na prefeitura ou peça a uma construtora que confira esses parâmetros pra você. Comprar um terreno e depois descobrir que a casa dos sonhos não cabe nele é uma das frustrações mais comuns e evitáveis do mercado.
+
+A Plenus realiza essa consulta como parte do processo de avaliação do terreno, garantindo que o projeto que vamos desenhar caiba dentro das normas municipais sem ajustes forçados depois.
+
+## 7. Pense no Potencial de Valorização
+
+Um bom terreno não é só onde você vai morar agora, é também um investimento. Bairros com obras de infraestrutura previstas, novas escolas, parques, shopping ou expansão viária tendem a valorizar com força nos próximos anos.
+
+Pesquise o histórico de valorização da região nos últimos 5 anos, converse com corretores locais e observe o movimento de novas construções no entorno. Áreas que estão atraindo construtoras de qualidade costumam ser apostas seguras.
+
+Indaiatuba e Jundiaí têm apresentado crescimento consistente, com forte demanda por imóveis residenciais de alto padrão. Construir agora em uma boa localização dessas cidades significa colher valorização nos próximos anos. Se ainda está em dúvida entre construir ou comprar pronto, leia nosso comparativo sobre [construir ou comprar casa pronta](/blog/construir-ou-comprar-casa-pronta).
+
+## Terrenos em Indaiatuba e Jundiaí: o Que Esperar
+
+A região oferece uma variedade enorme de opções: terrenos em condomínios fechados de alto padrão, lotes em bairros residenciais consolidados, áreas em loteamentos novos com infraestrutura completa. Os preços variam conforme a localização, a metragem e as condições do entorno, mas a boa notícia é que a região ainda tem terrenos com excelente custo-benefício comparados à capital paulista.
+
+Em Indaiatuba, bairros como Cidade Nova, Jardim Esplanada e os condomínios da região do Helvetia concentram boa parte da demanda. Em Jundiaí, os condomínios fechados próximos ao Eloy Chaves, Engordadouro e Anhangabaú são pontos de atenção pra quem busca qualidade de vida com proximidade da capital.
+
+A Plenus atua há anos em ambas as cidades e mantém parcerias com corretores e proprietários locais. Isso significa acesso a oportunidades que nem sempre estão nos portais de imóveis. Veja nossos [projetos já entregues](/projetos) pra conhecer de perto a qualidade do nosso trabalho na região.
+
+## Plenus: Sua Parceira na Busca pelo Terreno Ideal
+
+Escolher o terreno é o primeiro passo da construção, e cada detalhe avaliado nessa fase economiza tempo, dinheiro e dor de cabeça depois. Na Construtora Plenus, oferecemos a solução completa de terreno + construção: ajudamos você a encontrar o lote certo, avaliamos a viabilidade técnica e jurídica, e conduzimos a obra do projeto à entrega das chaves.
+
+Saber [como escolher a construtora ideal](/blog/como-escolher-construtora-ideal-indaiatuba-jundiai) é importante, mas começar com o terreno certo é o que define o resto da jornada. Trabalhamos junto com você desde a primeira visita ao lote, garantindo decisões informadas a cada etapa. Também ajudamos a estruturar o [financiamento para construção](/financiamento) quando faz sentido pra você.
+
+Pronto para encontrar o terreno perfeito? [Solicite um orçamento gratuito](/#contato) e converse com a equipe da Plenus. A melhor construtora de Indaiatuba e Jundiaí está pronta pra transformar o seu sonho em endereço.
+    `.trim(),
+  },
+  {
     slug: "como-escolher-construtora-ideal-indaiatuba-jundiai",
     title: "Como Escolher a Construtora Ideal para Sua Casa em Indaiatuba e Jundiaí",
     excerpt:
