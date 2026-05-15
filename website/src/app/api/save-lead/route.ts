@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { saveLead } from '@/lib/leads';
 import { sendPushNotification } from '@/lib/notify';
+import { createVimobLead } from '@/services/vimob';
 import { LeadInsert } from '@/types/database';
 
 export async function POST(request: NextRequest) {
@@ -24,6 +25,13 @@ export async function POST(request: NextRequest) {
     };
 
     await saveLead(lead);
+
+    createVimobLead({
+      name: data.nome,
+      phone: data.telefone,
+      email: data.email,
+      message: data.mensagem,
+    }).catch(() => {});
 
     await sendPushNotification(formType, data);
 

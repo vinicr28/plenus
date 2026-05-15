@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { saveLead } from "@/lib/leads";
 import { sendPushNotification } from "@/lib/notify";
+import { createVimobLead } from "@/services/vimob";
 import { LeadInsert } from "@/types/database";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -165,6 +166,13 @@ export async function POST(request: NextRequest) {
     } catch (leadError) {
       console.error("Error saving lead to DB:", leadError);
     }
+
+    createVimobLead({
+      name: data.nome,
+      phone: data.telefone,
+      email: data.email,
+      message: data.mensagem,
+    }).catch(() => {});
 
     await sendPushNotification(formType, data);
 

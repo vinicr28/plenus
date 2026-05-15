@@ -93,7 +93,40 @@ If a change involves:
 
 ---
 
-## 8. Change Log
+## 8. Integração Vimob CRM (pendente de validação)
+
+Branch: `feat/vimob-leads-integration`
+
+### O que já foi feito
+
+- `src/services/vimob.ts` criado (server-only) com `createVimobLead()` em padrão fire-and-forget
+- `src/app/api/send-email/route.ts` envia leads de Contato, Pós-venda e Trabalhe Conosco ao Vimob após salvar no Supabase
+- `src/app/api/save-lead/route.ts` envia leads de Financiamento ao Vimob
+- Env vars adicionadas no `.env.local` (`VIMOB_API_KEY` e `VIMOB_API_URL`)
+- Env vars adicionadas na Vercel Production (mesmo padrão de `RESEND_API_KEY`, `SUPABASE_SERVICE_ROLE_KEY`)
+- Formato da requisição validado por testes diretos: `POST /leads` com header `Authorization: Bearer <key>`
+
+### Bloqueador atual
+
+A chave atual `vk_ddd8c0lJgpnlDdxjARw6ypleklEkVrWw` retorna `401 invalid_api_key` em **qualquer endpoint** da API (testado em `/leads` e `/properties`). O formato da chamada está correto; o problema é a chave em si.
+
+### O que falta pra ativar
+
+1. **Validar chave no painel Vimob:** Configurações → API Pública. Conferir se a chave bate, se está ativa, se o módulo de API pública está habilitado pra organização (super admin precisa ativar).
+2. **Gerar key nova** se a atual estiver revogada e atualizar:
+   - `.env.local`
+   - Vercel Production (via `vercel env rm VIMOB_API_KEY production` + `vercel env add VIMOB_API_KEY production`)
+3. **Recriar `VIMOB-API.md`** com a doc oficial completa (página `/docs/api` é SPA protegido, conteúdo só renderiza logado). Copiar/colar da página renderizada.
+4. **Validar com lead real:** após chave válida, submeter um form de teste e confirmar no painel do Vimob que o lead chegou.
+
+### Melhorias opcionais identificadas na review
+
+- Trocar `createVimobLead(...).catch(() => {})` por `await createVimobLead(...)` nas duas rotas. Em ambiente serverless (Vercel), promises sem await podem ser canceladas quando o response retorna. Adiciona ~200-500ms de latência mas garante entrega.
+- Pra `trabalhe-conosco`, montar `message` com `Área: ${areaInteresse} | Sobre: ${sobreVoce}` — senão o lead chega no Vimob sem contexto da candidatura.
+
+---
+
+## 9. Change Log
 
 | Date | Section | Change | Status |
 |------|---------|--------|--------|
