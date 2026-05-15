@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { getAnosDeMercado } from "@/lib/empresa";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const anosDeMercado = getAnosDeMercado();
 
   return (
     <footer className="bg-[#0a0a0a] text-white">
@@ -21,7 +23,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-white/60 text-sm leading-relaxed mb-6">
-              Transformando sonhos em realidade há mais de 9 anos. Especialistas
+              Transformando sonhos em realidade há mais de {anosDeMercado} anos. Especialistas
               em construção de casas personalizadas com economia real.
             </p>
             <div className="flex gap-4">
@@ -184,7 +186,7 @@ export default function Footer() {
                     d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                   />
                 </svg>
-                sistemasplenusobras@gmail.com
+                contato@plenusobras.com.br
               </li>
               <li>
                 <a

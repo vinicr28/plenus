@@ -8,6 +8,7 @@ import dynamic from "next/dynamic";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import { getAnosDeMercado } from "@/lib/empresa";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
 
 const ChatBot = dynamic(() => import("@/components/ChatBot"));
@@ -15,7 +16,7 @@ const ChatBot = dynamic(() => import("@/components/ChatBot"));
 const defaultStats = [
   { value: "150+", label: "Obras Entregues", prefix: null },
   { value: "40%", label: "de Economia Garantida", prefix: "Até " },
-  { value: "9", label: "Anos de Mercado", prefix: null },
+  { value: String(getAnosDeMercado()), label: "Anos de Mercado", prefix: null },
 ];
 
 interface CityPageClientProps {
@@ -162,7 +163,7 @@ export default function CityPageClient({ stats: propStats }: CityPageClientProps
 
                 <FadeIn delay={0.3}>
                   <p className="max-w-2xl mx-auto text-lg text-white/80 leading-relaxed mb-12">
-                    Terreno selecionado e construção personalizada com economia de até 40%. Mais de 9 anos construindo em Indaiatuba e região.
+                    Terreno selecionado e construção personalizada com economia de até 40%. Mais de {getAnosDeMercado()} anos construindo em Indaiatuba e região.
                   </p>
                 </FadeIn>
 

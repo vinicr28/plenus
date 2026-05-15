@@ -5,11 +5,12 @@ import { motion, useScroll, useTransform, useSpring, useMotionValue, animate } f
 import Image from "next/image";
 import Link from "next/link";
 import { FadeIn, StaggerContainer, StaggerItem } from "./ScrollAnimations";
+import { getAnosDeMercado } from "@/lib/empresa";
 
 const defaultStats = [
   { value: "150+", label: "Obras Entregues", prefix: null },
   { value: "40%", label: "de Economia Garantida", prefix: "Até " },
-  { value: "9", label: "Anos de Mercado", prefix: null },
+  { value: String(getAnosDeMercado()), label: "Anos de Mercado", prefix: null },
 ];
 
 interface HeroProps {

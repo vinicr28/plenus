@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { FUNDACAO_ANO, getAnosDeMercado } from "@/lib/empresa";
 import "./globals.css";
 
 // TODO: Replace SITE_URL with actual domain when available
 const SITE_URL = 'https://plenusobras.com.br'; // placeholder
+const ANOS = getAnosDeMercado();
 
 const inter = Inter({
   variable: "--font-inter",
@@ -25,7 +27,7 @@ export const metadata: Metadata = {
     template: "%s | Plenus Obras",
   },
   description:
-    "Você sonha, a Plenus realiza. Especialistas em terreno + construção personalizada com economia de até 40%. 9 anos transformando sonhos em realidade em Indaiatuba e Jundiaí.",
+    `Você sonha, a Plenus realiza. Especialistas em terreno + construção personalizada com economia de até 40%. ${ANOS} anos transformando sonhos em realidade em Indaiatuba e Jundiaí.`,
   keywords: [
     "construção de casas",
     "terreno e construção",
@@ -51,7 +53,7 @@ export const metadata: Metadata = {
     siteName: "Plenus Obras",
     title: "Plenus Obras | Construção de Casas Personalizadas",
     description:
-      "Você sonha, a Plenus realiza. Especialistas em terreno + construção personalizada com economia de até 40%. 9 anos transformando sonhos em realidade.",
+      `Você sonha, a Plenus realiza. Especialistas em terreno + construção personalizada com economia de até 40%. ${ANOS} anos transformando sonhos em realidade.`,
     images: [
       {
         url: "/og-image.jpg",
@@ -92,8 +94,8 @@ const organizationSchema = {
   url: SITE_URL,
   logo: `${SITE_URL}/logo.png`,
   description:
-    "Especialistas em terreno + construção personalizada com economia de até 40%. 9 anos transformando sonhos em realidade.",
-  foundingDate: "2016",
+    `Especialistas em terreno + construção personalizada com economia de até 40%. ${ANOS} anos transformando sonhos em realidade.`,
+  foundingDate: String(FUNDACAO_ANO),
   areaServed: [
     {
       "@type": "City",
@@ -114,12 +116,12 @@ const organizationSchema = {
   ],
   contactPoint: {
     "@type": "ContactPoint",
-    telephone: "+55-19-99205-7955",
+    telephone: "+55-19-99293-7486",
     contactType: "customer service",
     availableLanguage: "Portuguese",
   },
   sameAs: [
-    "https://www.instagram.com/plenusobras",
+    "https://www.instagram.com/plenusobrasoficial",
   ],
 };
 
@@ -130,7 +132,7 @@ const localBusinessSchema = {
   name: "Plenus Obras",
   image: `${SITE_URL}/og-image.jpg`,
   url: SITE_URL,
-  telephone: "+55-19-99205-7955",
+  telephone: "+55-19-99293-7486",
   priceRange: "$$",
   address: {
     "@type": "PostalAddress",

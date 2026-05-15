@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { FadeIn, StaggerContainer, StaggerItem } from "./ScrollAnimations";
+import { getAnosDeMercado } from "@/lib/empresa";
 
 const values = [
   "Gratidão",
@@ -59,7 +60,7 @@ export default function About() {
           </FadeIn>
           <FadeIn delay={0.1}>
             <h2 className="font-[var(--font-playfair)] text-3xl md:text-5xl font-bold text-[#1a1a1a] mb-6">
-              9 Anos Transformando
+              {getAnosDeMercado()} Anos Transformando
               <br />
               <span className="text-[#525252]">Sonhos em Realidade</span>
             </h2>

@@ -7,8 +7,7 @@ import { FadeIn, StaggerContainer, StaggerItem } from "./ScrollAnimations";
 const faqs = [
   {
     question: "Quanto custa construir uma casa em Indaiatuba?",
-    answer:
-      "O custo varia conforme o padrão de acabamento e o tamanho do projeto. Em 2026, o valor médio do metro quadrado da construção no Brasil é de R$ 1.920,74 (SINAPI). Na Plenus, oferecemos orçamentos detalhados e personalizados para que você saiba exatamente quanto vai investir.",
+    answer: `O custo varia conforme o padrão de acabamento e o tamanho do projeto. Em ${new Date().getFullYear()}, o valor médio do metro quadrado da construção no Brasil é de R$ 1.920,74 (SINAPI). Na Plenus, oferecemos orçamentos detalhados e personalizados para que você saiba exatamente quanto vai investir.`,
   },
   {
     question: "A Plenus oferece terreno + construção?",

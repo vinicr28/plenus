@@ -126,7 +126,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <p className="font-semibold text-[#1a1a1a]">E-mail</p>
-                    <p className="text-[#525252]">sistemasplenusobras@gmail.com</p>
+                    <p className="text-[#525252]">contato@plenusobras.com.br</p>
                   </div>
                 </div>
               </FadeIn>

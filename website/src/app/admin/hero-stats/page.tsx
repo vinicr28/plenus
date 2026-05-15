@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { getAnosDeMercado } from "@/lib/empresa";
 
 interface StatField {
   position: number;
@@ -12,7 +13,7 @@ interface StatField {
 const DEFAULT_STATS: StatField[] = [
   { position: 1, value: "150+", label: "Obras Entregues", prefix: "" },
   { position: 2, value: "40%", label: "de Economia Garantida", prefix: "Até " },
-  { position: 3, value: "9", label: "Anos de Mercado", prefix: "" },
+  { position: 3, value: String(getAnosDeMercado()), label: "Anos de Mercado", prefix: "" },
 ];
 
 export default function HeroStatsPage() {

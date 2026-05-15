@@ -9,13 +9,14 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
+import { getAnosDeMercado } from "@/lib/empresa";
 
 const ChatBot = dynamic(() => import("@/components/ChatBot"));
 
 const defaultStats = [
   { value: "150+", label: "Obras Entregues", prefix: null },
   { value: "40%", label: "de Economia Garantida", prefix: "Até " },
-  { value: "9", label: "Anos de Mercado", prefix: null },
+  { value: String(getAnosDeMercado()), label: "Anos de Mercado", prefix: null },
 ];
 
 interface CityPageClientProps {
